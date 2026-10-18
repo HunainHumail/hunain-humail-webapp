@@ -1,4 +1,10 @@
 export {
+  onAuthChange,
+  signInWithGoogle,
+  signOut,
+  type AuthListener,
+} from "./auth";
+export {
   getFirebaseApp,
   getFirebaseAuth,
   getFirebaseDb,

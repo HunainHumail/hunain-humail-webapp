@@ -1,3 +1,4 @@
+export { useAuth, type UseAuthResult } from "./useAuth";
 export { useDubaiClock, formatDubaiClockLabel } from "./useDubaiClock";
 export { useTypewriter, type UseTypewriterOptions } from "./useTypewriter";
 export { useLenis } from "./useLenis";

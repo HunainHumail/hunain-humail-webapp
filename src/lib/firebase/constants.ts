@@ -1,4 +1,4 @@
-export const ADMIN_EMAIL = "hunainhumail786@gmail.com";
+export { ADMIN_EMAIL } from "@/lib/admin";
 
 export const COLLECTIONS = {
   profile: "profile",

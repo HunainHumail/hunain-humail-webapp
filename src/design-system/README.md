@@ -63,3 +63,9 @@ Standard Tailwind spacing scale (`0`–`24`) — see `tokens/spacing.ts`.
 | Markdown | safe `react-markdown` body renderer |
 
 Use `cn()` from `@/lib/utils/cn` to merge class names.
+
+## Admin (shadcn)
+
+Admin UI lives in `src/components/admin/ui` and is not used on the public site. shadcn variables (`--background`, `--foreground`, `--primary`, `--secondary`, `--muted`, `--accent`, `--destructive`, `--border`, `--input`, `--ring`, sidebar and chart aliases) point at the DLS tokens above. `--primary` is the electric cyan accent.
+
+Public utilities `bg-accent`, `text-muted`, and `border-border` stay on the DLS palette. Inside the generated admin primitives, hover and selected surfaces use `bg-secondary` (the elevated token) so they do not repaint the cyan accent or the muted text color.
