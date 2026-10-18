@@ -9,4 +9,5 @@ export { StoryTimeline, type StoryTimelineProps } from "./StoryTimeline";
 export { NowSection, type NowSectionProps } from "./NowSection";
 export { WorkGrid, type WorkGridProps } from "./WorkGrid";
 export { WritingList, type WritingListProps } from "./WritingList";
+export { ContactSection, type ContactSectionProps } from "./ContactSection";
 

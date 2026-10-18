@@ -4,4 +4,9 @@ export { getStory, publishedStoryItems } from "./story";
 export { getNow, publishedNowItems } from "./now";
 export { getWork, getWorkBySlug, publishedWorkItems } from "./work";
 export { getWriting, publishedWritingItems } from "./writing";
+export {
+  submitContactMessage,
+  type SubmitContactMessageResult,
+} from "./contact";
+
 

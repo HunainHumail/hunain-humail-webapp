@@ -1,3 +1,4 @@
+import { ContactSection } from "@/components/organisms/ContactSection";
 import { Hero } from "@/components/organisms/Hero";
 import { NowSection } from "@/components/organisms/NowSection";
 import { StoryTimeline } from "@/components/organisms/StoryTimeline";
@@ -43,6 +44,7 @@ export function HomeTemplate({
       <NowSection items={now} />
       <WorkGrid items={work} />
       <WritingList items={writing} />
+      <ContactSection contact={settings.contact} />
     </SiteTemplate>
   );
 }

@@ -8,4 +8,7 @@ test("home page shows site title", async ({ page }) => {
   await expect(
     page.getByRole("heading", { level: 2, name: "Thinking out loud." }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Got something to build?" }),
+  ).toBeVisible();
 });

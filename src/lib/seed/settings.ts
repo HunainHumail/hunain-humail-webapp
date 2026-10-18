@@ -25,4 +25,9 @@ export const siteSettingsSeed: SiteSettings = {
       icon: "mail",
     },
   ],
+  contact: {
+    email: "raohunain@hotmail.com",
+    intro: "Open to freelance builds, consulting and interesting roles.",
+    options: ["Freelance", "Consulting", "Roles"],
+  },
 };

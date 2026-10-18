@@ -7,5 +7,10 @@ describe("getSiteSettings", () => {
     expect(settings.nav).toHaveLength(5);
     expect(settings.nav[0].label).toBe("Story");
     expect(settings.socials.length).toBeGreaterThan(0);
+    expect(settings.contact).toEqual({
+      email: "raohunain@hotmail.com",
+      intro: "Open to freelance builds, consulting and interesting roles.",
+      options: ["Freelance", "Consulting", "Roles"],
+    });
   });
 });

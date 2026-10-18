@@ -18,4 +18,11 @@ export {
   type UseWritingFilterResult,
   type WritingFilterType,
 } from "./useWritingFilter";
+export {
+  useContactForm,
+  type ContactFormErrors,
+  type ContactFormStatus,
+  type ContactFormValues,
+  type UseContactFormResult,
+} from "./useContactForm";
 
