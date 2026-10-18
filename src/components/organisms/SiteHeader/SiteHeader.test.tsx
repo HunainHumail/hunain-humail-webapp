@@ -14,7 +14,11 @@ describe("SiteHeader", () => {
   });
 
   it("renders logo and primary nav", () => {
-    render(<SiteHeader settings={{ nav: siteSettingsSeed.nav }} />);
+    render(
+      <SiteHeader
+        settings={{ nav: siteSettingsSeed.nav, seo: siteSettingsSeed.seo }}
+      />,
+    );
     expect(screen.getByRole("link", { name: /hunain humail home/i })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Primary" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /01\s*Story/i })).toBeInTheDocument();
@@ -22,7 +26,11 @@ describe("SiteHeader", () => {
 
   it("opens mobile menu", async () => {
     const user = userEvent.setup();
-    render(<SiteHeader settings={{ nav: siteSettingsSeed.nav }} />);
+    render(
+      <SiteHeader
+        settings={{ nav: siteSettingsSeed.nav, seo: siteSettingsSeed.seo }}
+      />,
+    );
     const toggle = screen.getByRole("button", { name: "Open menu" });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
 

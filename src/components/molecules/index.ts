@@ -18,4 +18,6 @@ export {
 } from "./FilterTabs";
 export { WritingItem, type WritingItemProps } from "./WritingItem";
 export { FormField, type FormFieldProps } from "./FormField";
+export { SectionHeader, type SectionHeaderProps } from "./SectionHeader";
+export { RevealGroup, type RevealGroupProps } from "./RevealGroup";
 

@@ -1,10 +1,32 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
+import { createElement } from "react";
 import { afterEach, vi } from "vitest";
+
+vi.mock("next/image", () => ({
+  default: ({ alt }: { alt: string }) => createElement("img", { alt }),
+}));
 
 afterEach(() => {
   cleanup();
 });
+
+class MockIntersectionObserver {
+  observe() {
+    return undefined;
+  }
+  unobserve() {
+    return undefined;
+  }
+  disconnect() {
+    return undefined;
+  }
+}
+
+vi.stubGlobal(
+  "IntersectionObserver",
+  MockIntersectionObserver as unknown as typeof IntersectionObserver,
+);
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,

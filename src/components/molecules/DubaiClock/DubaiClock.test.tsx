@@ -12,8 +12,8 @@ describe("DubaiClock", () => {
     vi.useRealTimers();
   });
 
-  it("shows Dubai clock label", () => {
+  it("shows Dubai clock label after mount", () => {
     render(<DubaiClock />);
-    expect(screen.getByText(/^DUBAI · 25\.20° N · /)).toBeInTheDocument();
+    expect(screen.getByText(/^DUBAI · 25\.20° N/)).toBeInTheDocument();
   });
 });

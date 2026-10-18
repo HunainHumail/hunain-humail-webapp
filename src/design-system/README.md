@@ -1,6 +1,6 @@
 # Design system
 
-Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.css` under `[data-theme="dark"]` (default) and `[data-theme="light"]`. Tailwind utilities are wired via `@theme inline`.
+Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.css` under `:root` (dark default so utilities resolve before `data-theme` is set), `[data-theme="dark"]`, and `[data-theme="light"]`. Tailwind utilities are wired via `@theme inline`.
 
 ## Color
 
@@ -14,18 +14,36 @@ Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.c
 | muted | `#94a3b8` | `#64748b` | `text-muted` |
 | accent | `#22d3ee` | `#22d3ee` | `bg-accent`, `text-accent` |
 | accent-contrast | `#0a0e14` | `#0a0e14` | `text-accent-contrast` |
-| grid | faint lines | faint lines | `.bg-grid` |
+| grid | faint ink | faint ink | `.bg-grid` |
+| grid-hero | faint cyan | faint cyan | `.bg-grid-hero` |
+| glow | cyan halo | teal halo | `--color-glow` |
 | focus-ring | cyan | darker cyan | `ring-focus-ring` |
+
+Accent `#22d3ee` is reserved for the name-dot, active nav, scroll progress, primary pill CTAs, timeline dots/progress, hover borders, terminal prompt/caret, and focus rings.
 
 ## Typography
 
 - **Fonts**: Space Grotesk (`font-display`, `font-sans`), JetBrains Mono (`font-mono`) via `next/font`.
-- **Scale**: `text-xs` … `text-4xl`, plus `text-display-xl` (clamp, line-height 0.9, tight tracking).
-- **Tracking**: `tracking-tight`, `tracking-wide` (mono labels).
+- **Scale**: `text-xs` … `text-4xl`, plus:
+  - `text-display-hero` / `text-display-xl` — `clamp(64px, 9vw, 128px)`, line-height `0.88`, tracking `-0.05em`
+  - `text-display-section` — `clamp(2.75rem, 5vw, 3.75rem)` (44–60px), line-height `0.92`, tracking `-0.03em`
+  - `text-display-counter` — outlined section index
+  - `text-mono-md` — 15px terminal body
+- **Tracking**: `tracking-tighter` (`-0.05em`), `tracking-tight` (`-0.03em`), `tracking-wide` (mono labels).
 
 ## Spacing
 
-Standard Tailwind spacing scale (`0`–`24`) — see `tokens/spacing.ts`.
+Standard Tailwind scale plus:
+
+| Token | Value | Utility |
+| --- | --- | --- |
+| gutter | `1.25rem` | `px-gutter` |
+| gutter-lg | `2.5rem` | `md:px-gutter-lg` |
+| section | `5rem` | `py-section` |
+| section-lg | `8.5rem` (136px) | `md:py-section-lg` |
+| terminal | `27.5rem` (440px) | `min-w-terminal` |
+| 32 / 40 | `8rem` / `10rem` | `py-32`, `py-40` |
+| page | `80rem` (1280px) | `max-w-page` |
 
 ## Radius
 
@@ -33,8 +51,17 @@ Standard Tailwind spacing scale (`0`–`24`) — see `tokens/spacing.ts`.
 
 ## Motion
 
-- Durations: `duration-fast` (150ms), `duration-base` (250ms), `duration-slow` (400ms).
-- Easings: `ease-default`, `ease-in`, `ease-out`, `ease-in-out`.
+- Durations: `duration-fast` (150ms), `duration-base` (250ms), `duration-slow` (400ms), `duration-reveal` (800ms).
+- Easings: `ease-default`, `ease-in`, `ease-out`, `ease-in-out`, `ease-reveal`.
+- Caret: `animate-caret` (disabled under `prefers-reduced-motion`).
+
+## Shadow
+
+| Token | Utility |
+| --- | --- |
+| accentGlow | `shadow-accent-glow` |
+
+Used with `.card-lift` for hover glow.
 
 ## Z-index
 
@@ -42,25 +69,29 @@ Standard Tailwind spacing scale (`0`–`24`) — see `tokens/spacing.ts`.
 
 ## Utilities
 
-- **`bg-grid`**: faint grid background using `--color-grid`.
+- **`bg-grid`**: faint site-wide blueprint grid (`--size-grid`).
+- **`bg-grid-hero`**: stronger hero grid (`--size-grid-hero`, cyan-tinted).
+- **`counter-stroke`**: transparent fill + 1px text stroke for outlined counters.
+- **`card-lift`**: 1px border, `translateY(-4px)` + cyan glow on hover, motion-token transitions.
 
 ## Atoms (`src/components/atoms`)
 
 | Atom | Purpose |
 | --- | --- |
-| Button | `primary` / `ghost` / `pill`; sizes `sm` / `md` / `lg` |
-| Heading | levels 1–6; optional `display` size |
+| Button | `primary` / `ghost` / `pill`; sizes `sm` / `md` / `lg` — `primary` is the cyan pill CTA |
+| Heading | levels 1–6; sizes `default` / `display` / `hero` / `section` |
 | Text | `body` / `muted` / `small` |
 | MonoLabel | uppercase mono caption |
 | Chip | pill tag |
 | Link | internal (`next/link`) or external `<a>` |
-| Icon | `arrow`, `sun`, `moon`, `github`, `linkedin`, `mail`, `x` |
+| Icon | `arrow`, `menu`, `sun`, `moon`, `github`, `linkedin`, `mail`, `x` |
 | Input / Textarea | form fields with focus ring |
 | Badge | status `default` / `success` / `warning` / `error` |
 | VisuallyHidden | screen-reader-only text |
-| Container | max-width page gutter |
+| Container | 12-col page gutter, `max-w-page` (1280px) |
 | Divider | horizontal rule |
 | Markdown | safe `react-markdown` body renderer |
+| SectionCounter | huge outlined section index (`01`) |
 
 Use `cn()` from `@/lib/utils/cn` to merge class names.
 

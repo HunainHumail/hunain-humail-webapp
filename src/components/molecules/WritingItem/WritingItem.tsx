@@ -32,24 +32,22 @@ function WritingItemBody({
 }) {
   return (
     <>
-      <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-6">
-        <MonoLabel className="shrink-0 sm:w-44">
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <MonoLabel className="shrink-0">
           {dateLabel} · {typeLabel}
         </MonoLabel>
-        <div className="min-w-0 flex-1">
-          <Heading
-            level={3}
-            className="text-xl transition-colors duration-fast ease-default group-hover:text-accent"
-          >
-            {title}
-          </Heading>
-          <Text variant="muted" className="mt-1 text-sm">
-            {venue}
-          </Text>
-          <Text variant="muted" className="mt-1 text-sm">
-            {summary}
-          </Text>
-        </div>
+        <Heading
+          level={3}
+          className="text-xl transition-colors duration-fast ease-default group-hover:text-accent"
+        >
+          {title}
+        </Heading>
+        <Text variant="muted" className="text-sm">
+          {venue}
+        </Text>
+        <Text variant="muted" className="text-sm">
+          {summary}
+        </Text>
       </div>
       {showArrow ? (
         <Icon
@@ -70,11 +68,6 @@ export function WritingItem({
   href,
   className,
 }: WritingItemProps) {
-  const rowClassName = cn(
-    "group flex w-full items-center gap-4 py-5 text-inherit no-underline",
-    className,
-  );
-
   const body = (
     <WritingItemBody
       dateLabel={dateLabel}
@@ -86,15 +79,20 @@ export function WritingItem({
     />
   );
 
+  const surfaceClassName = cn(
+    "card-lift group flex h-full items-start gap-4 rounded-xl border border-border bg-surface p-5 text-inherit no-underline",
+    className,
+  );
+
   if (href) {
     return (
-      <article>
-        <Link href={href} className={rowClassName}>
+      <article className="h-full">
+        <Link href={href} className={surfaceClassName}>
           {body}
         </Link>
       </article>
     );
   }
 
-  return <article className={rowClassName}>{body}</article>;
+  return <article className={surfaceClassName}>{body}</article>;
 }

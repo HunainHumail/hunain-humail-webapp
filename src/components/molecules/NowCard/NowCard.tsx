@@ -1,10 +1,6 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Heading } from "@/components/atoms/Heading";
 import { MonoLabel } from "@/components/atoms/MonoLabel";
 import { Text } from "@/components/atoms/Text";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils/cn";
 
 export interface NowCardProps {
@@ -15,23 +11,12 @@ export interface NowCardProps {
 }
 
 export function NowCard({ label, title, body, className }: NowCardProps) {
-  const reducedMotion = useReducedMotion();
-
-  const motionProps = reducedMotion
-    ? {}
-    : {
-        whileHover: { y: -4 },
-        transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const },
-      };
-
   return (
-    <motion.article
+    <article
       className={cn(
-        "rounded-xl border border-border bg-surface p-5 transition-colors duration-fast ease-default",
-        "hover:border-accent",
+        "card-lift rounded-xl border border-border bg-surface p-5",
         className,
       )}
-      {...motionProps}
     >
       <MonoLabel className="mb-2 block">{label}</MonoLabel>
       <Heading level={3} className="text-xl">
@@ -40,6 +25,6 @@ export function NowCard({ label, title, body, className }: NowCardProps) {
       <Text variant="muted" className="mt-2 text-sm">
         {body}
       </Text>
-    </motion.article>
+    </article>
   );
 }

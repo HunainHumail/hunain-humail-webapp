@@ -15,4 +15,13 @@ export const spacing = {
   16: "4rem",
   20: "5rem",
   24: "6rem",
+  28: "7rem",
+  32: "8rem",
+  40: "10rem",
+  gutter: "1.25rem",
+  "gutter-lg": "2.5rem",
+  section: "5rem",
+  "section-lg": "8.5rem",
+  terminal: "27.5rem",
+  lift: "0.25rem",
 } as const;

@@ -1,11 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { profileSeed } from "@/lib/seed/profile";
 import { Hero } from "./Hero";
-
-vi.mock("next/image", () => ({
-  default: (props: { alt: string }) => <img alt={props.alt} />,
-}));
 
 describe("Hero", () => {
   it("renders profile hero content and landmarks", () => {

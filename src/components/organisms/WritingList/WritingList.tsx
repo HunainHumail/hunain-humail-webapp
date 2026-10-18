@@ -1,13 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Container } from "@/components/atoms/Container";
-import { Heading } from "@/components/atoms/Heading";
 import { MonoLabel } from "@/components/atoms/MonoLabel";
 import { Text } from "@/components/atoms/Text";
 import { FilterTabs } from "@/components/molecules/FilterTabs";
+import { RevealGroup } from "@/components/molecules/RevealGroup";
+import { SectionHeader } from "@/components/molecules/SectionHeader";
 import { WritingItem } from "@/components/molecules/WritingItem";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useWritingFilter } from "@/hooks/useWritingFilter";
 import type { WritingItem as WritingRecord } from "@/lib/schemas/writing";
 import { cn } from "@/lib/utils/cn";
@@ -21,38 +20,25 @@ import { formatWritingDate } from "@/lib/utils/formatWritingDate";
 
 export interface WritingListProps {
   items: WritingRecord[];
+  index?: string;
+  label?: string;
   className?: string;
 }
 
-function WritingRows({
+function WritingCards({
   items,
-  reducedMotion,
   listLabel,
 }: {
   items: WritingRecord[];
-  reducedMotion: boolean;
   listLabel: string;
 }) {
   return (
     <ul
-      className="m-0 list-none divide-y divide-border border-y border-border p-0"
+      className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2"
       aria-label={listLabel}
     >
-      {items.map((item, index) => (
-        <motion.li
-          key={item.id}
-          initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={
-            reducedMotion
-              ? { duration: 0 }
-              : {
-                  duration: 0.4,
-                  delay: index * 0.06,
-                  ease: [0.4, 0, 0.2, 1],
-                }
-          }
-        >
+      {items.map((item) => (
+        <li key={item.id} data-reveal>
           <WritingItem
             dateLabel={formatWritingDate(item.date)}
             typeLabel={WRITING_TYPE_LABELS[item.type]}
@@ -61,56 +47,50 @@ function WritingRows({
             summary={item.summary}
             href={item.url}
           />
-        </motion.li>
+        </li>
       ))}
     </ul>
   );
 }
 
-function WritingGroups({
-  groups,
-  reducedMotion,
-}: {
-  groups: WritingTypeGroup[];
-  reducedMotion: boolean;
-}) {
+function WritingGroups({ groups }: { groups: WritingTypeGroup[] }) {
   return (
     <div className="flex flex-col gap-10">
       {groups.map((group) => (
         <div key={group.type}>
-          <MonoLabel as="p" className="mb-2">
+          <MonoLabel as="p" className="mb-3">
             {group.label}
           </MonoLabel>
-          <WritingRows
-            items={group.items}
-            reducedMotion={reducedMotion}
-            listLabel={group.label}
-          />
+          <WritingCards items={group.items} listLabel={group.label} />
         </div>
       ))}
     </div>
   );
 }
 
-export function WritingList({ items, className }: WritingListProps) {
+export function WritingList({
+  items,
+  index = "04",
+  label = "Writing",
+  className,
+}: WritingListProps) {
   const { type, setType, filtered } = useWritingFilter(items);
-  const reducedMotion = useReducedMotion();
   const groups = groupWritingByType(filtered);
   const showGroups = type === "all";
 
   return (
     <section
       id="writing"
-      className={cn("border-t border-border py-16 md:py-20", className)}
-      aria-labelledby="writing-section-label"
+      className={cn("border-t border-border py-section md:py-section-lg", className)}
+      aria-labelledby="writing-heading"
     >
       <Container>
-        <MonoLabel id="writing-section-label" as="p" className="mb-2">
-          04 · Writing & talks
-        </MonoLabel>
-        <Heading level={2} className="mb-6">
-          Thinking out loud.
-        </Heading>
+        <SectionHeader
+          index={index}
+          eyebrow={label}
+          title="Thinking out loud."
+          titleId="writing-heading"
+        />
         <FilterTabs
           tabs={WRITING_FILTER_TABS}
           value={type}
@@ -123,14 +103,17 @@ export function WritingList({ items, className }: WritingListProps) {
         </p>
         {filtered.length === 0 ? (
           <Text variant="muted">No writing in this type.</Text>
-        ) : showGroups ? (
-          <WritingGroups groups={groups} reducedMotion={reducedMotion} />
         ) : (
-          <WritingRows
-            items={filtered}
-            reducedMotion={reducedMotion}
-            listLabel="Writing and talks"
-          />
+          <RevealGroup>
+            {showGroups ? (
+              <WritingGroups groups={groups} />
+            ) : (
+              <WritingCards
+                items={filtered}
+                listLabel="Writing and talks"
+              />
+            )}
+          </RevealGroup>
         )}
       </Container>
     </section>

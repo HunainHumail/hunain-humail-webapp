@@ -7,7 +7,7 @@ import { WritingList } from "@/components/organisms/WritingList";
 import { SiteTemplate } from "@/components/templates/SiteTemplate";
 import type { Profile } from "@/lib/schemas/profile";
 import type { NowItem } from "@/lib/schemas/now";
-import type { SiteSettings } from "@/lib/schemas/siteSettings";
+import type { NavItem, SiteSettings } from "@/lib/schemas/siteSettings";
 import type { StoryItem } from "@/lib/schemas/story";
 import type { WorkItem } from "@/lib/schemas/work";
 import type { WritingItem } from "@/lib/schemas/writing";
@@ -21,6 +21,10 @@ export interface HomeTemplateProps {
   writing: WritingItem[];
 }
 
+function navFor(settings: SiteSettings, href: string): NavItem | undefined {
+  return settings.nav.find((item) => item.href === href);
+}
+
 export function HomeTemplate({
   settings,
   profile,
@@ -29,6 +33,12 @@ export function HomeTemplate({
   work,
   writing,
 }: HomeTemplateProps) {
+  const storyNav = navFor(settings, "#story");
+  const nowNav = navFor(settings, "#now");
+  const workNav = navFor(settings, "#work");
+  const writingNav = navFor(settings, "#writing");
+  const contactNav = navFor(settings, "#contact");
+
   return (
     <SiteTemplate settings={settings}>
       <Hero
@@ -40,11 +50,23 @@ export function HomeTemplate({
         terminalLines={profile.terminalLines}
         ctas={profile.ctas}
       />
-      <StoryTimeline items={story} />
-      <NowSection items={now} />
-      <WorkGrid items={work} />
-      <WritingList items={writing} />
-      <ContactSection contact={settings.contact} />
+      <StoryTimeline
+        items={story}
+        index={storyNav?.number}
+        label={storyNav?.label}
+      />
+      <NowSection items={now} index={nowNav?.number} label={nowNav?.label} />
+      <WorkGrid items={work} index={workNav?.number} label={workNav?.label} />
+      <WritingList
+        items={writing}
+        index={writingNav?.number}
+        label={writingNav?.label}
+      />
+      <ContactSection
+        contact={settings.contact}
+        index={contactNav?.number}
+        label={contactNav?.label}
+      />
     </SiteTemplate>
   );
 }

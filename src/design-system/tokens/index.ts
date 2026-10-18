@@ -7,4 +7,5 @@ export {
 export { spacing } from "./spacing";
 export { radius } from "./radius";
 export { duration, easing } from "./motion";
+export { shadow } from "./shadow";
 export { zIndex } from "./zIndex";

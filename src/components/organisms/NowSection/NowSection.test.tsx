@@ -7,7 +7,8 @@ describe("NowSection", () => {
   it("renders now section with cards and updated label", () => {
     render(<NowSection items={nowSeed} />);
 
-    expect(screen.getByText("02 · Now")).toBeInTheDocument();
+    expect(screen.getByText("Now")).toBeInTheDocument();
+    expect(screen.getByText("02")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { level: 2, name: "This month." }),
     ).toBeInTheDocument();

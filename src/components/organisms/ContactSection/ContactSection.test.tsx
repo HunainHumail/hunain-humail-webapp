@@ -19,7 +19,8 @@ describe("ContactSection", () => {
   it("renders the invitation, mailto link, and form", () => {
     render(<ContactSection contact={contact} />);
 
-    expect(screen.getByText("05 · Work with me")).toBeInTheDocument();
+    expect(screen.getByText("Contact")).toBeInTheDocument();
+    expect(screen.getByText("05")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
         level: 2,

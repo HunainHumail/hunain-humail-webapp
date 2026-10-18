@@ -31,16 +31,13 @@ vi.mock("gsap", () => ({
     },
     set: vi.fn(),
     to: vi.fn(),
+    fromTo: vi.fn(),
     ticker: {
       add: vi.fn(),
       remove: vi.fn(),
       lagSmoothing: vi.fn(),
     },
   },
-}));
-
-vi.mock("next/image", () => ({
-  default: (props: { alt: string }) => <img alt={props.alt} />,
 }));
 
 describe("HomeTemplate", () => {

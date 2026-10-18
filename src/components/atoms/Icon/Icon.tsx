@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils/cn";
 
 export type IconName =
   | "arrow"
+  | "menu"
   | "sun"
   | "moon"
   | "github"
@@ -24,6 +25,15 @@ const paths: Record<IconName, ReactNode> = {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+    />
+  ),
+  menu: (
+    <path
+      d="M4 7h16M4 12h16M4 17h16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
     />
   ),
   sun: (

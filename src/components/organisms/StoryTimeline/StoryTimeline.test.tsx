@@ -16,6 +16,7 @@ vi.mock("gsap", () => ({
     },
     set: vi.fn(),
     to: vi.fn(),
+    fromTo: vi.fn(),
   },
 }));
 
@@ -23,7 +24,8 @@ describe("StoryTimeline", () => {
   it("renders story section with timeline items", () => {
     render(<StoryTimeline items={storySeed} />);
 
-    expect(screen.getByText("01 · Story")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Story" })).toBeInTheDocument();
+    expect(screen.getAllByText("01").length).toBeGreaterThan(0);
     const section = document.getElementById("story");
     expect(section).toBeInTheDocument();
     expect(

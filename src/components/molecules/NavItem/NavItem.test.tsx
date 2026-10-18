@@ -9,5 +9,14 @@ describe("NavItem", () => {
     render(<NavItem item={item} />);
     const link = screen.getByRole("link", { name: /01\s*Story/i });
     expect(link).toHaveAttribute("href", "#story");
+    expect(link).not.toHaveAttribute("aria-current");
+  });
+
+  it("marks the active item", () => {
+    render(<NavItem item={item} active />);
+    expect(screen.getByRole("link", { name: /01\s*Story/i })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
   });
 });

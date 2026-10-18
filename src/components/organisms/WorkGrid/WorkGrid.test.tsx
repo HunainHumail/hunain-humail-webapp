@@ -12,7 +12,8 @@ describe("WorkGrid", () => {
   it("renders the work section and case studies", () => {
     render(<WorkGrid items={workSeed} />);
 
-    expect(screen.getByText("03 · Work")).toBeInTheDocument();
+    expect(screen.getByText("Work")).toBeInTheDocument();
+    expect(screen.getByText("03")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { level: 2, name: "Things I've built." }),
     ).toBeInTheDocument();

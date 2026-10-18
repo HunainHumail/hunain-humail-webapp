@@ -25,10 +25,13 @@ export async function getWorkBySlug(slug: string): Promise<WorkItem | null> {
     async () => {
       const document = await workRepository.getBySlug(slug);
       if (!document) {
-        return null;
+        throw new Error(`Work slug not found: ${slug}`);
       }
       const parsed = workItemSchema.parse(document);
-      return parsed.status === "published" ? parsed : null;
+      if (parsed.status !== "published") {
+        return null;
+      }
+      return parsed;
     },
     () =>
       parseWorkItems(workSeed).find((item) => item.slug === slug) ?? null,

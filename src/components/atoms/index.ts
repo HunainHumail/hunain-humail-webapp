@@ -9,6 +9,7 @@ export * from "./Input";
 export * from "./Link";
 export * from "./Markdown";
 export * from "./MonoLabel";
+export * from "./SectionCounter";
 export * from "./Text";
 export * from "./Textarea";
 export * from "./VisuallyHidden";

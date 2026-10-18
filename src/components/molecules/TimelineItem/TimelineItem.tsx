@@ -29,14 +29,11 @@ export function TimelineItem({
     >
       <span
         aria-hidden
-        className="absolute -left-[1.625rem] top-2 size-2 rounded-full bg-accent"
+        className="absolute -left-8 top-2 size-2 -translate-x-1/2 rounded-full bg-accent"
       />
       <MonoLabel className="mb-2 block">{indexLabel}</MonoLabel>
       <p
-        className={cn(
-          "font-display text-4xl font-semibold tracking-tight text-transparent md:text-5xl",
-          "[-webkit-text-stroke-width:1px] [-webkit-text-stroke-color:var(--color-text)]",
-        )}
+        className="font-display text-4xl font-semibold tracking-tighter counter-stroke md:text-5xl"
         aria-hidden
       >
         {year}

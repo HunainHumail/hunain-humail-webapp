@@ -126,4 +126,12 @@ describe("getWorkBySlug", () => {
     const item = await getWorkBySlug("trinnect");
     expect(item?.title).toBe("Trinnect");
   });
+
+  it("falls back to seed when the repository has no document", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(workRepository.getBySlug).mockResolvedValue(null);
+
+    const item = await getWorkBySlug("trinnect");
+    expect(item?.title).toBe("Trinnect");
+  });
 });

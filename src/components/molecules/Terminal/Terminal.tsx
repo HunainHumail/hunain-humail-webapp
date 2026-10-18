@@ -20,21 +20,32 @@ export function Terminal({ lines, className }: TerminalProps) {
   return (
     <div
       className={cn(
-        "min-h-16 min-w-0 rounded-lg border border-border bg-bg px-4 py-3 font-mono text-sm text-accent",
+        "w-full min-w-0 overflow-hidden rounded-xl border border-border bg-surface lg:min-w-terminal",
         className,
       )}
       role="group"
       aria-label="Terminal"
     >
+      <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+        <span className="flex items-center gap-1.5" aria-hidden>
+          <span className="size-2 rounded-full bg-muted" />
+          <span className="size-2 rounded-full bg-muted" />
+          <span className="size-2 rounded-full bg-accent" />
+        </span>
+      </div>
       <VisuallyHidden>{fullText}</VisuallyHidden>
       <pre
-        className="m-0 whitespace-pre-wrap break-words"
+        className="m-0 min-h-24 overflow-x-auto whitespace-pre-wrap break-words px-4 py-3 font-mono text-mono-md text-accent"
         aria-live="off"
         aria-hidden="true"
       >
         {instantDisplay ?? (
           <>
             {view.command}
+            <span
+              className="ml-0.5 inline-block h-4 w-px translate-y-0.5 bg-accent align-text-bottom motion-safe:animate-caret"
+              aria-hidden
+            />
             {view.output !== null ? (
               <>
                 {"\n"}

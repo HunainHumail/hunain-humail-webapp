@@ -3,27 +3,33 @@
 import { useId } from "react";
 import { Button } from "@/components/atoms/Button";
 import { Container } from "@/components/atoms/Container";
-import { Heading } from "@/components/atoms/Heading";
 import { Input } from "@/components/atoms/Input";
 import { Link } from "@/components/atoms/Link";
-import { MonoLabel } from "@/components/atoms/MonoLabel";
 import { Text } from "@/components/atoms/Text";
 import { Textarea } from "@/components/atoms/Textarea";
 import { VisuallyHidden } from "@/components/atoms/VisuallyHidden";
 import { FormField } from "@/components/molecules/FormField";
+import { SectionHeader } from "@/components/molecules/SectionHeader";
 import { useContactForm } from "@/hooks/useContactForm";
 import type { ContactSettings } from "@/lib/schemas/siteSettings";
 import { cn } from "@/lib/utils/cn";
 
 export interface ContactSectionProps {
   contact: ContactSettings;
+  index?: string;
+  label?: string;
   className?: string;
 }
 
 const selectClasses =
   "w-full rounded-md border border-border bg-surface px-3 py-2 text-base text-text transition-colors duration-fast ease-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-50";
 
-export function ContactSection({ contact, className }: ContactSectionProps) {
+export function ContactSection({
+  contact,
+  index = "05",
+  label = "Contact",
+  className,
+}: ContactSectionProps) {
   const id = useId();
   const nameId = `${id}-name`;
   const emailId = `${id}-email`;
@@ -43,23 +49,24 @@ export function ContactSection({ contact, className }: ContactSectionProps) {
   return (
     <section
       id="contact"
-      className={cn("border-t border-border py-16 md:py-20", className)}
-      aria-labelledby="contact-section-label"
+      className={cn("border-t border-border py-section md:py-section-lg", className)}
+      aria-labelledby="contact-heading"
     >
       <Container>
-        <div className="mx-auto mb-10 max-w-xl text-center">
-          <MonoLabel id="contact-section-label" as="p" className="mb-2">
-            05 · Work with me
-          </MonoLabel>
-          <Heading level={2} className="mb-4">
-            Got something to build?
-          </Heading>
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <SectionHeader
+            index={index}
+            eyebrow={label}
+            title="Got something to build?"
+            titleId="contact-heading"
+            className="mb-6 justify-center sm:justify-center"
+          />
           <Text variant="muted" className="mb-6">
             {contact.intro}
           </Text>
           <Link
             href={`mailto:${contact.email}`}
-            className="inline-flex items-center rounded-full border border-accent px-4 py-2 text-accent no-underline hover:opacity-90"
+            className="inline-flex items-center rounded-full border border-accent bg-transparent px-5 py-2.5 text-accent no-underline hover:bg-accent hover:text-accent-contrast"
           >
             {contact.email}
           </Link>

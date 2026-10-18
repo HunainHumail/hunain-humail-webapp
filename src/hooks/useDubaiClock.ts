@@ -12,12 +12,14 @@ const timeFormatter = new Intl.DateTimeFormat("en-GB", {
   hour12: false,
 });
 
+export const DUBAI_CLOCK_PREFIX = "DUBAI · 25.20° N";
+
 export function formatDubaiClockLabel(date: Date): string {
-  return `DUBAI · 25.20° N · ${timeFormatter.format(date)}`;
+  return `${DUBAI_CLOCK_PREFIX} · ${timeFormatter.format(date)}`;
 }
 
 export function useDubaiClock(): string {
-  const [label, setLabel] = useState(() => formatDubaiClockLabel(new Date()));
+  const [label, setLabel] = useState(DUBAI_CLOCK_PREFIX);
 
   useEffect(() => {
     const tick = () => setLabel(formatDubaiClockLabel(new Date()));

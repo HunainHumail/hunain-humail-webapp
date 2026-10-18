@@ -8,7 +8,10 @@ export const colorDark = {
   muted: "#94a3b8",
   accent: "#22d3ee",
   accentContrast: "#0a0e14",
-  grid: "rgba(255, 255, 255, 0.04)",
+  grid: "rgba(255, 255, 255, 0.028)",
+  gridHero: "rgba(34, 211, 238, 0.07)",
+  glow: "rgba(34, 211, 238, 0.32)",
+  focusRing: "#22d3ee",
 } as const;
 
 export const colorLight = {
@@ -20,7 +23,10 @@ export const colorLight = {
   muted: "#64748b",
   accent: "#22d3ee",
   accentContrast: "#0a0e14",
-  grid: "rgba(10, 14, 20, 0.06)",
+  grid: "rgba(10, 14, 20, 0.045)",
+  gridHero: "rgba(8, 145, 178, 0.1)",
+  glow: "rgba(8, 145, 178, 0.22)",
+  focusRing: "#0891b2",
 } as const;
 
 export type ColorToken = keyof typeof colorDark;

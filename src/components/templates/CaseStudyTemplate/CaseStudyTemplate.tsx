@@ -25,7 +25,12 @@ export function CaseStudyTemplate({
 }: CaseStudyTemplateProps) {
   return (
     <SiteTemplate settings={settings}>
-      <article className={cn("border-t border-border py-16 md:py-20", className)}>
+      <article
+        className={cn(
+          "border-t border-border py-section md:py-section-lg",
+          className,
+        )}
+      >
         <Container className="max-w-3xl">
           <Link href="/#work" className="mb-8 inline-flex text-sm">
             Back to work
@@ -33,7 +38,7 @@ export function CaseStudyTemplate({
           <MonoLabel as="p" className="mb-3">
             {WORK_CATEGORY_LABELS[item.category]}
           </MonoLabel>
-          <Heading level={1} className="mb-4">
+          <Heading level={1} size="section" className="mb-4">
             {item.title}
           </Heading>
           <Text variant="muted" className="mb-8">
@@ -51,13 +56,13 @@ export function CaseStudyTemplate({
             </div>
           ) : null}
           <div className="mb-8 grid gap-6 sm:grid-cols-2">
-            <div>
+            <div className="rounded-xl border border-border bg-surface p-5">
               <MonoLabel as="p" className="mb-2">
                 Role
               </MonoLabel>
               <Text>{item.role}</Text>
             </div>
-            <div>
+            <div className="rounded-xl border border-border bg-surface p-5">
               <MonoLabel as="p" className="mb-2">
                 Stack
               </MonoLabel>

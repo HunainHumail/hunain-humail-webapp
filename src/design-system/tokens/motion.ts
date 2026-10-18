@@ -3,6 +3,7 @@ export const duration = {
   fast: "150ms",
   base: "250ms",
   slow: "400ms",
+  reveal: "800ms",
 } as const;
 
 export const easing = {
@@ -10,4 +11,5 @@ export const easing = {
   in: "cubic-bezier(0.4, 0, 1, 1)",
   out: "cubic-bezier(0, 0, 0.2, 1)",
   inOut: "cubic-bezier(0.4, 0, 0.2, 1)",
+  reveal: "cubic-bezier(0.22, 1, 0.36, 1)",
 } as const;

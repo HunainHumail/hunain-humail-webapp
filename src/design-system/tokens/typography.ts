@@ -14,14 +14,28 @@ export const fontSize = {
   "2xl": ["1.5rem", { lineHeight: "2rem" }],
   "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
   "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+  "mono-md": ["0.9375rem", { lineHeight: "1.6" }],
   "display-xl": [
-    "clamp(3rem, 8vw, 5.5rem)",
-    { lineHeight: "0.9", letterSpacing: "-0.04em" },
+    "clamp(64px, 9vw, 128px)",
+    { lineHeight: "0.88", letterSpacing: "-0.05em" },
+  ],
+  "display-hero": [
+    "clamp(64px, 9vw, 128px)",
+    { lineHeight: "0.88", letterSpacing: "-0.05em" },
+  ],
+  "display-section": [
+    "clamp(2.75rem, 5vw, 3.75rem)",
+    { lineHeight: "0.92", letterSpacing: "-0.03em" },
+  ],
+  "display-counter": [
+    "clamp(4.5rem, 10vw, 8rem)",
+    { lineHeight: "0.8", letterSpacing: "-0.06em" },
   ],
 } as const;
 
 export const letterSpacing = {
-  tight: "-0.04em",
+  tighter: "-0.05em",
+  tight: "-0.03em",
   normal: "0",
-  wide: "0.12em",
+  wide: "0.14em",
 } as const;

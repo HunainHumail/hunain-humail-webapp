@@ -12,7 +12,8 @@ describe("WritingList", () => {
   it("renders the writing section, groups, and items", () => {
     render(<WritingList items={writingSeed} />);
 
-    expect(screen.getByText("04 · Writing & talks")).toBeInTheDocument();
+    expect(screen.getByText("Writing")).toBeInTheDocument();
+    expect(screen.getByText("04")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { level: 2, name: "Thinking out loud." }),
     ).toBeInTheDocument();

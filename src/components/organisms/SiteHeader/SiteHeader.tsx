@@ -1,24 +1,55 @@
 "use client";
 
-import { useCallback, useId, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { Button } from "@/components/atoms/Button";
+import { Container } from "@/components/atoms/Container";
 import { Icon } from "@/components/atoms/Icon";
 import { Link } from "@/components/atoms/Link";
 import { DubaiClock } from "@/components/molecules/DubaiClock";
 import { NavItem } from "@/components/molecules/NavItem";
 import { ThemeToggle } from "@/components/molecules/ThemeToggle";
+import { useActiveSection } from "@/hooks/useActiveSection";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import { cn } from "@/lib/utils/cn";
 
 export interface SiteHeaderProps {
-  settings: Pick<SiteSettings, "nav">;
+  settings: Pick<SiteSettings, "nav" | "seo">;
   className?: string;
+}
+
+function brandFromTitle(title: string): string {
+  return title.trim().split(/\s+/)[0]?.toLowerCase() ?? title;
 }
 
 export function SiteHeader({ settings, className }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
   const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const hrefs = useMemo(
+    () => settings.nav.map((item) => item.href),
+    [settings.nav],
+  );
+  const activeHref = useActiveSection(hrefs);
+  const brand = brandFromTitle(settings.seo.title);
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return undefined;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <header
@@ -27,13 +58,14 @@ export function SiteHeader({ settings, className }: SiteHeaderProps) {
         className,
       )}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 md:px-10">
+      <Container className="flex items-center justify-between gap-4 py-4">
         <Link
           href="/"
           className="font-display text-lg font-semibold tracking-tight text-text no-underline"
           aria-label="Hunain Humail home"
         >
-          HH
+          {brand}
+          <span className="text-accent">.</span>
         </Link>
 
         <nav
@@ -41,7 +73,11 @@ export function SiteHeader({ settings, className }: SiteHeaderProps) {
           aria-label="Primary"
         >
           {settings.nav.map((item) => (
-            <NavItem key={item.href} item={item} />
+            <NavItem
+              key={item.href}
+              item={item}
+              active={activeHref === item.href}
+            />
           ))}
         </nav>
 
@@ -62,27 +98,31 @@ export function SiteHeader({ settings, className }: SiteHeaderProps) {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen((open) => !open)}
           >
-            <Icon name={menuOpen ? "x" : "arrow"} className="size-5" aria-hidden />
+            <Icon name={menuOpen ? "x" : "menu"} className="size-5" aria-hidden />
           </Button>
         </div>
-      </div>
+      </Container>
 
       <nav
         id={menuId}
         hidden={!menuOpen}
-        className="border-t border-border px-6 py-4 lg:hidden"
+        className="border-t border-border lg:hidden"
         aria-label="Mobile primary"
       >
-        <ul className="flex flex-col gap-4">
-          {settings.nav.map((item) => (
-            <li key={item.href}>
-              <NavItem item={item} onNavigate={closeMenu} />
-            </li>
-          ))}
-          <li>
-            <DubaiClock />
-          </li>
-        </ul>
+        <Container className="flex flex-col gap-5 py-6">
+          <ul className="m-0 flex list-none flex-col gap-5 p-0">
+            {settings.nav.map((item) => (
+              <li key={item.href}>
+                <NavItem
+                  item={item}
+                  active={activeHref === item.href}
+                  onNavigate={closeMenu}
+                />
+              </li>
+            ))}
+          </ul>
+          <DubaiClock />
+        </Container>
       </nav>
     </header>
   );

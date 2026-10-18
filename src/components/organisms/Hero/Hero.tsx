@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
 import { Container } from "@/components/atoms/Container";
 import { Heading } from "@/components/atoms/Heading";
 import { Link } from "@/components/atoms/Link";
@@ -9,7 +9,7 @@ import { Text } from "@/components/atoms/Text";
 import { ChipList } from "@/components/molecules/ChipList";
 import { PhotoSlot } from "@/components/molecules/PhotoSlot";
 import { Terminal } from "@/components/molecules/Terminal";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useGsapLineReveal } from "@/hooks/useGsapLineReveal";
 import type { ProfileCta, TerminalLine } from "@/lib/schemas/profile";
 import { cn } from "@/lib/utils/cn";
 
@@ -45,41 +45,40 @@ export function Hero({
   ctas,
   className,
 }: HeroProps) {
-  const reducedMotion = useReducedMotion();
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  useGsapLineReveal(titleRef);
   const { first, last } = splitDisplayName(name);
 
-  const fade = reducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 24 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
-      };
-
   return (
-    <section className={cn("py-16 md:py-20", className)} aria-labelledby="hero-heading">
+    <section
+      className={cn("bg-grid-hero py-section md:py-section-lg", className)}
+      aria-labelledby="hero-heading"
+    >
       <Container>
-        <div className="grid items-center gap-10 lg:grid-cols-[auto_1fr_minmax(16rem,22rem)] lg:gap-12">
-          <motion.div {...fade}>
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="flex min-w-0 flex-col gap-6 lg:col-span-7">
             <PhotoSlot name={name} photoUrl={photoUrl} />
-          </motion.div>
-
-          <motion.div className="flex min-w-0 flex-col gap-5" {...fade}>
             <MonoLabel>{location}</MonoLabel>
             <Heading
+              ref={titleRef}
               id="hero-heading"
               level={1}
-              size="display"
-              className="leading-[0.9] tracking-tight"
+              size="hero"
             >
-              {first}
+              <span className="block overflow-hidden">
+                <span data-reveal-line className="inline-block">
+                  {first}
+                  {last ? null : <span className="text-accent">.</span>}
+                </span>
+              </span>
               {last ? (
-                <>
-                  <br />
-                  {last}
-                </>
+                <span className="block overflow-hidden">
+                  <span data-reveal-line className="inline-block">
+                    {last}
+                    <span className="text-accent">.</span>
+                  </span>
+                </span>
               ) : null}
-              <span className="text-accent">.</span>
             </Heading>
             <Text variant="muted" className="max-w-xl text-lg md:text-xl">
               {headline}
@@ -88,7 +87,7 @@ export function Hero({
             <div className="flex flex-wrap gap-3 pt-1">
               {ctas.map((cta, index) => (
                 <Link
-                  key={cta.href}
+                  key={`${cta.href}-${cta.label}`}
                   href={cta.href}
                   className={cn(
                     ctaBase,
@@ -101,11 +100,11 @@ export function Hero({
                 </Link>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div className="lg:justify-self-end" {...fade}>
-            <Terminal lines={terminalLines} className="w-full lg:max-w-sm" />
-          </motion.div>
+          <div className="min-w-0 lg:col-span-5">
+            <Terminal lines={terminalLines} />
+          </div>
         </div>
       </Container>
     </section>

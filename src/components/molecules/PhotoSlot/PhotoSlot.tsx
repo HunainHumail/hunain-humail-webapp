@@ -22,7 +22,7 @@ export function PhotoSlot({ name, photoUrl, className }: PhotoSlotProps) {
   return (
     <div
       className={cn(
-        "relative flex h-72 w-60 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-elevated",
+        "relative flex h-48 w-36 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-elevated md:h-72 md:w-60",
         className,
       )}
     >

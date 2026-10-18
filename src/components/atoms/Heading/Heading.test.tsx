@@ -8,9 +8,23 @@ describe("Heading", () => {
     expect(screen.getByRole("heading", { level: 1, name: "Title" })).toBeInTheDocument();
   });
 
-  it("supports display size", () => {
-    render(<Heading level={1} size="display">Display</Heading>);
-    const heading = screen.getByRole("heading", { level: 1, name: "Display" });
-    expect(heading.className).toMatch(/text-display-xl/);
+  it("supports display and hero sizes", () => {
+    const { rerender } = render(
+      <Heading level={1} size="display">
+        Display
+      </Heading>,
+    );
+    expect(screen.getByRole("heading", { level: 1, name: "Display" }).className).toMatch(
+      /text-display-hero/,
+    );
+
+    rerender(
+      <Heading level={2} size="section">
+        Section
+      </Heading>,
+    );
+    expect(screen.getByRole("heading", { level: 2, name: "Section" }).className).toMatch(
+      /text-display-section/,
+    );
   });
 });
