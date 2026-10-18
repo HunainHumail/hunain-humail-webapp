@@ -1,7 +1,7 @@
 import { nowRepository } from "@/lib/firebase";
 import { nowSeed } from "@/lib/seed/now";
 import { nowItemSchema, type NowItem } from "@/lib/schemas/now";
-import { withFirebaseFallback } from "./withFirebaseFallback";
+import { listOrSeed, withFirebaseFallback } from "./withFirebaseFallback";
 
 export function publishedNowItems(items: NowItem[]): NowItem[] {
   return items
@@ -14,8 +14,9 @@ function parseNowItems(items: unknown[]): NowItem[] {
 }
 
 export async function getNow(): Promise<NowItem[]> {
-  return withFirebaseFallback(
-    async () => parseNowItems(await nowRepository.listPublished()),
-    () => parseNowItems(nowSeed),
-  );
+  const seed = () => parseNowItems(nowSeed);
+  return withFirebaseFallback(async () => {
+    const items = parseNowItems(await nowRepository.listPublished());
+    return listOrSeed(items, seed());
+  }, seed);
 }

@@ -67,6 +67,14 @@ describe("getStory", () => {
     expect(items[0]?.title).toBe("From Firestore");
   });
 
+  it("falls back to seed when the published collection is empty", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(storyRepository.listPublished).mockResolvedValue([]);
+
+    const items = await getStory();
+    expect(items[0]?.year).toBe("2017");
+  });
+
   it("falls back to seed when the repository throws", async () => {
     vi.mocked(isFirebaseConfigured).mockReturnValue(true);
     vi.mocked(storyRepository.listPublished).mockRejectedValue(

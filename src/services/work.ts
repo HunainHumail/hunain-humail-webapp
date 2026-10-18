@@ -1,7 +1,7 @@
 import { workRepository } from "@/lib/firebase";
 import { workItemSchema, type WorkItem } from "@/lib/schemas/work";
 import { workSeed } from "@/lib/seed/work";
-import { withFirebaseFallback } from "./withFirebaseFallback";
+import { listOrSeed, withFirebaseFallback } from "./withFirebaseFallback";
 
 export function publishedWorkItems(items: WorkItem[]): WorkItem[] {
   return items
@@ -14,10 +14,11 @@ function parseWorkItems(items: unknown[]): WorkItem[] {
 }
 
 export async function getWork(): Promise<WorkItem[]> {
-  return withFirebaseFallback(
-    async () => parseWorkItems(await workRepository.listPublished()),
-    () => parseWorkItems(workSeed),
-  );
+  const seed = () => parseWorkItems(workSeed);
+  return withFirebaseFallback(async () => {
+    const items = parseWorkItems(await workRepository.listPublished());
+    return listOrSeed(items, seed());
+  }, seed);
 }
 
 export async function getWorkBySlug(slug: string): Promise<WorkItem | null> {

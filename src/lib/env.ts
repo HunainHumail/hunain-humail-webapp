@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { FALLBACK_SITE_URL, normalizeSiteUrl } from "@/lib/seo/siteUrl";
 
 const firebaseEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string().min(1).optional(),
@@ -11,6 +12,7 @@ const firebaseEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_STORAGE_ENABLED: z.string().optional(),
   STATIC_EXPORT: z.string().optional(),
   NEXT_PUBLIC_STATIC_EXPORT: z.string().optional(),
+  NEXT_PUBLIC_SITE_URL: z.string().optional(),
 });
 
 const parsed = firebaseEnvSchema.safeParse({
@@ -28,6 +30,7 @@ const parsed = firebaseEnvSchema.safeParse({
     process.env.NEXT_PUBLIC_FIREBASE_STORAGE_ENABLED,
   STATIC_EXPORT: process.env.STATIC_EXPORT,
   NEXT_PUBLIC_STATIC_EXPORT: process.env.NEXT_PUBLIC_STATIC_EXPORT,
+  NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
 });
 
 export const env = parsed.success ? parsed.data : {};
@@ -92,4 +95,10 @@ export function isStaticExport(): boolean {
   return (
     env.STATIC_EXPORT === "true" || env.NEXT_PUBLIC_STATIC_EXPORT === "true"
   );
+}
+
+export const DEFAULT_SITE_URL = FALLBACK_SITE_URL;
+
+export function getSiteUrl(): string {
+  return normalizeSiteUrl(env.NEXT_PUBLIC_SITE_URL ?? "");
 }

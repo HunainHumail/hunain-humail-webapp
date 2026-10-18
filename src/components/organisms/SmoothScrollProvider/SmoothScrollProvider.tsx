@@ -1,6 +1,5 @@
 "use client";
 
-import "lenis/dist/lenis.css";
 import { type ReactNode } from "react";
 import { useLenis } from "@/hooks/useLenis";
 

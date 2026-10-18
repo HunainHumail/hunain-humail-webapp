@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import Home from "./page";
+import { getSiteUrl } from "@/lib/env";
+import { siteSettingsSeed } from "@/lib/seed/settings";
+import Home, { generateMetadata } from "./page";
 
 vi.mock("lenis", () => ({
   default: class MockLenis {
@@ -45,7 +47,7 @@ vi.mock("@/hooks/useReducedMotion", () => ({
 describe("Home", () => {
   it("renders the hero inside site shell", async () => {
     const ui = await Home();
-    render(ui);
+    const { container } = render(ui);
     expect(
       screen.getByRole("heading", { level: 1, name: /Hunain\s+Humail/i }),
     ).toBeInTheDocument();
@@ -60,5 +62,28 @@ describe("Home", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Got something to build?" }),
     ).toBeInTheDocument();
+    const jsonLd = container.querySelector(
+      'script[type="application/ld+json"]',
+    );
+    expect(jsonLd?.textContent).toContain('"@type":"Person"');
+    expect(jsonLd?.textContent).toContain('"jobTitle":"GenAI Engineer"');
+    expect(jsonLd?.textContent).toContain("https://github.com/hunainhumail");
+  });
+
+  it("generateMetadata uses settings SEO and the site url", async () => {
+    const metadata = await generateMetadata();
+    const siteUrl = getSiteUrl();
+    expect(metadata.title).toBe(siteSettingsSeed.seo.title);
+    expect(metadata.description).toBe(siteSettingsSeed.seo.description);
+    expect(metadata.alternates).toEqual({ canonical: siteUrl });
+    expect(metadata.openGraph).toMatchObject({
+      title: siteSettingsSeed.seo.title,
+      description: siteSettingsSeed.seo.description,
+      url: siteUrl,
+    });
+    expect(metadata.twitter).toMatchObject({
+      card: "summary_large_image",
+      title: siteSettingsSeed.seo.title,
+    });
   });
 });

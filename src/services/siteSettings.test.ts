@@ -50,6 +50,14 @@ describe("getSiteSettings", () => {
     expect(settingsRepository.getById).toHaveBeenCalledWith("site");
   });
 
+  it("falls back to seed when the settings document is missing", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(settingsRepository.getById).mockResolvedValue(null);
+
+    const settings = await getSiteSettings();
+    expect(settings.seo.title).toBe(siteSettingsSeed.seo.title);
+  });
+
   it("falls back to seed when the repository throws", async () => {
     vi.mocked(isFirebaseConfigured).mockReturnValue(true);
     vi.mocked(settingsRepository.getById).mockRejectedValue(

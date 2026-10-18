@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { getSiteUrl } from "@/lib/env";
 import { themeInitScript } from "@/lib/theme/constants";
 import "./globals.css";
 
@@ -15,10 +16,13 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Hunain Humail",
-  description: "GenAI engineer — fintech and open finance.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    metadataBase: new URL(getSiteUrl()),
+    title: "Hunain Humail",
+    description: "GenAI engineer — fintech and open finance.",
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

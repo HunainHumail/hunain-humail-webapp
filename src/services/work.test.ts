@@ -88,6 +88,14 @@ describe("getWork", () => {
     expect(items[0]?.title).toBe("From Firestore");
   });
 
+  it("falls back to seed when the published collection is empty", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(workRepository.listPublished).mockResolvedValue([]);
+
+    const items = await getWork();
+    expect(items).toHaveLength(workSeed.length);
+  });
+
   it("falls back to seed when the repository throws", async () => {
     vi.mocked(isFirebaseConfigured).mockReturnValue(true);
     vi.mocked(workRepository.listPublished).mockRejectedValue(

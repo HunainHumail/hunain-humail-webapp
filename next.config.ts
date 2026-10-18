@@ -5,6 +5,10 @@ const isStaticExport =
   process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
 
 const nextConfig: NextConfig = {
+  ...(isStaticExport ? { output: "export" as const } : {}),
+  ...(isStaticExport
+    ? { env: { NEXT_PUBLIC_STATIC_EXPORT: "true" } }
+    : {}),
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   images: {
     unoptimized: isStaticExport,

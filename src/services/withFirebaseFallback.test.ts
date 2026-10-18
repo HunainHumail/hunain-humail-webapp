@@ -1,10 +1,20 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { isFirebaseConfigured } from "@/lib/env";
-import { withFirebaseFallback } from "./withFirebaseFallback";
+import { listOrSeed, withFirebaseFallback } from "./withFirebaseFallback";
 
 vi.mock("@/lib/env", () => ({
   isFirebaseConfigured: vi.fn(() => false),
 }));
+
+describe("listOrSeed", () => {
+  it("uses seed when the loaded collection is empty", () => {
+    expect(listOrSeed([], ["seed"])).toEqual(["seed"]);
+  });
+
+  it("keeps a non-empty collection", () => {
+    expect(listOrSeed(["live"], ["seed"])).toEqual(["live"]);
+  });
+});
 
 describe("withFirebaseFallback", () => {
   afterEach(() => {

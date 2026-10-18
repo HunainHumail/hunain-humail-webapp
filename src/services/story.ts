@@ -1,7 +1,7 @@
 import { storyRepository } from "@/lib/firebase";
 import { storySeed } from "@/lib/seed/story";
 import { storyItemSchema, type StoryItem } from "@/lib/schemas/story";
-import { withFirebaseFallback } from "./withFirebaseFallback";
+import { listOrSeed, withFirebaseFallback } from "./withFirebaseFallback";
 
 export function publishedStoryItems(items: StoryItem[]): StoryItem[] {
   return items
@@ -14,8 +14,9 @@ function parseStoryItems(items: unknown[]): StoryItem[] {
 }
 
 export async function getStory(): Promise<StoryItem[]> {
-  return withFirebaseFallback(
-    async () => parseStoryItems(await storyRepository.listPublished()),
-    () => parseStoryItems(storySeed),
-  );
+  const seed = () => parseStoryItems(storySeed);
+  return withFirebaseFallback(async () => {
+    const items = parseStoryItems(await storyRepository.listPublished());
+    return listOrSeed(items, seed());
+  }, seed);
 }

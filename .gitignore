@@ -18,7 +18,9 @@
 # next.js
 /.next/
 /.next-3200/
+/.next-build/
 /out/
+/.lighthouseci/
 
 # production
 /build

@@ -1,7 +1,7 @@
 import { writingRepository } from "@/lib/firebase";
 import { writingItemSchema, type WritingItem } from "@/lib/schemas/writing";
 import { writingSeed } from "@/lib/seed/writing";
-import { withFirebaseFallback } from "./withFirebaseFallback";
+import { listOrSeed, withFirebaseFallback } from "./withFirebaseFallback";
 
 export function publishedWritingItems(items: WritingItem[]): WritingItem[] {
   return items
@@ -16,8 +16,9 @@ function parseWritingItems(items: unknown[]): WritingItem[] {
 }
 
 export async function getWriting(): Promise<WritingItem[]> {
-  return withFirebaseFallback(
-    async () => parseWritingItems(await writingRepository.listPublished()),
-    () => parseWritingItems(writingSeed),
-  );
+  const seed = () => parseWritingItems(writingSeed);
+  return withFirebaseFallback(async () => {
+    const items = parseWritingItems(await writingRepository.listPublished());
+    return listOrSeed(items, seed());
+  }, seed);
 }

@@ -41,6 +41,14 @@ describe("getProfile", () => {
     expect(profileRepository.getById).toHaveBeenCalledWith("main");
   });
 
+  it("falls back to seed when the profile document is missing", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(profileRepository.getById).mockResolvedValue(null);
+
+    const profile = await getProfile();
+    expect(profile.name).toBe(profileSeed.name);
+  });
+
   it("falls back to seed when the repository throws", async () => {
     vi.mocked(isFirebaseConfigured).mockReturnValue(true);
     vi.mocked(profileRepository.getById).mockRejectedValue(

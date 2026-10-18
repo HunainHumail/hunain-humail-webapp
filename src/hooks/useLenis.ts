@@ -19,9 +19,15 @@ export function useLenis(): void {
     let gsapRef: typeof import("gsap").gsap | null = null;
 
     const init = async () => {
-      const Lenis = (await import("lenis")).default;
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      const gsap = (await import("gsap")).default;
+      const [lenisModule, scrollTriggerModule, gsapModule] = await Promise.all([
+        import("lenis"),
+        import("gsap/ScrollTrigger"),
+        import("gsap"),
+        import("lenis/dist/lenis.css"),
+      ]);
+      const Lenis = lenisModule.default;
+      const { ScrollTrigger } = scrollTriggerModule;
+      const gsap = gsapModule.default;
 
       if (destroyed) {
         return;

@@ -85,4 +85,21 @@ describe("firebase env", () => {
     const { isStaticExport } = await import("./env");
     expect(isStaticExport()).toBe(true);
   });
+
+  it("defaults the site url when NEXT_PUBLIC_SITE_URL is unset", async () => {
+    const { DEFAULT_SITE_URL, getSiteUrl } = await import("./env");
+    expect(getSiteUrl()).toBe(DEFAULT_SITE_URL);
+  });
+
+  it("normalizes NEXT_PUBLIC_SITE_URL", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://hunain.example/");
+    const { getSiteUrl } = await import("./env");
+    expect(getSiteUrl()).toBe("https://hunain.example");
+  });
+
+  it("falls back when NEXT_PUBLIC_SITE_URL is not a url", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "not a url");
+    const { DEFAULT_SITE_URL, getSiteUrl } = await import("./env");
+    expect(getSiteUrl()).toBe(DEFAULT_SITE_URL);
+  });
 });
