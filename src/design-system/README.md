@@ -60,5 +60,6 @@ Standard Tailwind spacing scale (`0`–`24`) — see `tokens/spacing.ts`.
 | VisuallyHidden | screen-reader-only text |
 | Container | max-width page gutter |
 | Divider | horizontal rule |
+| Markdown | safe `react-markdown` body renderer |
 
 Use `cn()` from `@/lib/utils/cn` to merge class names.

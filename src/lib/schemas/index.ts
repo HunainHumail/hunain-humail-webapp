@@ -16,3 +16,11 @@ export {
 } from "./siteSettings";
 export { storyItemSchema, type StoryItem } from "./story";
 export { nowItemSchema, type NowItem } from "./now";
+export {
+  workCategorySchema,
+  workItemSchema,
+  workLinkSchema,
+  type WorkCategory,
+  type WorkItem,
+  type WorkLink,
+} from "./work";

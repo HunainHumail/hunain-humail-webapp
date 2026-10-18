@@ -41,6 +41,10 @@ vi.mock("next/image", () => ({
   default: (props: { alt: string }) => <img alt={props.alt} />,
 }));
 
+vi.mock("@/hooks/useReducedMotion", () => ({
+  useReducedMotion: () => true,
+}));
+
 describe("Home", () => {
   it("renders the hero inside site shell", async () => {
     const ui = await Home();
@@ -50,5 +54,8 @@ describe("Home", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /skip to content/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View work" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Things I've built." }),
+    ).toBeInTheDocument();
   });
 });

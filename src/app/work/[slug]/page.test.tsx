@@ -1,0 +1,83 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import WorkCaseStudyPage, {
+  generateMetadata,
+  generateStaticParams,
+} from "./page";
+
+vi.mock("next/navigation", () => ({
+  notFound: () => {
+    throw new Error("NEXT_NOT_FOUND");
+  },
+}));
+
+vi.mock("lenis", () => ({
+  default: class MockLenis {
+    on() {
+      return undefined;
+    }
+    raf() {
+      return undefined;
+    }
+    destroy() {
+      return undefined;
+    }
+  },
+}));
+
+vi.mock("gsap/ScrollTrigger", () => ({
+  ScrollTrigger: { update: vi.fn() },
+}));
+
+vi.mock("gsap", () => ({
+  default: {
+    registerPlugin: vi.fn(),
+    ticker: {
+      add: vi.fn(),
+      remove: vi.fn(),
+      lagSmoothing: vi.fn(),
+    },
+  },
+}));
+
+vi.mock("next/image", () => ({
+  default: (props: { alt: string }) => <img alt={props.alt} />,
+}));
+
+describe("WorkCaseStudyPage", () => {
+  it("renders a published case study", async () => {
+    const ui = await WorkCaseStudyPage({
+      params: Promise.resolve({ slug: "trinnect" }),
+    });
+    render(ui);
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Trinnect" }),
+    ).toBeInTheDocument();
+  });
+
+  it("calls notFound for an unknown slug", async () => {
+    await expect(
+      WorkCaseStudyPage({ params: Promise.resolve({ slug: "missing" }) }),
+    ).rejects.toThrow("NEXT_NOT_FOUND");
+  });
+
+  it("generateStaticParams returns published slugs", async () => {
+    const params = await generateStaticParams();
+    expect(params.map((entry) => entry.slug)).toEqual([
+      "trinnect",
+      "terranzo",
+      "isense-my-float",
+      "fastbrix",
+      "vigil",
+      "open-finance-project",
+    ]);
+  });
+
+  it("generateMetadata uses the case study title and summary", async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ slug: "trinnect" }),
+    });
+    expect(metadata.title).toBe("Trinnect · Hunain Humail");
+    expect(metadata.description).toMatch(/AI-native product/i);
+  });
+});

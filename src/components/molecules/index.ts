@@ -10,3 +10,9 @@ export {
 export { ThemeToggle, type ThemeToggleProps } from "./ThemeToggle";
 export { TimelineItem, type TimelineItemProps } from "./TimelineItem";
 export { NowCard, type NowCardProps } from "./NowCard";
+export { CaseStudyCard, type CaseStudyCardProps } from "./CaseStudyCard";
+export {
+  FilterTabs,
+  type FilterTab,
+  type FilterTabsProps,
+} from "./FilterTabs";

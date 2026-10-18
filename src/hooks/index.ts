@@ -8,3 +8,8 @@ export {
   useStoryTimelineScroll,
   type UseStoryTimelineScrollOptions,
 } from "./useStoryTimelineScroll";
+export {
+  useWorkFilter,
+  type UseWorkFilterResult,
+  type WorkFilterCategory,
+} from "./useWorkFilter";

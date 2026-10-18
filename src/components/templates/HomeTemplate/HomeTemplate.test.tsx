@@ -51,6 +51,7 @@ describe("HomeTemplate", () => {
         profile={profileSeed}
         story={[]}
         now={[]}
+        work={[]}
       />,
     );
     expect(
