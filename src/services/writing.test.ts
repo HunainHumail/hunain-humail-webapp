@@ -3,6 +3,7 @@ import { isFirebaseConfigured } from "@/lib/env";
 import { writingRepository } from "@/lib/firebase";
 import type { WritingItem } from "@/lib/schemas/writing";
 import { writingSeed } from "@/lib/seed/writing";
+import { LINKEDIN_PROFILE_URL } from "@/lib/utils/rewriteLinkedInUrls";
 import { getWriting, publishedWritingItems } from "./writing";
 
 vi.mock("@/lib/env", () => ({
@@ -80,6 +81,20 @@ describe("getWriting", () => {
 
     const items = await getWriting();
     expect(items[0]?.title).toBe("From Firestore");
+  });
+
+  it("rewrites a stale linkedin url from Firestore", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(writingRepository.listPublished).mockResolvedValue([
+      {
+        ...writingSeed[2],
+        url: "https://www.linkedin.com/in/hunainhumail",
+      },
+    ]);
+
+    const items = await getWriting();
+    expect(items[0]?.url).toBe(LINKEDIN_PROFILE_URL);
+    expect(items[0]?.venue).toBe("LinkedIn");
   });
 
   it("falls back to seed when the published collection is empty", async () => {

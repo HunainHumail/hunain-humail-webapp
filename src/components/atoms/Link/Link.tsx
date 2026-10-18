@@ -1,6 +1,8 @@
 import NextLink from "next/link";
 import { type AnchorHTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
+import { resolveExternalHref } from "@/lib/utils/resolveExternalHref";
+import { rewriteLinkedInUrls } from "@/lib/utils/rewriteLinkedInUrls";
 
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
@@ -18,17 +20,17 @@ export function Link({
   children,
   ...props
 }: LinkProps) {
-  const isExternal =
-    external ?? (href.startsWith("http://") || href.startsWith("https://"));
+  const externalHref = resolveExternalHref(rewriteLinkedInUrls(href));
+  const isExternal = external ?? externalHref !== null;
 
   if (isExternal) {
     return (
       <a
-        href={href}
+        {...props}
+        href={externalHref ?? href}
         className={cn(linkClasses, className)}
         target="_blank"
         rel="noopener noreferrer"
-        {...props}
       >
         {children}
       </a>

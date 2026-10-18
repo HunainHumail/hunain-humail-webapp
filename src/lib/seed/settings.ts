@@ -1,4 +1,5 @@
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
+import { LINKEDIN_PROFILE_URL } from "@/lib/utils/rewriteLinkedInUrls";
 
 export const siteSettingsSeed: SiteSettings = {
   status: "published",
@@ -19,7 +20,7 @@ export const siteSettingsSeed: SiteSettings = {
     },
     {
       label: "LinkedIn",
-      href: "https://www.linkedin.com/in/hunainhumail",
+      href: LINKEDIN_PROFILE_URL,
       icon: "linkedin",
     },
     {

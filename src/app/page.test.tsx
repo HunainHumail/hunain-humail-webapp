@@ -68,6 +68,21 @@ describe("Home", () => {
     expect(jsonLd?.textContent).toContain('"@type":"Person"');
     expect(jsonLd?.textContent).toContain('"jobTitle":"GenAI Engineer"');
     expect(jsonLd?.textContent).toContain("https://github.com/hunainhumail");
+    expect(jsonLd?.textContent).toContain(
+      "https://www.linkedin.com/in/hunain-humail",
+    );
+    expect(jsonLd?.textContent).toContain("mailto:raohunain@hotmail.com");
+    for (const social of siteSettingsSeed.socials) {
+      const links = screen.getAllByRole("link", {
+        name: new RegExp(social.label, "i"),
+      });
+      expect(links.length).toBeGreaterThan(0);
+      for (const link of links) {
+        expect(link).toHaveAttribute("href", social.href);
+        expect(link).toHaveAttribute("target", "_blank");
+        expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      }
+    }
   });
 
   it("generateMetadata uses settings SEO and the site url", async () => {

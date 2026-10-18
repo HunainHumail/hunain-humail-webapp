@@ -4,6 +4,7 @@ import {
   siteSettingsSchema,
   type SiteSettings,
 } from "@/lib/schemas/siteSettings";
+import { rewriteLinkedInInTree } from "@/lib/utils/rewriteLinkedInUrls";
 import { withFirebaseFallback } from "./withFirebaseFallback";
 
 function requirePublished(settings: SiteSettings): SiteSettings {
@@ -14,7 +15,7 @@ function requirePublished(settings: SiteSettings): SiteSettings {
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  return withFirebaseFallback(
+  const settings = await withFirebaseFallback(
     async () => {
       const document = await settingsRepository.getById(SETTINGS_DOC_ID);
       if (!document) {
@@ -24,4 +25,5 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     },
     () => requirePublished(siteSettingsSchema.parse(siteSettingsSeed)),
   );
+  return rewriteLinkedInInTree(settings);
 }

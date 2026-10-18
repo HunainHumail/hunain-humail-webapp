@@ -8,7 +8,7 @@ describe("buildPersonJsonLd", () => {
         name: "Hunain Humail",
         sameAs: [
           "https://github.com/hunainhumail",
-          "https://www.linkedin.com/in/hunainhumail",
+          "https://www.linkedin.com/in/hunain-humail",
           "mailto:raohunain@hotmail.com",
         ],
       }),
@@ -19,7 +19,7 @@ describe("buildPersonJsonLd", () => {
       jobTitle: PERSON_JOB_TITLE,
       sameAs: [
         "https://github.com/hunainhumail",
-        "https://www.linkedin.com/in/hunainhumail",
+        "https://www.linkedin.com/in/hunain-humail",
         "mailto:raohunain@hotmail.com",
       ],
     });

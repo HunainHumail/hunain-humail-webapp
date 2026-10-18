@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { isFirebaseConfigured } from "@/lib/env";
 import { settingsRepository } from "@/lib/firebase";
 import { siteSettingsSeed } from "@/lib/seed/settings";
+import { LINKEDIN_PROFILE_URL } from "@/lib/utils/rewriteLinkedInUrls";
 import { getSiteSettings } from "./siteSettings";
 
 vi.mock("@/lib/env", () => ({
@@ -56,6 +57,29 @@ describe("getSiteSettings", () => {
 
     const settings = await getSiteSettings();
     expect(settings.seo.title).toBe(siteSettingsSeed.seo.title);
+  });
+
+  it("rewrites a stale linkedin slug from Firestore", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(settingsRepository.getById).mockResolvedValue({
+      ...siteSettingsSeed,
+      socials: siteSettingsSeed.socials.map((social) =>
+        social.icon === "linkedin"
+          ? { ...social, href: "https://www.linkedin.com/in/hunainhumail" }
+          : social,
+      ),
+    });
+
+    const settings = await getSiteSettings();
+    expect(
+      settings.socials.find((social) => social.icon === "linkedin")?.href,
+    ).toBe(LINKEDIN_PROFILE_URL);
+    expect(
+      settings.socials.find((social) => social.icon === "github")?.href,
+    ).toBe("https://github.com/hunainhumail");
+    expect(
+      settings.socials.find((social) => social.icon === "mail")?.href,
+    ).toBe("mailto:raohunain@hotmail.com");
   });
 
   it("falls back to seed when the repository throws", async () => {

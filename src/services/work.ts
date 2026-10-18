@@ -1,6 +1,7 @@
 import { workRepository } from "@/lib/firebase";
 import { workItemSchema, type WorkItem } from "@/lib/schemas/work";
 import { workSeed } from "@/lib/seed/work";
+import { rewriteLinkedInInTree } from "@/lib/utils/rewriteLinkedInUrls";
 import { listOrSeed, withFirebaseFallback } from "./withFirebaseFallback";
 
 export function publishedWorkItems(items: WorkItem[]): WorkItem[] {
@@ -15,10 +16,11 @@ function parseWorkItems(items: unknown[]): WorkItem[] {
 
 export async function getWork(): Promise<WorkItem[]> {
   const seed = () => parseWorkItems(workSeed);
-  return withFirebaseFallback(async () => {
-    const items = parseWorkItems(await workRepository.listPublished());
-    return listOrSeed(items, seed());
+  const items = await withFirebaseFallback(async () => {
+    const loaded = parseWorkItems(await workRepository.listPublished());
+    return listOrSeed(loaded, seed());
   }, seed);
+  return rewriteLinkedInInTree(items);
 }
 
 export async function getWorkBySlug(slug: string): Promise<WorkItem | null> {
@@ -32,9 +34,12 @@ export async function getWorkBySlug(slug: string): Promise<WorkItem | null> {
       if (parsed.status !== "published") {
         return null;
       }
-      return parsed;
+      return rewriteLinkedInInTree(parsed);
     },
-    () =>
-      parseWorkItems(workSeed).find((item) => item.slug === slug) ?? null,
+    () => {
+      const item =
+        parseWorkItems(workSeed).find((entry) => entry.slug === slug) ?? null;
+      return item ? rewriteLinkedInInTree(item) : null;
+    },
   );
 }

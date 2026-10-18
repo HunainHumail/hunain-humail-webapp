@@ -15,6 +15,13 @@ describe("SiteFooter", () => {
     );
     expect(screen.getByText(siteSettingsSeed.seo.title)).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Social links" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /GitHub/i })).toBeInTheDocument();
+    for (const social of siteSettingsSeed.socials) {
+      const link = screen.getByRole("link", {
+        name: new RegExp(social.label, "i"),
+      });
+      expect(link).toHaveAttribute("href", social.href);
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    }
   });
 });

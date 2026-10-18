@@ -30,14 +30,14 @@ describe("WritingItem", () => {
       <WritingItem
         {...baseProps}
         title="AI-native delivery"
-        href="https://www.linkedin.com/in/hunainhumail"
+        href="https://www.linkedin.com/in/hunain-humail"
       />,
     );
 
     const link = screen.getByRole("link", { name: /AI-native delivery/i });
     expect(link).toHaveAttribute(
       "href",
-      "https://www.linkedin.com/in/hunainhumail",
+      "https://www.linkedin.com/in/hunain-humail",
     );
     expect(link).toHaveAttribute("target", "_blank");
     expect(link.querySelector("svg")).not.toBeNull();

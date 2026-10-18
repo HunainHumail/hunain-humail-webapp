@@ -1,4 +1,5 @@
 import type { WritingItem } from "@/lib/schemas/writing";
+import { LINKEDIN_PROFILE_URL } from "@/lib/utils/rewriteLinkedInUrls";
 
 const updatedAt = "2026-10-18T00:00:00.000Z";
 
@@ -33,7 +34,7 @@ export const writingSeed: WritingItem[] = [
     title: "AI-native delivery",
     venue: "LinkedIn",
     date: "2026-09-12",
-    url: "https://www.linkedin.com/in/hunainhumail",
+    url: LINKEDIN_PROFILE_URL,
     summary:
       "Prompt to PR — automated build, test, and release so GenAI work ships on a boring, repeatable train.",
     order: 2,
@@ -46,7 +47,7 @@ export const writingSeed: WritingItem[] = [
     title: "Agentic SDLC",
     venue: "LinkedIn",
     date: "2026-07-08",
-    url: "https://www.linkedin.com/in/hunainhumail",
+    url: LINKEDIN_PROFILE_URL,
     summary:
       "Where agents sit in the software loop: specs, patches, tests, and a human gate before production.",
     order: 3,
@@ -59,7 +60,7 @@ export const writingSeed: WritingItem[] = [
     title: "Production evals for agents",
     venue: "LinkedIn",
     date: "2026-05-20",
-    url: "https://www.linkedin.com/in/hunainhumail",
+    url: LINKEDIN_PROFILE_URL,
     summary:
       "Placeholder notes on eval harnesses and guardrails that keep agent workflows reliable in production.",
     order: 4,
