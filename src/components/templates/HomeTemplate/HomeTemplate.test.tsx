@@ -50,6 +50,7 @@ describe("HomeTemplate", () => {
         settings={siteSettingsSeed}
         profile={profileSeed}
         story={[]}
+        now={[]}
       />,
     );
     expect(

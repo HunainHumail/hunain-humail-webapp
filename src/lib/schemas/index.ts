@@ -15,3 +15,4 @@ export {
   type SocialLink,
 } from "./siteSettings";
 export { storyItemSchema, type StoryItem } from "./story";
+export { nowItemSchema, type NowItem } from "./now";

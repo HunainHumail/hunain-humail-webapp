@@ -9,3 +9,4 @@ export {
 } from "./ScrollProgressBar";
 export { ThemeToggle, type ThemeToggleProps } from "./ThemeToggle";
 export { TimelineItem, type TimelineItemProps } from "./TimelineItem";
+export { NowCard, type NowCardProps } from "./NowCard";

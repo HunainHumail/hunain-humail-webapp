@@ -6,3 +6,4 @@ export {
   type SmoothScrollProviderProps,
 } from "./SmoothScrollProvider";
 export { StoryTimeline, type StoryTimelineProps } from "./StoryTimeline";
+export { NowSection, type NowSectionProps } from "./NowSection";
