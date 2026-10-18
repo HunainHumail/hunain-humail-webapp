@@ -1,3 +1,5 @@
+import { layout } from "./layout";
+
 /** Spacing scale (rem) — mirrored in Tailwind `spacing` theme. */
 export const spacing = {
   0: "0",
@@ -18,8 +20,7 @@ export const spacing = {
   28: "7rem",
   32: "8rem",
   40: "10rem",
-  gutter: "1.25rem",
-  "gutter-lg": "2.5rem",
+  gutter: layout.gutter,
   section: "5rem",
   "section-lg": "8.5rem",
   terminal: "27.5rem",

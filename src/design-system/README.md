@@ -37,14 +37,20 @@ Standard Tailwind scale plus:
 
 | Token | Value | Utility |
 | --- | --- | --- |
-| gutter | `1.25rem` | `px-gutter` |
-| gutter-lg | `2.5rem` | `md:px-gutter-lg` |
 | section | `5rem` | `py-section` |
 | section-lg | `8.5rem` (136px) | `md:py-section-lg` |
 | terminal | `27.5rem` (440px) | `min-w-terminal` |
 | avatar | `6rem` (96px) | `size-avatar` |
 | 32 / 40 | `8rem` / `10rem` | `py-32`, `py-40` |
-| page | `80rem` (1280px) | `max-w-page` |
+
+## Layout
+
+Page shell used by the Container atom (header, sections, footer).
+
+| Token | Value | Utility |
+| --- | --- | --- |
+| page | `90rem` (1440px) | `max-w-page` |
+| gutter | `clamp(20px, 4vw, 64px)` | `px-gutter` |
 
 ## Aspect
 
@@ -97,7 +103,7 @@ Used with `.card-lift` for hover glow.
 | Input / Textarea | form fields with focus ring |
 | Badge | status `default` / `success` / `warning` / `error` |
 | VisuallyHidden | screen-reader-only text |
-| Container | 12-col page gutter, `max-w-page` (1280px) |
+| Container | Page shell: `max-w-page` (1440px), side padding `clamp(20px, 4vw, 64px)` |
 | Divider | horizontal rule |
 | Markdown | safe `react-markdown` body renderer |
 | SectionCounter | huge outlined section index (`01`) |

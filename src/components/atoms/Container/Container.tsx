@@ -15,7 +15,7 @@ export function Container({
   return (
     <Component
       className={cn(
-        "mx-auto w-full max-w-page px-gutter md:px-gutter-lg",
+        "mx-auto w-full min-w-0 max-w-page px-gutter",
         className,
       )}
       {...props}

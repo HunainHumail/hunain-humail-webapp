@@ -125,9 +125,8 @@
   --z-modal: 50;
   --z-toast: 60;
 
-  --max-width-page: 80rem;
-  --spacing-gutter: 1.25rem;
-  --spacing-gutter-lg: 2.5rem;
+  --max-width-page: 90rem;
+  --spacing-gutter: clamp(20px, 4vw, 64px);
   --spacing-section: 5rem;
   --spacing-section-lg: 8.5rem;
   --spacing-terminal: 27.5rem;
