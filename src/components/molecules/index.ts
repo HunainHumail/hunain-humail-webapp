@@ -8,3 +8,4 @@ export {
   type ScrollProgressBarProps,
 } from "./ScrollProgressBar";
 export { ThemeToggle, type ThemeToggleProps } from "./ThemeToggle";
+export { TimelineItem, type TimelineItemProps } from "./TimelineItem";

@@ -1,0 +1,36 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { storySeed } from "@/lib/seed/story";
+import { StoryTimeline } from "./StoryTimeline";
+
+vi.mock("gsap/ScrollTrigger", () => ({
+  ScrollTrigger: { update: vi.fn() },
+}));
+
+vi.mock("gsap", () => ({
+  default: {
+    registerPlugin: vi.fn(),
+    context: (fn: () => void) => {
+      fn();
+      return { revert: vi.fn() };
+    },
+    set: vi.fn(),
+    to: vi.fn(),
+  },
+}));
+
+describe("StoryTimeline", () => {
+  it("renders story section with timeline items", () => {
+    render(<StoryTimeline items={storySeed} />);
+
+    expect(screen.getByText("01 · Story")).toBeInTheDocument();
+    const section = document.getElementById("story");
+    expect(section).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Building with AI" }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 3 }).length).toBe(
+      storySeed.length,
+    );
+  });
+});

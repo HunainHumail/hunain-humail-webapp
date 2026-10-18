@@ -5,3 +5,4 @@ export {
   SmoothScrollProvider,
   type SmoothScrollProviderProps,
 } from "./SmoothScrollProvider";
+export { StoryTimeline, type StoryTimelineProps } from "./StoryTimeline";

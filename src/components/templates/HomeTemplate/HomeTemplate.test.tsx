@@ -25,6 +25,12 @@ vi.mock("gsap/ScrollTrigger", () => ({
 vi.mock("gsap", () => ({
   default: {
     registerPlugin: vi.fn(),
+    context: (fn: () => void) => {
+      fn();
+      return { revert: vi.fn() };
+    },
+    set: vi.fn(),
+    to: vi.fn(),
     ticker: {
       add: vi.fn(),
       remove: vi.fn(),
@@ -40,7 +46,11 @@ vi.mock("next/image", () => ({
 describe("HomeTemplate", () => {
   it("renders hero inside site shell", () => {
     render(
-      <HomeTemplate settings={siteSettingsSeed} profile={profileSeed} />,
+      <HomeTemplate
+        settings={siteSettingsSeed}
+        profile={profileSeed}
+        story={[]}
+      />,
     );
     expect(
       screen.getByRole("heading", { level: 1, name: /Hunain\s+Humail/i }),

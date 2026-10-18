@@ -14,3 +14,4 @@ export {
   type SiteSettings,
   type SocialLink,
 } from "./siteSettings";
+export { storyItemSchema, type StoryItem } from "./story";
