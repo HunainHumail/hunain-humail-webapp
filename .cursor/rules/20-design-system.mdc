@@ -1,0 +1,11 @@
+---
+description: DLS tokens only — no ad-hoc values
+globs: src/**/*.tsx,src/**/*.css,tailwind.config.*
+alwaysApply: true
+---
+- Use DLS tokens from `src/design-system/tokens` (exposed as CSS variables + Tailwind theme). No raw hex, px font sizes or arbitrary Tailwind values (`text-[17px]`, `#fff`) in components.
+- Palette: bg `#0a0e14` (dark default), paper-white light theme, ONE accent electric cyan `#22d3ee`. Neutrals via tokens.
+- Type: huge tight grotesk display headlines (tight tracking, ~0.9 line-height); small UPPERCASE mono labels with wide tracking.
+- Motion tokens: durations (fast/base/slow) and easings; honor `prefers-reduced-motion` (disable GSAP/Lenis/typing effects).
+- Theme via `data-theme` on `<html>`; both themes must meet WCAG AA contrast.
+- New token? Add it to tokens + document it in `src/design-system/README.md`.

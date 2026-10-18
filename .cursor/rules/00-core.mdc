@@ -1,0 +1,12 @@
+---
+description: Core coding standards for the whole repo
+alwaysApply: true
+---
+- TypeScript `strict: true`, no `any` (use `unknown` + narrowing), no non-null `!` unless justified in a comment.
+- Prefer named exports. One component per file. Files: `PascalCase.tsx` for components, `useCamelCase.ts` hooks, `camelCase.ts` utils/services.
+- Server Components by default; add `"use client"` only for interactivity/animation.
+- Validate external data (Firestore, forms, env) with zod schemas in `src/lib/schemas`.
+- No dead code, no commented-out code, no console.log in committed code.
+- Env/config via `process.env.NEXT_PUBLIC_*` read only in `src/lib/env.ts`.
+- Small, focused commits; conventional commit messages (`feat:`, `chore:`, `test:`, `fix:`, `docs:`).
+- Content rules (AGENTS.md #4) are hard constraints — also for seed data and placeholders.

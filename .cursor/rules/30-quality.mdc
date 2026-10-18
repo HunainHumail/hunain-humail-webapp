@@ -1,0 +1,9 @@
+---
+description: Testing, accessibility and performance requirements
+alwaysApply: true
+---
+- Every feature: Vitest + Testing Library unit tests for components (render, a11y roles, key states) and for hooks/services/lib (pure logic, mocked Firebase).
+- e2e: Playwright specs in `e2e/` for user flows; run against `npm run build && npm start` (or static export) with seed/mocked data, never real production data.
+- Accessibility: semantic landmarks, one h1 per page, labelled controls, visible focus, keyboard nav, alt text, aria-live for dynamic text only when needed.
+- Performance budget: Lighthouse 95+ (perf, a11y, best practices, SEO). Lazy-load heavy animation libs (dynamic import on client), `next/image`, `next/font`, no layout shift, JS per route kept minimal.
+- Before finishing: `npm run lint && npm run typecheck && npm test -- --run && npm run build` all green.

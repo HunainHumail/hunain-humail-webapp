@@ -1,0 +1,13 @@
+---
+description: Atomic design and separation of UI from business logic
+globs: src/components/**,src/app/**
+alwaysApply: true
+---
+- atoms: smallest primitives (Button, Text, Heading, MonoLabel, Chip, Icon, Link, Input). No data fetching, no app state.
+- molecules: combinations of atoms (NavItem, TimelineItem, CaseStudyCard, FormField).
+- organisms: page sections (SiteHeader, Hero, StoryTimeline, NowSection, WorkGrid, WritingList, ContactSection).
+- templates: page layouts composing organisms; receive all data via props.
+- pages (`src/app/**/page.tsx`): fetch via `src/services`, pass to templates. No styling logic.
+- Components are presentational: props in, JSX out. Business logic (fetching, validation, Firebase, form submit, filtering) lives in `hooks/`, `services/`, `lib/`.
+- A component may only import from its own level or lower, plus `design-system`, `lib/utils`. Never import `lib/firebase` in components.
+- Each component folder: `Component.tsx`, `Component.test.tsx`, `index.ts`.

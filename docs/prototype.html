@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hunain Humail</title>
+<style>
+body{margin:0;background:#0a0e14;color:#e8eef5;font-family:Inter,Helvetica,sans-serif}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.12em;color:#7d8a99;text-transform:uppercase}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 40px;border-bottom:1px solid #1c2430;position:sticky;top:0;background:#0a0e14ee}
+nav a{margin-right:22px;color:#9fb0c2}
+.pill{border:1px solid #22d3ee;color:#22d3ee;padding:8px 16px;border-radius:99px}
+#bar{height:2px;background:#22d3ee;width:0;position:fixed;top:0;z-index:9}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:50px;align-items:center;padding:80px 40px;background-image:linear-gradient(#141b25 1px,transparent 1px),linear-gradient(90deg,#141b25 1px,transparent 1px);background-size:60px 60px}
+.photo{width:240px;height:300px;border-radius:16px;border:1px solid #2a3442;background:linear-gradient(160deg,#16202c,#0a0e14);display:flex;align-items:center;justify-content:center;color:#55606d}
+h1{font-size:84px;letter-spacing:-.05em;line-height:.9;margin:14px 0}
+.now{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.now span{border:1px solid #2a3442;padding:7px 12px;border-radius:99px;font-size:13px;color:#b8c6d4}
+.term{display:inline-block;background:#05080c;border:1px solid #1c2430;border-radius:8px;padding:12px 16px;font:13px ui-monospace,monospace;color:#9fe8f5;min-width:420px;min-height:60px}
+section{padding:70px 40px;border-top:1px solid #1c2430}
+h2{font-size:44px;letter-spacing:-.03em;margin:10px 0 30px}
+.tl{position:relative;border-left:1px solid #2a3442;margin-left:10px}
+.tl div{padding:0 0 30px 26px;position:relative}.tl div:before{content:"";position:absolute;left:-5px;top:6px;width:9px;height:9px;border-radius:50%;background:#22d3ee}
+.tl b{font-size:22px;display:block;margin:4px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:1px solid #1c2430;border-radius:12px;padding:20px}.card b{font-size:20px;display:block;margin:8px 0}
+.card p{color:#9fb0c2;font-size:14px;margin:0}
+.cta{text-align:center}.cta h2{font-size:60px}
+</style></head><body><div id="bar"></div>
+<nav><b>hunain<span style="color:#22d3ee">.</span></b><div class="mono"><a>01 Story</a><a>02 Now</a><a>03 Work</a><a>04 Writing</a><span id="clk"></span></div><span class="pill">Say hi</span></nav>
+<div class="hero"><div class="photo mono">your photo</div><div>
+<div class="mono">Dubai · 25.20°N 55.27°E</div>
+<h1>Hunain<br>Humail<span style="color:#22d3ee">.</span></h1>
+<p style="font-size:22px;color:#b8c6d4;margin:0">Software engineer building with AI, fintech and open finance.</p>
+<div class="now"><span>Senior Software Engineer</span><span>Fintech &amp; Open Finance</span><span>GenAI Engineer</span></div>
+<div class="term" id="t"></div></div></div>
+<section><div class="mono">01 · Story</div><h2>Seven years of shipping.</h2><div class="tl">
+<div><span class="mono">2017</span><b>Android freelancer</b><span style="color:#9fb0c2">First apps, first clients.</span></div>
+<div><span class="mono">2020–2025</span><b>Web &amp; mobile engineer</b><span style="color:#9fb0c2">Startups, agencies, PureVPN.</span></div>
+<div><span class="mono">2025 →</span><b>Building with AI</b><span style="color:#9fb0c2">AI-native delivery, fintech and open finance, cloud, architecture.</span></div></div></section>
+<section><div class="mono">02 · Now</div><h2>This month.</h2><div class="grid">
+<div class="card"><span class="mono">Building</span><b>Something new</b><p>Placeholder text, edited from the CMS.</p></div>
+<div class="card"><span class="mono">Exploring</span><b>Agentic workflows</b><p>Placeholder.</p></div>
+<div class="card"><span class="mono">Shipping</span><b>Automated pipelines</b><p>Placeholder.</p></div></div></section>
+<section><div class="mono">03 · Work</div><h2>Things I've built.</h2><div class="grid">
+<div class="card"><span class="mono">Case study</span><b>Trinnect</b><p>What I built · what I learned · my role</p></div>
+<div class="card"><span class="mono">Case study</span><b>Fastbrix</b><p>Placeholder.</p></div>
+<div class="card"><span class="mono">Case study</span><b>Vigil</b><p>Placeholder.</p></div><div class="card"><span class="mono">Open finance</span><b>Open finance work</b><p>Placeholder.</p></div></div></section>
+<section><div class="mono">04 · Writing &amp; talks</div><h2>Thinking out loud.</h2><div class="grid">
+<div class="card"><span class="mono">Talk</span><b>GDG DevFest Sindh 2023</b></div>
+<div class="card"><span class="mono">Award</span><b>Google Hackathon winner 2020</b></div>
+<div class="card"><span class="mono">Post</span><b>Latest LinkedIn post</b><p>Placeholder.</p></div></div></section>
+<section class="cta"><div class="mono">Work with me</div><h2>Got something to build?</h2><p style="color:#9fb0c2">Freelance, consulting, or a role. I'm happy to chat.</p><span class="pill">raohunain@hotmail.com</span></section>
+<script>
+const C=[["whoami","hunain · engineer · dubai"],["cat now.txt","building · shipping genai"],["ls ./focus","ai · fintech · open finance · cloud"]];let c=0;
+function run(){const[a,b]=C[c];t.innerHTML="$ ";let k=0;const ty=setInterval(()=>{t.innerHTML+=a[k++];if(k==a.length){clearInterval(ty);t.innerHTML+="<br><span style='color:#7d8a99'>"+b+"</span>";c=(c+1)%C.length;setTimeout(run,2200)}},80)}run();
+setInterval(()=>clk.textContent=" · DXB "+new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Dubai'}),1000);
+onscroll=()=>bar.style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+</script></body></html>
