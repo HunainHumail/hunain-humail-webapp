@@ -1,6 +1,7 @@
-import { isFirebaseConfigured } from "@/lib/env";
+import { writingRepository } from "@/lib/firebase";
 import { writingItemSchema, type WritingItem } from "@/lib/schemas/writing";
 import { writingSeed } from "@/lib/seed/writing";
+import { withFirebaseFallback } from "./withFirebaseFallback";
 
 export function publishedWritingItems(items: WritingItem[]): WritingItem[] {
   return items
@@ -8,10 +9,15 @@ export function publishedWritingItems(items: WritingItem[]): WritingItem[] {
     .sort((a, b) => a.order - b.order);
 }
 
+function parseWritingItems(items: unknown[]): WritingItem[] {
+  return publishedWritingItems(
+    items.map((item) => writingItemSchema.parse(item)),
+  );
+}
+
 export async function getWriting(): Promise<WritingItem[]> {
-  if (isFirebaseConfigured()) {
-    // Repository wiring lands with CMS; seed until then.
-  }
-  const parsed = writingSeed.map((item) => writingItemSchema.parse(item));
-  return publishedWritingItems(parsed);
+  return withFirebaseFallback(
+    async () => parseWritingItems(await writingRepository.listPublished()),
+    () => parseWritingItems(writingSeed),
+  );
 }

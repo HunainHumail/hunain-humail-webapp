@@ -1,6 +1,19 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { isFirebaseConfigured } from "@/lib/env";
+import { nowRepository } from "@/lib/firebase";
 import type { NowItem } from "@/lib/schemas/now";
+import { nowSeed } from "@/lib/seed/now";
 import { getNow, publishedNowItems } from "./now";
+
+vi.mock("@/lib/env", () => ({
+  isFirebaseConfigured: vi.fn(() => false),
+}));
+
+vi.mock("@/lib/firebase", () => ({
+  nowRepository: {
+    listPublished: vi.fn(),
+  },
+}));
 
 const baseItem: NowItem = {
   id: "test",
@@ -26,6 +39,11 @@ describe("publishedNowItems", () => {
 });
 
 describe("getNow", () => {
+  afterEach(() => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(false);
+    vi.mocked(nowRepository.listPublished).mockReset();
+  });
+
   it("returns published now seed sorted by order", async () => {
     const items = await getNow();
     expect(items.length).toBe(4);
@@ -36,5 +54,26 @@ describe("getNow", () => {
     expect(items[1].title).toBe("Agentic workflows");
     expect(items[2].label).toBe("Shipping");
     expect(items[3].label).toBe("Reading");
+    expect(nowRepository.listPublished).not.toHaveBeenCalled();
+  });
+
+  it("returns repository items when Firebase is configured", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(nowRepository.listPublished).mockResolvedValue([
+      { ...nowSeed[0], title: "From Firestore" },
+    ]);
+
+    const items = await getNow();
+    expect(items[0]?.title).toBe("From Firestore");
+  });
+
+  it("falls back to seed when the repository throws", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(nowRepository.listPublished).mockRejectedValue(
+      new Error("offline"),
+    );
+
+    const items = await getNow();
+    expect(items).toHaveLength(4);
   });
 });

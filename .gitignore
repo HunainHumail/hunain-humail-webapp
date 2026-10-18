@@ -37,9 +37,11 @@ yarn-error.log*
 !.env.example
 
 # firebase
+.firebase/
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+pubsub-debug.log
 
 # vercel
 .vercel

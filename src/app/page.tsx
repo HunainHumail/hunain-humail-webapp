@@ -6,6 +6,9 @@ import { getStory } from "@/services/story";
 import { getWork } from "@/services/work";
 import { getWriting } from "@/services/writing";
 
+export const dynamic = "force-static";
+export const revalidate = 60;
+
 export default async function Home() {
   const [settings, profile, story, now, work, writing] = await Promise.all([
     getSiteSettings(),

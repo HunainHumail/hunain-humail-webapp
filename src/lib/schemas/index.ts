@@ -9,10 +9,12 @@ export {
 export {
   contactSettingsSchema,
   navItemSchema,
+  seoSchema,
   siteSettingsSchema,
   socialLinkSchema,
   type ContactSettings,
   type NavItem,
+  type Seo,
   type SiteSettings,
   type SocialLink,
 } from "./siteSettings";

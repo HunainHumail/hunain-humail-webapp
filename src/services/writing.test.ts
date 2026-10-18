@@ -1,6 +1,19 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { isFirebaseConfigured } from "@/lib/env";
+import { writingRepository } from "@/lib/firebase";
 import type { WritingItem } from "@/lib/schemas/writing";
+import { writingSeed } from "@/lib/seed/writing";
 import { getWriting, publishedWritingItems } from "./writing";
+
+vi.mock("@/lib/env", () => ({
+  isFirebaseConfigured: vi.fn(() => false),
+}));
+
+vi.mock("@/lib/firebase", () => ({
+  writingRepository: {
+    listPublished: vi.fn(),
+  },
+}));
 
 const baseItem: WritingItem = {
   id: "test",
@@ -30,6 +43,11 @@ describe("publishedWritingItems", () => {
 });
 
 describe("getWriting", () => {
+  afterEach(() => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(false);
+    vi.mocked(writingRepository.listPublished).mockReset();
+  });
+
   it("returns published writing seed sorted by order", async () => {
     const items = await getWriting();
     expect(items).toHaveLength(5);
@@ -51,5 +69,26 @@ describe("getWriting", () => {
     ]);
     expect(items[0]?.venue).toBe("GDG DevFest Sindh 2023");
     expect(items[1]?.venue).toBe("Google Hackathon 2020");
+    expect(writingRepository.listPublished).not.toHaveBeenCalled();
+  });
+
+  it("returns repository items when Firebase is configured", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(writingRepository.listPublished).mockResolvedValue([
+      { ...writingSeed[0], title: "From Firestore" },
+    ]);
+
+    const items = await getWriting();
+    expect(items[0]?.title).toBe("From Firestore");
+  });
+
+  it("falls back to seed when the repository throws", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(writingRepository.listPublished).mockRejectedValue(
+      new Error("offline"),
+    );
+
+    const items = await getWriting();
+    expect(items).toHaveLength(5);
   });
 });

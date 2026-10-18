@@ -7,6 +7,7 @@ const firebaseEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: z.string().min(1).optional(),
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: z.string().min(1).optional(),
   NEXT_PUBLIC_FIREBASE_APP_ID: z.string().min(1).optional(),
+  NEXT_PUBLIC_USE_FIREBASE_EMULATOR: z.string().optional(),
 });
 
 const parsed = firebaseEnvSchema.safeParse({
@@ -18,22 +19,54 @@ const parsed = firebaseEnvSchema.safeParse({
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  NEXT_PUBLIC_USE_FIREBASE_EMULATOR:
+    process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR,
 });
 
 export const env = parsed.success ? parsed.data : {};
 
-const firebaseKeys = [
-  "NEXT_PUBLIC_FIREBASE_API_KEY",
-  "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",
-  "NEXT_PUBLIC_FIREBASE_PROJECT_ID",
-  "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET",
-  "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",
-  "NEXT_PUBLIC_FIREBASE_APP_ID",
-] as const;
+export interface FirebaseWebConfig {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+  appId: string;
+}
+
+export function getFirebaseWebConfig(): FirebaseWebConfig | null {
+  const apiKey = env.NEXT_PUBLIC_FIREBASE_API_KEY;
+  const authDomain = env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
+  const projectId = env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  const storageBucket = env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+  const messagingSenderId = env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID;
+  const appId = env.NEXT_PUBLIC_FIREBASE_APP_ID;
+
+  if (
+    !apiKey ||
+    !authDomain ||
+    !projectId ||
+    !storageBucket ||
+    !messagingSenderId ||
+    !appId
+  ) {
+    return null;
+  }
+
+  return {
+    apiKey,
+    authDomain,
+    projectId,
+    storageBucket,
+    messagingSenderId,
+    appId,
+  };
+}
 
 export function isFirebaseConfigured(): boolean {
-  return firebaseKeys.every((key) => {
-    const value = env[key];
-    return typeof value === "string" && value.length > 0;
-  });
+  return getFirebaseWebConfig() !== null;
+}
+
+export function isFirebaseEmulatorEnabled(): boolean {
+  return env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR === "true";
 }

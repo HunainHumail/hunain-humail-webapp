@@ -4,6 +4,9 @@ import { CaseStudyTemplate } from "@/components/templates";
 import { getSiteSettings } from "@/services/siteSettings";
 import { getWork, getWorkBySlug } from "@/services/work";
 
+export const dynamic = "force-static";
+export const revalidate = 60;
+
 type WorkCaseStudyPageProps = {
   params: Promise<{ slug: string }>;
 };
