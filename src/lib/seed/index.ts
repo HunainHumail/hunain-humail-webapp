@@ -3,3 +3,5 @@ export { siteSettingsSeed } from "./settings";
 export { storySeed } from "./story";
 export { nowSeed } from "./now";
 export { workSeed } from "./work";
+export { writingSeed } from "./writing";
+

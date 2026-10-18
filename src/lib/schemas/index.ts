@@ -24,3 +24,10 @@ export {
   type WorkItem,
   type WorkLink,
 } from "./work";
+export {
+  writingItemSchema,
+  writingTypeSchema,
+  type WritingItem,
+  type WritingType,
+} from "./writing";
+

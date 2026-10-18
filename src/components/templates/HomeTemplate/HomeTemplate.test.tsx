@@ -52,6 +52,7 @@ describe("HomeTemplate", () => {
         story={[]}
         now={[]}
         work={[]}
+        writing={[]}
       />,
     );
     expect(

@@ -57,5 +57,8 @@ describe("Home", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Things I've built." }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Thinking out loud." }),
+    ).toBeInTheDocument();
   });
 });

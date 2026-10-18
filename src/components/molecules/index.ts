@@ -16,3 +16,5 @@ export {
   type FilterTab,
   type FilterTabsProps,
 } from "./FilterTabs";
+export { WritingItem, type WritingItemProps } from "./WritingItem";
+

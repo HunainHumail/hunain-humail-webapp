@@ -2,12 +2,14 @@ import { Hero } from "@/components/organisms/Hero";
 import { NowSection } from "@/components/organisms/NowSection";
 import { StoryTimeline } from "@/components/organisms/StoryTimeline";
 import { WorkGrid } from "@/components/organisms/WorkGrid";
+import { WritingList } from "@/components/organisms/WritingList";
 import { SiteTemplate } from "@/components/templates/SiteTemplate";
 import type { Profile } from "@/lib/schemas/profile";
 import type { NowItem } from "@/lib/schemas/now";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import type { StoryItem } from "@/lib/schemas/story";
 import type { WorkItem } from "@/lib/schemas/work";
+import type { WritingItem } from "@/lib/schemas/writing";
 
 export interface HomeTemplateProps {
   settings: SiteSettings;
@@ -15,6 +17,7 @@ export interface HomeTemplateProps {
   story: StoryItem[];
   now: NowItem[];
   work: WorkItem[];
+  writing: WritingItem[];
 }
 
 export function HomeTemplate({
@@ -23,6 +26,7 @@ export function HomeTemplate({
   story,
   now,
   work,
+  writing,
 }: HomeTemplateProps) {
   return (
     <SiteTemplate settings={settings}>
@@ -38,6 +42,7 @@ export function HomeTemplate({
       <StoryTimeline items={story} />
       <NowSection items={now} />
       <WorkGrid items={work} />
+      <WritingList items={writing} />
     </SiteTemplate>
   );
 }

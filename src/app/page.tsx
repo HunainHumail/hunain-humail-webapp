@@ -4,14 +4,16 @@ import { getSiteSettings } from "@/services/siteSettings";
 import { getNow } from "@/services/now";
 import { getStory } from "@/services/story";
 import { getWork } from "@/services/work";
+import { getWriting } from "@/services/writing";
 
 export default async function Home() {
-  const [settings, profile, story, now, work] = await Promise.all([
+  const [settings, profile, story, now, work, writing] = await Promise.all([
     getSiteSettings(),
     getProfile(),
     getStory(),
     getNow(),
     getWork(),
+    getWriting(),
   ]);
 
   return (
@@ -21,6 +23,7 @@ export default async function Home() {
       story={story}
       now={now}
       work={work}
+      writing={writing}
     />
   );
 }

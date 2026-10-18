@@ -13,3 +13,9 @@ export {
   type UseWorkFilterResult,
   type WorkFilterCategory,
 } from "./useWorkFilter";
+export {
+  useWritingFilter,
+  type UseWritingFilterResult,
+  type WritingFilterType,
+} from "./useWritingFilter";
+
