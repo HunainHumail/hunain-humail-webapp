@@ -1,4 +1,4 @@
-import { isFirebaseConfigured } from "@/lib/env";
+import { isContactMockEnabled, isFirebaseConfigured } from "@/lib/env";
 import { messagesRepository } from "@/lib/firebase";
 import {
   contactMessageSchema,
@@ -25,8 +25,8 @@ export async function submitContactMessage(
     return { ok: true, id: "dropped" };
   }
 
-  if (!isFirebaseConfigured()) {
-    if (!isDevOrTest()) {
+  if (isContactMockEnabled() || !isFirebaseConfigured()) {
+    if (!isContactMockEnabled() && !isDevOrTest()) {
       throw new Error("Contact form is unavailable.");
     }
     return { ok: true, id: "mock-message" };

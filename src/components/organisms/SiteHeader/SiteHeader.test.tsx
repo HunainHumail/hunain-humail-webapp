@@ -22,6 +22,32 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("link", { name: /hunain humail home/i })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Primary" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /01\s*Story/i })).toBeInTheDocument();
+    expect(screen.getAllByText("Dubai clock")).toHaveLength(1);
+    expect(
+      document.querySelector('nav[aria-label="Primary"]'),
+    ).not.toHaveTextContent("Dubai clock");
+  });
+
+  it("renders one header clock on wide viewports", () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === "(min-width: 80rem)",
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    render(
+      <SiteHeader
+        settings={{ nav: siteSettingsSeed.nav, seo: siteSettingsSeed.seo }}
+      />,
+    );
+
+    expect(screen.getAllByText("Dubai clock")).toHaveLength(1);
+    expect(
+      document.querySelector('nav[aria-label="Mobile primary"]'),
+    ).not.toHaveTextContent("Dubai clock");
   });
 
   it("opens mobile menu", async () => {

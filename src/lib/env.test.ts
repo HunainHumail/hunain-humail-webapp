@@ -97,6 +97,28 @@ describe("firebase env", () => {
     expect(getSiteUrl()).toBe("https://hunain.example");
   });
 
+  it("enables the contact mock only for the string true", async () => {
+    vi.stubEnv("NEXT_PUBLIC_CONTACT_MOCK", "true");
+    const enabled = await import("./env");
+    expect(enabled.isContactMockEnabled()).toBe(true);
+
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_CONTACT_MOCK", "1");
+    const disabled = await import("./env");
+    expect(disabled.isContactMockEnabled()).toBe(false);
+  });
+
+  it("enables the signed-out preview only for the string true", async () => {
+    vi.stubEnv("NEXT_PUBLIC_E2E_SIGNED_OUT", "true");
+    const enabled = await import("./env");
+    expect(enabled.isE2ESignedOut()).toBe(true);
+
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_E2E_SIGNED_OUT", "");
+    const disabled = await import("./env");
+    expect(disabled.isE2ESignedOut()).toBe(false);
+  });
+
   it("falls back when NEXT_PUBLIC_SITE_URL is not a url", async () => {
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "not a url");
     const { DEFAULT_SITE_URL, getSiteUrl } = await import("./env");

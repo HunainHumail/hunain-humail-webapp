@@ -16,6 +16,7 @@ export function Terminal({ lines, className }: TerminalProps) {
   const { view, fullText, instantDisplay } = useTypewriter(lines, {
     reducedMotion,
   });
+  const showTranscript = instantDisplay !== null;
 
   return (
     <div
@@ -33,11 +34,11 @@ export function Terminal({ lines, className }: TerminalProps) {
           <span className="size-2 rounded-full bg-accent" />
         </span>
       </div>
-      <VisuallyHidden>{fullText}</VisuallyHidden>
+      {showTranscript ? null : <VisuallyHidden>{fullText}</VisuallyHidden>}
       <pre
         className="m-0 min-h-48 flex-1 overflow-x-auto whitespace-pre-wrap break-words px-5 py-4 font-mono text-mono-md text-accent"
         aria-live="off"
-        aria-hidden="true"
+        aria-hidden={showTranscript ? undefined : true}
       >
         {instantDisplay ?? (
           <>

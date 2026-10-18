@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { isFirebaseConfigured } from "@/lib/env";
+import { isContactMockEnabled, isFirebaseConfigured } from "@/lib/env";
 import { messagesRepository } from "@/lib/firebase";
 import { submitContactMessage } from "./contact";
 
@@ -12,6 +12,7 @@ const valid = {
 
 vi.mock("@/lib/env", () => ({
   isFirebaseConfigured: vi.fn(() => false),
+  isContactMockEnabled: vi.fn(() => false),
 }));
 
 vi.mock("@/lib/firebase", () => ({
@@ -23,11 +24,22 @@ vi.mock("@/lib/firebase", () => ({
 describe("submitContactMessage", () => {
   afterEach(() => {
     vi.mocked(isFirebaseConfigured).mockReturnValue(false);
+    vi.mocked(isContactMockEnabled).mockReturnValue(false);
     vi.mocked(messagesRepository.create).mockReset();
   });
 
   it("validates and returns mock success when Firebase is not configured", async () => {
     const result = await submitContactMessage(valid);
+    expect(result).toEqual({ ok: true, id: "mock-message" });
+    expect(messagesRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("returns mock success when the contact mock flag is set", async () => {
+    vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(isContactMockEnabled).mockReturnValue(true);
+
+    const result = await submitContactMessage(valid);
+
     expect(result).toEqual({ ok: true, id: "mock-message" });
     expect(messagesRepository.create).not.toHaveBeenCalled();
   });

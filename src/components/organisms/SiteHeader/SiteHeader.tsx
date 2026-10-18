@@ -9,6 +9,7 @@ import { DubaiClock } from "@/components/molecules/DubaiClock";
 import { NavItem } from "@/components/molecules/NavItem";
 import { ThemeToggle } from "@/components/molecules/ThemeToggle";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { useXlViewport } from "@/hooks/useXlViewport";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import { cn } from "@/lib/utils/cn";
 
@@ -31,6 +32,7 @@ export function SiteHeader({ settings, className }: SiteHeaderProps) {
   );
   const activeHref = useActiveSection(hrefs);
   const brand = brandFromTitle(settings.seo.title);
+  const headerClock = useXlViewport();
 
   useEffect(() => {
     if (!menuOpen) {
@@ -82,7 +84,7 @@ export function SiteHeader({ settings, className }: SiteHeaderProps) {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <DubaiClock className="hidden xl:inline" />
+          {headerClock ? <DubaiClock /> : null}
           <ThemeToggle />
         </div>
 
@@ -121,7 +123,7 @@ export function SiteHeader({ settings, className }: SiteHeaderProps) {
               </li>
             ))}
           </ul>
-          <DubaiClock />
+          {headerClock ? null : <DubaiClock />}
         </Container>
       </nav>
     </header>

@@ -11,6 +11,7 @@ export {
 export { useTypewriter, type UseTypewriterOptions } from "./useTypewriter";
 export { useLenis } from "./useLenis";
 export { useReducedMotion } from "./useReducedMotion";
+export { useXlViewport, XL_MEDIA_QUERY } from "./useXlViewport";
 export { useScrollProgress } from "./useScrollProgress";
 export { useTheme } from "./useTheme";
 export { useGsapLineReveal } from "./useGsapLineReveal";

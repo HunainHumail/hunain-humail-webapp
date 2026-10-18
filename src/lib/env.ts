@@ -77,6 +77,16 @@ export function isFirebaseConfigured(): boolean {
   return getFirebaseWebConfig() !== null;
 }
 
+/** Playwright sets this so the production e2e server can submit without Firestore. */
+export function isContactMockEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_CONTACT_MOCK === "true";
+}
+
+/** Playwright sets this so /admin renders the signed-out guard without Firebase Auth. */
+export function isE2ESignedOut(): boolean {
+  return process.env.NEXT_PUBLIC_E2E_SIGNED_OUT === "true";
+}
+
 export function isFirebaseEmulatorEnabled(): boolean {
   return env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR === "true";
 }

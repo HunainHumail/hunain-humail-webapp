@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { User } from "firebase/auth";
 import { isAdmin } from "@/lib/admin";
-import { isFirebaseConfigured } from "@/lib/env";
+import { isE2ESignedOut, isFirebaseConfigured } from "@/lib/env";
 import {
   onAuthChange,
   signInWithGoogle as signInWithGooglePopup,
@@ -28,13 +28,15 @@ function actionMessage(error: unknown, fallback: string): string {
 }
 
 export function useAuth(): UseAuthResult {
+  const previewSignedOut = isE2ESignedOut();
   const configured = isFirebaseConfigured();
+  const listen = configured && !previewSignedOut;
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(configured);
+  const [loading, setLoading] = useState(listen);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!configured) {
+    if (!listen) {
       return;
     }
 
@@ -42,7 +44,7 @@ export function useAuth(): UseAuthResult {
       setUser(next);
       setLoading(false);
     });
-  }, [configured]);
+  }, [listen]);
 
   const signInWithGoogle = useCallback(async () => {
     setError(null);
@@ -63,10 +65,10 @@ export function useAuth(): UseAuthResult {
   }, []);
 
   return {
-    user: configured ? user : null,
-    loading: configured ? loading : false,
-    isAdmin: configured ? isAdmin(user) : false,
-    configured,
+    user: listen ? user : null,
+    loading: listen ? loading : false,
+    isAdmin: listen ? isAdmin(user) : false,
+    configured: previewSignedOut || configured,
     error,
     signInWithGoogle,
     signOut,

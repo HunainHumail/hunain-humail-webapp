@@ -2,12 +2,13 @@ import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { User } from "firebase/auth";
 import { ADMIN_EMAIL } from "@/lib/admin";
-import { isFirebaseConfigured } from "@/lib/env";
+import { isE2ESignedOut, isFirebaseConfigured } from "@/lib/env";
 import { onAuthChange, signInWithGoogle, signOut } from "@/lib/firebase/auth";
 import { useAuth } from "./useAuth";
 
 vi.mock("@/lib/env", () => ({
   isFirebaseConfigured: vi.fn(() => true),
+  isE2ESignedOut: vi.fn(() => false),
 }));
 
 vi.mock("@/lib/firebase/auth", () => ({
@@ -24,9 +25,22 @@ describe("useAuth", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(isFirebaseConfigured).mockReturnValue(true);
+    vi.mocked(isE2ESignedOut).mockReturnValue(false);
     vi.mocked(onAuthChange).mockReturnValue(() => undefined);
     vi.mocked(signInWithGoogle).mockResolvedValue(user(ADMIN_EMAIL));
     vi.mocked(signOut).mockResolvedValue(undefined);
+  });
+
+  it("previews the signed-out guard without contacting auth", () => {
+    vi.mocked(isE2ESignedOut).mockReturnValue(true);
+    vi.mocked(isFirebaseConfigured).mockReturnValue(false);
+    const { result } = renderHook(() => useAuth());
+
+    expect(result.current.configured).toBe(true);
+    expect(result.current.loading).toBe(false);
+    expect(result.current.user).toBeNull();
+    expect(result.current.isAdmin).toBe(false);
+    expect(onAuthChange).not.toHaveBeenCalled();
   });
 
   it("stays signed out when Firebase is not configured", () => {
