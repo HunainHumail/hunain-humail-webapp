@@ -8,6 +8,22 @@ export const featuredCaseStudies = [
   { slug: "vigil", title: "Vigil" },
 ] as const;
 
+export const allCaseStudies = [
+  ...featuredCaseStudies,
+  { slug: "wellspent", title: "Wellspent Screen Time SDK" },
+  { slug: "white-label-vpn-sdk", title: "White-label VPN SDK" },
+  { slug: "luviq", title: "LuvIQ" },
+  { slug: "escrow-trakker-landlords", title: "Escrow Trakker for Landlords" },
+  { slug: "escrow-trakker-lawyers", title: "Escrow Trakker for Lawyers" },
+  { slug: "al-rayyan-tv", title: "Al Rayyan TV" },
+  { slug: "banoon", title: "Banoon" },
+  { slug: "bring-itt", title: "Bring itt" },
+  { slug: "emdee", title: "Emdee Healthcare" },
+  { slug: "lions-clubs-connect", title: "Lions Clubs Connect" },
+  { slug: "savesor", title: "Savesor Smart Hotel Rooms" },
+  { slug: "tecobi", title: "Tecobi" },
+] as const;
+
 export function isMobileProject(info: TestInfo): boolean {
   return info.project.use.isMobile === true;
 }

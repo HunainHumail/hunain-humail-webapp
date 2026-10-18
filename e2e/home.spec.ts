@@ -74,10 +74,19 @@ test("desktop nav anchors scroll to each section", async ({ page }, info) => {
 
   const nav = page.getByRole("navigation", { name: "Primary" });
   for (const section of sections) {
+    if (section.nav === "Work") {
+      continue;
+    }
     await nav.getByRole("link", { name: section.nav }).click();
     await expect(page).toHaveURL(new RegExp(`${section.id}$`));
     await expect(page.locator(section.id)).toBeInViewport();
   }
+
+  await nav.getByRole("link", { name: "Work" }).click();
+  await expect(page).toHaveURL(/\/work$/);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "All projects" }),
+  ).toBeVisible();
 });
 
 test("mobile menu reaches sections without horizontal overflow", async ({
@@ -94,6 +103,9 @@ test("mobile menu reaches sections without horizontal overflow", async ({
   await expectNoHorizontalOverflow(page);
 
   for (const section of sections) {
+    if (section.nav === "Work") {
+      continue;
+    }
     if (!(await nav.isVisible())) {
       await page.getByRole("button", { name: "Open menu" }).click();
       await expect(nav).toBeVisible();
@@ -102,4 +114,14 @@ test("mobile menu reaches sections without horizontal overflow", async ({
     await expect(page).toHaveURL(new RegExp(`${section.id}$`));
     await expect(page.locator(section.id)).toBeInViewport();
   }
+
+  if (!(await nav.isVisible())) {
+    await page.getByRole("button", { name: "Open menu" }).click();
+    await expect(nav).toBeVisible();
+  }
+  await nav.getByRole("link", { name: "Work" }).click();
+  await expect(page).toHaveURL(/\/work$/);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "All projects" }),
+  ).toBeVisible();
 });

@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { siteSettingsSeed } from "@/lib/seed/settings";
-import { buildHomeMetadata, buildWorkMetadata } from "./metadata";
+import {
+  buildHomeMetadata,
+  buildWorkIndexMetadata,
+  buildWorkMetadata,
+} from "./metadata";
 
 const siteUrl = "https://hunain.example/";
 
@@ -47,6 +51,20 @@ describe("buildHomeMetadata", () => {
     });
     expect(metadata.twitter).toMatchObject({
       images: ["https://cdn.example/og.png"],
+    });
+  });
+});
+
+describe("buildWorkIndexMetadata", () => {
+  it("points the all-projects page at /work", () => {
+    const metadata = buildWorkIndexMetadata(siteUrl);
+    expect(metadata.title).toBe("All projects · Hunain Humail");
+    expect(metadata.alternates).toEqual({
+      canonical: "https://hunain.example/work",
+    });
+    expect(metadata.openGraph).toMatchObject({
+      url: "https://hunain.example/work",
+      type: "website",
     });
   });
 });

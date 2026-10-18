@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Heading } from "@/components/atoms/Heading";
+import { Heading, type HeadingLevel } from "@/components/atoms/Heading";
 import { MonoLabel } from "@/components/atoms/MonoLabel";
 import { SectionCounter } from "@/components/atoms/SectionCounter";
 import { useGsapLineReveal } from "@/hooks/useGsapLineReveal";
@@ -12,6 +12,7 @@ export interface SectionHeaderProps {
   eyebrow: string;
   title?: string;
   titleId: string;
+  headingLevel?: Extract<HeadingLevel, 1 | 2>;
   className?: string;
 }
 
@@ -20,6 +21,7 @@ export function SectionHeader({
   eyebrow,
   title,
   titleId,
+  headingLevel = 2,
   className,
 }: SectionHeaderProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -41,7 +43,7 @@ export function SectionHeader({
             {eyebrow}
           </MonoLabel>
         ) : null}
-        <Heading ref={titleRef} id={titleId} level={2} size="section">
+        <Heading ref={titleRef} id={titleId} level={headingLevel} size="section">
           <span className="block overflow-hidden">
             <span data-reveal-line className="inline-block">
               {headingText}

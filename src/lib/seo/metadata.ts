@@ -44,6 +44,31 @@ export function buildHomeMetadata(seo: Seo, siteUrl: string): Metadata {
   };
 }
 
+export function buildWorkIndexMetadata(siteUrl: string): Metadata {
+  const title = "All projects · Hunain Humail";
+  const description =
+    "Case studies across AI systems, products, and client apps.";
+  const canonical = absolute(siteUrl, "/work");
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "Hunain Humail",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
+
 export function buildWorkMetadata(
   item: WorkMetadataInput | null,
   siteUrl: string,

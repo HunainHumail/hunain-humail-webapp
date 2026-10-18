@@ -2,12 +2,26 @@ import { workRepository } from "@/lib/firebase";
 import { workItemSchema, type WorkItem } from "@/lib/schemas/work";
 import { workSeed } from "@/lib/seed/work";
 import { rewriteLinkedInInTree } from "@/lib/utils/rewriteLinkedInUrls";
-import { listOrSeed, withFirebaseFallback } from "./withFirebaseFallback";
+import { withFirebaseFallback } from "./withFirebaseFallback";
 
 export function publishedWorkItems(items: WorkItem[]): WorkItem[] {
   return items
     .filter((item) => item.status === "published")
     .sort((a, b) => a.order - b.order);
+}
+
+export function mergePublishedWork(
+  loaded: readonly WorkItem[],
+  seed: readonly WorkItem[],
+): WorkItem[] {
+  const bySlug = new Map<string, WorkItem>();
+  for (const item of seed) {
+    bySlug.set(item.slug, item);
+  }
+  for (const item of loaded) {
+    bySlug.set(item.slug, item);
+  }
+  return [...bySlug.values()].sort((a, b) => a.order - b.order);
 }
 
 function parseWorkItems(items: unknown[]): WorkItem[] {
@@ -18,7 +32,7 @@ export async function getWork(): Promise<WorkItem[]> {
   const seed = () => parseWorkItems(workSeed);
   const items = await withFirebaseFallback(async () => {
     const loaded = parseWorkItems(await workRepository.listPublished());
-    return listOrSeed(loaded, seed());
+    return mergePublishedWork(loaded, seed());
   }, seed);
   return rewriteLinkedInInTree(items);
 }

@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { settleMotion } from "./support";
 
-const routes = ["/", "/work/trinnect"] as const;
+const routes = ["/", "/work", "/work/trinnect"] as const;
 
 test.beforeEach(async ({ page }) => {
   await settleMotion(page);

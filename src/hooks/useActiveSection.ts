@@ -3,23 +3,30 @@
 import { useEffect, useState } from "react";
 
 function hrefToId(href: string): string | null {
-  if (!href.startsWith("#") || href.length < 2) {
+  const hashIndex = href.indexOf("#");
+  if (hashIndex < 0 || hashIndex === href.length - 1) {
     return null;
   }
-  return href.slice(1);
+  return href.slice(hashIndex + 1);
 }
 
 export function useActiveSection(hrefs: readonly string[]): string | null {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    const elements = hrefs
-      .map(hrefToId)
-      .filter((id): id is string => id !== null)
-      .map((id) => document.getElementById(id))
-      .filter((element): element is HTMLElement => element !== null);
+    const tracked = hrefs.flatMap((href) => {
+      const id = hrefToId(href);
+      if (!id) {
+        return [];
+      }
+      const element = document.getElementById(id);
+      if (!element) {
+        return [];
+      }
+      return [{ href, element }];
+    });
 
-    if (elements.length === 0) {
+    if (tracked.length === 0) {
       return undefined;
     }
 
@@ -28,15 +35,18 @@ export function useActiveSection(hrefs: readonly string[]): string | null {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        const id = visible[0]?.target.id;
-        if (id) {
-          setActive(`#${id}`);
+        const target = visible[0]?.target;
+        const match = tracked.find((item) => item.element === target);
+        if (match) {
+          setActive(match.href);
         }
       },
       { rootMargin: "-28% 0px -55% 0px", threshold: [0, 0.2, 0.45, 0.7] },
     );
 
-    elements.forEach((element) => observer.observe(element));
+    for (const item of tracked) {
+      observer.observe(item.element);
+    }
     return () => observer.disconnect();
   }, [hrefs]);
 

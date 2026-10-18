@@ -6,11 +6,11 @@ export const siteSettingsSeed: SiteSettings = {
   order: 0,
   updatedAt: "2026-10-18T00:00:00.000Z",
   nav: [
-    { number: "01", label: "Story", href: "#story" },
-    { number: "02", label: "Now", href: "#now" },
-    { number: "03", label: "Work", href: "#work" },
-    { number: "04", label: "Writing", href: "#writing" },
-    { number: "05", label: "Contact", href: "#contact" },
+    { number: "01", label: "Story", href: "/#story" },
+    { number: "02", label: "Now", href: "/#now" },
+    { number: "03", label: "Work", href: "/work" },
+    { number: "04", label: "Writing", href: "/#writing" },
+    { number: "05", label: "Contact", href: "/#contact" },
   ],
   socials: [
     {

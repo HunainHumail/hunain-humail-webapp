@@ -15,6 +15,33 @@ export const WORK_FILTER_TABS: { value: WorkFilterCategory; label: string }[] = 
   { value: "client-apps", label: "Client apps" },
 ];
 
+export function countWorkByCategory(
+  items: readonly WorkItem[],
+): Record<WorkFilterCategory, number> {
+  const counts: Record<WorkFilterCategory, number> = {
+    all: items.length,
+    "ai-systems": 0,
+    products: 0,
+    "client-apps": 0,
+  };
+
+  for (const item of items) {
+    counts[item.category] += 1;
+  }
+
+  return counts;
+}
+
+export function workFilterTabs(
+  items: readonly WorkItem[],
+): { value: WorkFilterCategory; label: string }[] {
+  const counts = countWorkByCategory(items);
+  return WORK_FILTER_TABS.map((tab) => ({
+    value: tab.value,
+    label: `${tab.label} (${counts[tab.value]})`,
+  }));
+}
+
 export function filterWorkByCategory(
   items: readonly WorkItem[],
   category: WorkFilterCategory,

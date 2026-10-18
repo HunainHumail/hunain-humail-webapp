@@ -20,6 +20,11 @@ export function buildSitemap(
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: `${base}/work`,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
     ...work,
   ];
 }

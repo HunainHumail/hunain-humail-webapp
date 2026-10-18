@@ -3,7 +3,12 @@ import { isFirebaseConfigured } from "@/lib/env";
 import { workRepository } from "@/lib/firebase";
 import type { WorkItem } from "@/lib/schemas/work";
 import { workSeed } from "@/lib/seed/work";
-import { getWork, getWorkBySlug, publishedWorkItems } from "./work";
+import {
+  getWork,
+  getWorkBySlug,
+  mergePublishedWork,
+  publishedWorkItems,
+} from "./work";
 
 vi.mock("@/lib/env", () => ({
   isFirebaseConfigured: vi.fn(() => false),
@@ -44,6 +49,23 @@ describe("publishedWorkItems", () => {
   });
 });
 
+describe("mergePublishedWork", () => {
+  it("keeps seeded projects when the live list is partial", () => {
+    const merged = mergePublishedWork(
+      [{ ...workSeed[0], title: "From Firestore" }],
+      publishedWorkItems(workSeed),
+    );
+
+    expect(merged).toHaveLength(workSeed.length);
+    expect(merged.find((item) => item.slug === "trinnect")?.title).toBe(
+      "From Firestore",
+    );
+    expect(merged.map((item) => item.slug)).toEqual(
+      workSeed.map((item) => item.slug),
+    );
+  });
+});
+
 describe("getWork", () => {
   afterEach(() => {
     vi.mocked(isFirebaseConfigured).mockReturnValue(false);
@@ -77,15 +99,18 @@ describe("getWork", () => {
     expect(workRepository.listPublished).not.toHaveBeenCalled();
   });
 
-  it("returns repository items when Firebase is configured", async () => {
+  it("keeps every seeded project when Firebase returns a partial list", async () => {
     vi.mocked(isFirebaseConfigured).mockReturnValue(true);
     vi.mocked(workRepository.listPublished).mockResolvedValue([
       { ...workSeed[0], title: "From Firestore" },
     ]);
 
     const items = await getWork();
-    expect(items).toHaveLength(1);
-    expect(items[0]?.title).toBe("From Firestore");
+    expect(items).toHaveLength(workSeed.length);
+    expect(items.find((item) => item.slug === "trinnect")?.title).toBe(
+      "From Firestore",
+    );
+    expect(items.some((item) => item.slug === "tecobi")).toBe(true);
   });
 
   it("falls back to seed when the published collection is empty", async () => {

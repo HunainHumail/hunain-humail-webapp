@@ -10,6 +10,11 @@ describe("buildSitemap", () => {
         priority: 1,
       },
       {
+        url: "https://hunain.example/work",
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+      {
         url: "https://hunain.example/work/trinnect",
         changeFrequency: "monthly",
         priority: 0.8,
@@ -28,6 +33,7 @@ describe("buildSitemap", () => {
     );
     expect(urls).toEqual([
       "https://hunain.example",
+      "https://hunain.example/work",
       "https://hunain.example/work/trinnect",
     ]);
   });

@@ -1,7 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { getSiteUrl } from "@/lib/env";
 import { siteSettingsSeed } from "@/lib/seed/settings";
+import { workSeed } from "@/lib/seed/work";
+import { workFilterTabs } from "@/lib/utils/filterWorkByCategory";
 import Home, { generateMetadata } from "./page";
 
 vi.mock("lenis", () => ({
@@ -56,6 +58,25 @@ describe("Home", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Things I've built." }),
     ).toBeInTheDocument();
+    const allTab = workFilterTabs(workSeed).find((tab) => tab.value === "all");
+    expect(screen.getByRole("button", { name: allTab?.label })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    const workList = screen.getByRole("list", { name: "Case studies" });
+    expect(within(workList).getAllByRole("listitem")).toHaveLength(workSeed.length);
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Tecobi" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", {
+        name: `View all projects (${workSeed.length})`,
+      }),
+    ).toHaveAttribute("href", "/work");
+    expect(screen.getByRole("link", { name: /03\s*Work/i })).toHaveAttribute(
+      "href",
+      "/work",
+    );
     expect(
       screen.getByRole("heading", { level: 2, name: "Thinking out loud." }),
     ).toBeInTheDocument();

@@ -72,7 +72,7 @@ describe("CaseStudyTemplate", () => {
     );
     expect(screen.getByRole("link", { name: "Back to work" })).toHaveAttribute(
       "href",
-      "/#work",
+      "/work",
     );
     expect(screen.getByRole("link", { name: "Live site" })).toHaveAttribute(
       "href",

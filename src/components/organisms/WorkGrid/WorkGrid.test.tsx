@@ -2,7 +2,16 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { workSeed } from "@/lib/seed/work";
+import { workFilterTabs } from "@/lib/utils/filterWorkByCategory";
 import { WorkGrid } from "./WorkGrid";
+
+function tabLabel(value: string): string {
+  const label = workFilterTabs(workSeed).find((tab) => tab.value === value)?.label;
+  if (!label) {
+    throw new Error(`Missing filter tab: ${value}`);
+  }
+  return label;
+}
 
 vi.mock("@/hooks/useReducedMotion", () => ({
   useReducedMotion: () => true,
@@ -29,6 +38,32 @@ describe("WorkGrid", () => {
       "src",
       "/projects/trinnect/cover.webp",
     );
+    expect(screen.getByRole("button", { name: tabLabel("all") })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
+  it("shows every project under the default All filter", () => {
+    render(<WorkGrid items={workSeed} />);
+    const list = screen.getByRole("list", { name: "Case studies" });
+    expect(within(list).getAllByRole("heading", { level: 3 })).toHaveLength(
+      workSeed.length,
+    );
+    for (const item of workSeed) {
+      expect(
+        within(list).getByRole("heading", { level: 3, name: item.title }),
+      ).toBeInTheDocument();
+    }
+  });
+
+  it("links to the full project index", () => {
+    render(<WorkGrid items={workSeed} viewAllHref="/work" />);
+    expect(
+      screen.getByRole("link", {
+        name: `View all projects (${workSeed.length})`,
+      }),
+    ).toHaveAttribute("href", "/work");
   });
 
   it("filters cards by category", async () => {
@@ -36,7 +71,9 @@ describe("WorkGrid", () => {
     render(<WorkGrid items={workSeed} />);
 
     const filters = screen.getByRole("group", { name: "Filter work by category" });
-    await user.click(within(filters).getByRole("button", { name: "AI systems" }));
+    await user.click(
+      within(filters).getByRole("button", { name: tabLabel("ai-systems") }),
+    );
 
     expect(
       screen.getByRole("heading", { level: 3, name: "Trinnect" }),
@@ -45,7 +82,9 @@ describe("WorkGrid", () => {
       screen.queryByRole("heading", { level: 3, name: "Banoon" }),
     ).not.toBeInTheDocument();
 
-    await user.click(within(filters).getByRole("button", { name: "Client apps" }));
+    await user.click(
+      within(filters).getByRole("button", { name: tabLabel("client-apps") }),
+    );
     expect(
       screen.getByRole("heading", { level: 3, name: "Al Rayyan TV" }),
     ).toBeInTheDocument();
@@ -53,7 +92,7 @@ describe("WorkGrid", () => {
       screen.queryByRole("heading", { level: 3, name: "Trinnect" }),
     ).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "All" }));
+    await user.click(screen.getByRole("button", { name: tabLabel("all") }));
     expect(
       screen.getByRole("heading", { level: 3, name: "Trinnect" }),
     ).toBeInTheDocument();

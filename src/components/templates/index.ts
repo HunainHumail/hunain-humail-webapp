@@ -4,3 +4,7 @@ export {
   CaseStudyTemplate,
   type CaseStudyTemplateProps,
 } from "./CaseStudyTemplate";
+export {
+  WorkIndexTemplate,
+  type WorkIndexTemplateProps,
+} from "./WorkIndexTemplate";

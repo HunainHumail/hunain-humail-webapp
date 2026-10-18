@@ -1,6 +1,10 @@
 export { buildPersonJsonLd, PERSON_JOB_TITLE, serializeJsonLd } from "./jsonLd";
 export type { PersonJsonLd, PersonJsonLdInput } from "./jsonLd";
-export { buildHomeMetadata, buildWorkMetadata } from "./metadata";
+export {
+  buildHomeMetadata,
+  buildWorkIndexMetadata,
+  buildWorkMetadata,
+} from "./metadata";
 export type { WorkMetadataInput } from "./metadata";
 export { buildRobots } from "./robots";
 export { buildSitemap } from "./sitemap";

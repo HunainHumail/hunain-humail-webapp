@@ -22,7 +22,9 @@ export interface HomeTemplateProps {
 }
 
 function navFor(settings: SiteSettings, href: string): NavItem | undefined {
-  return settings.nav.find((item) => item.href === href);
+  return settings.nav.find(
+    (item) => item.href === href || item.href === `/${href}`,
+  );
 }
 
 export function HomeTemplate({
@@ -35,7 +37,7 @@ export function HomeTemplate({
 }: HomeTemplateProps) {
   const storyNav = navFor(settings, "#story");
   const nowNav = navFor(settings, "#now");
-  const workNav = navFor(settings, "#work");
+  const workNav = navFor(settings, "/work") ?? navFor(settings, "#work");
   const writingNav = navFor(settings, "#writing");
   const contactNav = navFor(settings, "#contact");
 
@@ -56,7 +58,12 @@ export function HomeTemplate({
         label={storyNav?.label}
       />
       <NowSection items={now} index={nowNav?.number} label={nowNav?.label} />
-      <WorkGrid items={work} index={workNav?.number} label={workNav?.label} />
+      <WorkGrid
+        items={work}
+        index={workNav?.number}
+        label={workNav?.label}
+        viewAllHref="/work"
+      />
       <WritingList
         items={writing}
         index={writingNav?.number}

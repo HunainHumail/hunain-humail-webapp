@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { WorkItem } from "@/lib/schemas/work";
 import { workSeed } from "@/lib/seed/work";
-import { filterWorkByCategory } from "./filterWorkByCategory";
+import {
+  countWorkByCategory,
+  filterWorkByCategory,
+  workFilterTabs,
+} from "./filterWorkByCategory";
 
 const baseItem: WorkItem = {
   id: "a",
@@ -20,6 +24,29 @@ const baseItem: WorkItem = {
 };
 
 describe("filterWorkByCategory", () => {
+  it("keeps every seeded project when the filter is all", () => {
+    const result = filterWorkByCategory(workSeed, "all");
+    expect(result).toHaveLength(workSeed.length);
+    expect(result.map((item) => item.slug)).toEqual(
+      workSeed.map((item) => item.slug),
+    );
+  });
+
+  it("counts each filter tab from the full list", () => {
+    expect(countWorkByCategory(workSeed)).toEqual({
+      all: workSeed.length,
+      "ai-systems": 5,
+      products: 5,
+      "client-apps": 7,
+    });
+    expect(workFilterTabs(workSeed).map((tab) => tab.label)).toEqual([
+      `All (${workSeed.length})`,
+      "AI systems (5)",
+      "Products (5)",
+      "Client apps (7)",
+    ]);
+  });
+
   it("returns all items sorted by order when category is all", () => {
     const items: WorkItem[] = [
       { ...baseItem, id: "b", slug: "b", order: 1, category: "client-apps" },

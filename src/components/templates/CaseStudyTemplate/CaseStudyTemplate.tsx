@@ -34,7 +34,7 @@ export function CaseStudyTemplate({
         )}
       >
         <Container className="max-w-3xl">
-          <Link href="/#work" className="mb-8 inline-flex text-sm">
+          <Link href="/work" className="mb-8 inline-flex text-sm">
             Back to work
           </Link>
           <MonoLabel as="p" className="mb-3">

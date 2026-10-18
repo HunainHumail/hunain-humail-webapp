@@ -21,7 +21,35 @@ const BANNED_PATTERNS = [
   /open-finance-project/i,
 ];
 
+const ALLOWED_SLUGS = [
+  "al-rayyan-tv",
+  "banoon",
+  "bring-itt",
+  "emdee",
+  "escrow-trakker-landlords",
+  "escrow-trakker-lawyers",
+  "fast-brix",
+  "lions-clubs-connect",
+  "luviq",
+  "my-float",
+  "savesor",
+  "tecobi",
+  "terranzo",
+  "trinnect",
+  "vigil",
+  "wellspent",
+] as const;
+
 describe("workSeed", () => {
+  it("publishes the 16 allowed projects and the optional VPN card", () => {
+    const slugs = workSeed.map((item) => item.slug);
+    expect(new Set(slugs)).toEqual(
+      new Set<string>([...ALLOWED_SLUGS, "white-label-vpn-sdk"]),
+    );
+    expect(workSeed).toHaveLength(ALLOWED_SLUGS.length + 1);
+    expect(workSeed.every((item) => item.status === "published")).toBe(true);
+  });
+
   it("parses every item and keeps slugs unique", () => {
     const slugs = workSeed.map((item) => item.slug);
     expect(new Set(slugs).size).toBe(slugs.length);

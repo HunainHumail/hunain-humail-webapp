@@ -9,7 +9,11 @@ const banned = [
   /certification/i,
 ] as const;
 
-const routes = ["/", ...featuredCaseStudies.map((item) => `/work/${item.slug}`)];
+const routes = [
+  "/",
+  "/work",
+  ...featuredCaseStudies.map((item) => `/work/${item.slug}`),
+];
 
 test("public pages omit banned phrases", async ({ page }) => {
   await settleMotion(page);
