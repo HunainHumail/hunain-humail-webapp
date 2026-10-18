@@ -1,1 +1,1 @@
-export {};
+export { siteSettingsSeed } from "./settings";
