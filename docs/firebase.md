@@ -9,7 +9,7 @@ Set the same project id in both places:
 - `NEXT_PUBLIC_FIREBASE_PROJECT_ID` in `.env.local` (see `.env.example`)
 - `.firebaserc` → `projects.default`
 
-The committed `.firebaserc` value `your-firebase-project-id` is a placeholder. Replace it before `firebase deploy`. Emulator scripts pass `--project demo-hunain-humail` and do not need a real project.
+`.firebaserc` `projects.default` is `hunain-humail-webapp`. Firestore `(default)` is in `me-central1`. Emulator scripts pass `--project demo-hunain-humail` and do not need a real project. Live site: https://hunain-humail-webapp.web.app
 
 ## Env
 
@@ -24,12 +24,15 @@ The committed `.firebaserc` value `your-firebase-project-id` is a placeholder. R
 ## Commands
 
 - `npm run emulators` — Firestore, Auth, Storage, and the emulator UI (`:4000`).
-- `npm run seed` — push seed collections (`profile/main`, `settings/site`, `story`, `now`, `work`, `writing`).
+- `npm run seed` — optional; push seed collections when the emulator or `GOOGLE_APPLICATION_CREDENTIALS` is available. Production seeding is the admin **Import seed data** button.
 - `npm run test:rules` — security rules via the emulators (`tests/rules`, excluded from `npm test`).
+- `firebase deploy --only hosting,firestore --project hunain-humail-webapp --non-interactive` — rules, indexes, and Hosting. Do not deploy Storage.
 
 ## Rules
 
-Published content is publicly readable. Writes require Google Auth with `email == hunainhumail786@gmail.com` and `email_verified`. `messages` are create-only (validated shape); only the admin can read them, mark them read, or delete them. Storage `images/**` is public-read; admin writes are limited to images under 5MB. The Spark plan does not enable Storage, so the CMS keeps an image URL field and shows upload only when Storage is enabled.
+Published content is publicly readable. Writes require Google Auth with `email == hunainhumail786@gmail.com` and `email_verified`. `messages` are create-only (validated shape); only the admin can read them, mark them read, or delete them. `storage.rules` keeps the same admin check for `images/**` (public read, admin writes under 5MB) but Storage is not a deploy target: the Spark plan has not enabled it. The CMS keeps an image URL field and shows upload only when Storage is enabled.
+
+Public pages fall back to `src/lib/seed` when Firebase env is missing, a collection is empty, or a read fails. With no service account, the admin dashboard **Import seed data** button upserts that seed after the owner signs in. The write is limited to the admin email and is safe to run again.
 
 ## Hosting
 
