@@ -5,6 +5,7 @@ export {
   letterSpacing,
 } from "./typography";
 export { spacing } from "./spacing";
+export { aspect } from "./aspect";
 export { radius } from "./radius";
 export { duration, easing } from "./motion";
 export { shadow } from "./shadow";

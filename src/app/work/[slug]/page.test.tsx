@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { workSeed } from "@/lib/seed/work";
 import WorkCaseStudyPage, {
   generateMetadata,
   generateStaticParams,
@@ -66,14 +67,9 @@ describe("WorkCaseStudyPage", () => {
 
   it("generateStaticParams returns published slugs", async () => {
     const params = await generateStaticParams();
-    expect(params.map((entry) => entry.slug)).toEqual([
-      "trinnect",
-      "terranzo",
-      "isense-my-float",
-      "fastbrix",
-      "vigil",
-      "open-finance-project",
-    ]);
+    expect(params.map((entry) => entry.slug)).toEqual(
+      workSeed.map((item) => item.slug),
+    );
   });
 
   it("generateMetadata uses the case study title and summary", async () => {
@@ -81,6 +77,6 @@ describe("WorkCaseStudyPage", () => {
       params: Promise.resolve({ slug: "trinnect" }),
     });
     expect(metadata.title).toBe("Trinnect · Hunain Humail");
-    expect(metadata.description).toMatch(/AI-native product/i);
+    expect(metadata.description).toMatch(/location-based social app/i);
   });
 });

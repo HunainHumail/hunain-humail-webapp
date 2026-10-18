@@ -52,7 +52,10 @@ describe("CaseStudyTemplate", () => {
         settings={siteSettingsSeed}
         item={{
           ...item,
-          links: [{ label: "Live site", href: "https://example.com" }],
+          links: [
+            ...(item.links ?? []),
+            { label: "Live site", href: "https://example.com" },
+          ],
         }}
       />,
     );
@@ -62,9 +65,11 @@ describe("CaseStudyTemplate", () => {
     expect(screen.getByText(item.role)).toBeInTheDocument();
     expect(screen.getByRole("list", { name: "Stack" })).toBeInTheDocument();
     expect(screen.getByText(item.highlights[0] ?? "")).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { level: 2, name: "What I built" }),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/started life as a Lovable web app/i)).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: `${item.title} cover` })).toHaveAttribute(
+      "src",
+      "/projects/trinnect/cover@2x.webp",
+    );
     expect(screen.getByRole("link", { name: "Back to work" })).toHaveAttribute(
       "href",
       "/#work",
@@ -72,6 +77,10 @@ describe("CaseStudyTemplate", () => {
     expect(screen.getByRole("link", { name: "Live site" })).toHaveAttribute(
       "href",
       "https://example.com",
+    );
+    expect(screen.getByRole("link", { name: "App Store" })).toHaveAttribute(
+      "href",
+      "https://apps.apple.com/ae/app/trinnect/id6758113133",
     );
   });
 });

@@ -51,4 +51,16 @@ describe("firebase env", () => {
     const { isFirebaseEmulatorEnabled } = await import("./env");
     expect(isFirebaseEmulatorEnabled()).toBe(false);
   });
+
+  it("treats STATIC_EXPORT=true as a static export", async () => {
+    vi.stubEnv("STATIC_EXPORT", "true");
+    const { isStaticExport } = await import("./env");
+    expect(isStaticExport()).toBe(true);
+  });
+
+  it("treats NEXT_PUBLIC_STATIC_EXPORT=true as a static export", async () => {
+    vi.stubEnv("NEXT_PUBLIC_STATIC_EXPORT", "true");
+    const { isStaticExport } = await import("./env");
+    expect(isStaticExport()).toBe(true);
+  });
 });

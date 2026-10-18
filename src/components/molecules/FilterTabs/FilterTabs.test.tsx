@@ -5,7 +5,7 @@ import { FilterTabs } from "./FilterTabs";
 
 const tabs = [
   { value: "all", label: "All" },
-  { value: "fintech", label: "Fintech" },
+  { value: "products", label: "Products" },
 ] as const;
 
 describe("FilterTabs", () => {
@@ -26,7 +26,7 @@ describe("FilterTabs", () => {
       "aria-pressed",
       "true",
     );
-    expect(screen.getByRole("button", { name: "Fintech" })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: "Products" })).toHaveAttribute(
       "aria-pressed",
       "false",
     );
@@ -37,7 +37,7 @@ describe("FilterTabs", () => {
     const onChange = vi.fn();
     render(<FilterTabs tabs={tabs} value="all" onChange={onChange} />);
 
-    await user.click(screen.getByRole("button", { name: "Fintech" }));
-    expect(onChange).toHaveBeenCalledWith("fintech");
+    await user.click(screen.getByRole("button", { name: "Products" }));
+    expect(onChange).toHaveBeenCalledWith("products");
   });
 });

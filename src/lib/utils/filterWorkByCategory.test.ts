@@ -22,7 +22,7 @@ const baseItem: WorkItem = {
 describe("filterWorkByCategory", () => {
   it("returns all items sorted by order when category is all", () => {
     const items: WorkItem[] = [
-      { ...baseItem, id: "b", slug: "b", order: 1, category: "fintech" },
+      { ...baseItem, id: "b", slug: "b", order: 1, category: "client-apps" },
       { ...baseItem, id: "c", slug: "c", order: 0, category: "ai-systems" },
     ];
 
@@ -33,15 +33,19 @@ describe("filterWorkByCategory", () => {
   });
 
   it("filters to a single category and keeps order", () => {
-    const result = filterWorkByCategory(workSeed, "fintech");
-    expect(result).toHaveLength(1);
-    expect(result[0]?.title).toBe("Open finance project");
+    const result = filterWorkByCategory(workSeed, "ai-systems");
+    expect(result).toHaveLength(5);
+    expect(result.map((item) => item.slug)).toEqual([
+      "trinnect",
+      "terranzo",
+      "my-float",
+      "fast-brix",
+      "vigil",
+    ]);
   });
 
   it("returns an empty list when nothing matches", () => {
-    const items: WorkItem[] = [
-      { ...baseItem, category: "products" },
-    ];
+    const items: WorkItem[] = [{ ...baseItem, category: "products" }];
     expect(filterWorkByCategory(items, "client-apps")).toEqual([]);
   });
 

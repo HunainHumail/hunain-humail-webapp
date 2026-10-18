@@ -25,6 +25,10 @@ describe("WorkGrid", () => {
     expect(
       screen.getByRole("group", { name: "Filter work by category" }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Trinnect cover" })).toHaveAttribute(
+      "src",
+      "/projects/trinnect/cover.webp",
+    );
   });
 
   it("filters cards by category", async () => {
@@ -32,10 +36,18 @@ describe("WorkGrid", () => {
     render(<WorkGrid items={workSeed} />);
 
     const filters = screen.getByRole("group", { name: "Filter work by category" });
-    await user.click(within(filters).getByRole("button", { name: "Fintech" }));
+    await user.click(within(filters).getByRole("button", { name: "AI systems" }));
 
     expect(
-      screen.getByRole("heading", { level: 3, name: "Open finance project" }),
+      screen.getByRole("heading", { level: 3, name: "Trinnect" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { level: 3, name: "Banoon" }),
+    ).not.toBeInTheDocument();
+
+    await user.click(within(filters).getByRole("button", { name: "Client apps" }));
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Al Rayyan TV" }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("heading", { level: 3, name: "Trinnect" }),
@@ -45,5 +57,14 @@ describe("WorkGrid", () => {
     expect(
       screen.getByRole("heading", { level: 3, name: "Trinnect" }),
     ).toBeInTheDocument();
+  });
+
+  it("makes featured cards span two columns", () => {
+    render(<WorkGrid items={workSeed} />);
+    const list = screen.getByRole("list", { name: "Case studies" });
+    const featuredItem = within(list)
+      .getByRole("heading", { level: 3, name: "Trinnect" })
+      .closest("li");
+    expect(featuredItem).toHaveClass("sm:col-span-2");
   });
 });

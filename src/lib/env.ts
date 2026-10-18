@@ -8,6 +8,8 @@ const firebaseEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: z.string().min(1).optional(),
   NEXT_PUBLIC_FIREBASE_APP_ID: z.string().min(1).optional(),
   NEXT_PUBLIC_USE_FIREBASE_EMULATOR: z.string().optional(),
+  STATIC_EXPORT: z.string().optional(),
+  NEXT_PUBLIC_STATIC_EXPORT: z.string().optional(),
 });
 
 const parsed = firebaseEnvSchema.safeParse({
@@ -21,6 +23,8 @@ const parsed = firebaseEnvSchema.safeParse({
   NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   NEXT_PUBLIC_USE_FIREBASE_EMULATOR:
     process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR,
+  STATIC_EXPORT: process.env.STATIC_EXPORT,
+  NEXT_PUBLIC_STATIC_EXPORT: process.env.NEXT_PUBLIC_STATIC_EXPORT,
 });
 
 export const env = parsed.success ? parsed.data : {};
@@ -69,4 +73,10 @@ export function isFirebaseConfigured(): boolean {
 
 export function isFirebaseEmulatorEnabled(): boolean {
   return env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR === "true";
+}
+
+export function isStaticExport(): boolean {
+  return (
+    env.STATIC_EXPORT === "true" || env.NEXT_PUBLIC_STATIC_EXPORT === "true"
+  );
 }

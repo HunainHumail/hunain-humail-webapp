@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
+import { imageUnoptimized } from "@/lib/utils/imageUnoptimized";
 
 export interface PhotoSlotProps {
   name: string;
@@ -33,6 +34,7 @@ export function PhotoSlot({ name, photoUrl, className }: PhotoSlotProps) {
           fill
           sizes="240px"
           className="object-cover"
+          unoptimized={imageUnoptimized()}
           priority
         />
       ) : (

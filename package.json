@@ -11,6 +11,7 @@
     "test": "vitest",
     "test:rules": "firebase emulators:exec --only firestore,storage --project demo-hunain-humail --config firebase.json \"vitest run --config vitest.rules.config.ts\"",
     "seed": "tsx scripts/seed.ts",
+    "import-covers": "tsx scripts/import-covers.ts",
     "emulators": "firebase emulators:start --only firestore,auth,storage,ui",
     "e2e": "playwright test",
     "format": "prettier --write ."
@@ -52,6 +53,7 @@
     "firebase-tools": "^15.34.0",
     "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",

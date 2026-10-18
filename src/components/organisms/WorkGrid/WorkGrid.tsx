@@ -13,6 +13,7 @@ import {
   WORK_CATEGORY_LABELS,
   WORK_FILTER_TABS,
 } from "@/lib/utils/filterWorkByCategory";
+import { workCoverAlt } from "@/lib/utils/workCover";
 
 export interface WorkGridProps {
   items: WorkItem[];
@@ -61,13 +62,20 @@ export function WorkGrid({
               aria-label="Case studies"
             >
               {filtered.map((item) => (
-                <li key={item.id} data-reveal>
+                <li
+                  key={item.id}
+                  data-reveal
+                  className={item.featured ? "sm:col-span-2" : undefined}
+                >
                   <CaseStudyCard
                     title={item.title}
                     categoryLabel={WORK_CATEGORY_LABELS[item.category]}
                     summary={item.summary}
                     href={`/work/${item.slug}`}
                     featured={item.featured}
+                    coverUrl={item.coverUrl}
+                    coverAlt={workCoverAlt(item.title)}
+                    priority={item.order === 0}
                   />
                 </li>
               ))}

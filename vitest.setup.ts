@@ -4,7 +4,8 @@ import { createElement } from "react";
 import { afterEach, vi } from "vitest";
 
 vi.mock("next/image", () => ({
-  default: ({ alt }: { alt: string }) => createElement("img", { alt }),
+  default: ({ alt, src }: { alt: string; src: string }) =>
+    createElement("img", { alt, src }),
 }));
 
 afterEach(() => {

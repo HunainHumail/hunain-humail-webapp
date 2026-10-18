@@ -45,6 +45,14 @@ Standard Tailwind scale plus:
 | 32 / 40 | `8rem` / `10rem` | `py-32`, `py-40` |
 | page | `80rem` (1280px) | `max-w-page` |
 
+## Aspect
+
+| Token | Value | Utility |
+| --- | --- | --- |
+| cover | `4 / 3` | `aspect-cover` |
+
+Used for work covers on cards and case-study pages.
+
 ## Radius
 
 `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-full`.

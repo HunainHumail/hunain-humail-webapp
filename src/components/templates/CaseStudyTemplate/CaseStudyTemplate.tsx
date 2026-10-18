@@ -11,6 +11,8 @@ import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import type { WorkItem } from "@/lib/schemas/work";
 import { cn } from "@/lib/utils/cn";
 import { WORK_CATEGORY_LABELS } from "@/lib/utils/filterWorkByCategory";
+import { imageUnoptimized } from "@/lib/utils/imageUnoptimized";
+import { workCoverAlt, workCoverSrc } from "@/lib/utils/workCover";
 
 export interface CaseStudyTemplateProps {
   settings: SiteSettings;
@@ -45,13 +47,15 @@ export function CaseStudyTemplate({
             {item.summary}
           </Text>
           {item.coverUrl ? (
-            <div className="relative mb-8 aspect-video overflow-hidden rounded-xl border border-border bg-elevated">
+            <div className="relative mb-8 aspect-cover overflow-hidden rounded-xl border border-border bg-elevated">
               <Image
-                src={item.coverUrl}
-                alt=""
+                src={workCoverSrc(item.coverUrl, "2x")}
+                alt={workCoverAlt(item.title)}
                 fill
                 sizes="(min-width: 768px) 48rem, 100vw"
                 className="object-cover"
+                unoptimized={imageUnoptimized()}
+                priority
               />
             </div>
           ) : null}

@@ -151,6 +151,8 @@
   --spacing-40: 10rem;
   --spacing-28: 7rem;
 
+  --aspect-cover: 4 / 3;
+
   --size-grid: 2.5rem;
   --size-grid-hero: 3.75rem;
   --stroke-counter: 1px;

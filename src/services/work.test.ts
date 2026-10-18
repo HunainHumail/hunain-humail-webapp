@@ -53,18 +53,27 @@ describe("getWork", () => {
 
   it("returns published work seed sorted by order", async () => {
     const items = await getWork();
-    expect(items).toHaveLength(6);
+    expect(items).toHaveLength(workSeed.length);
     expect(items.every((item) => item.status === "published")).toBe(true);
-    expect(items.map((item) => item.order)).toEqual([0, 1, 2, 3, 4, 5]);
-    expect(items.map((item) => item.title)).toEqual([
+    expect(items.map((item) => item.order)).toEqual(
+      workSeed.map((item) => item.order),
+    );
+    expect(items.slice(0, 5).map((item) => item.title)).toEqual([
       "Trinnect",
       "Terranzo",
-      "iSense My Float",
-      "Fastbrix",
+      "My Float by I-Sense",
+      "Fast Brix",
       "Vigil",
-      "Open finance project",
     ]);
-    expect(items.some((item) => item.category === "fintech")).toBe(true);
+    expect(items.slice(0, 5).every((item) => item.featured)).toBe(true);
+    expect(
+      items.every(
+        (item) =>
+          item.category === "ai-systems" ||
+          item.category === "products" ||
+          item.category === "client-apps",
+      ),
+    ).toBe(true);
     expect(workRepository.listPublished).not.toHaveBeenCalled();
   });
 
@@ -86,7 +95,7 @@ describe("getWork", () => {
     );
 
     const items = await getWork();
-    expect(items).toHaveLength(6);
+    expect(items).toHaveLength(workSeed.length);
   });
 });
 

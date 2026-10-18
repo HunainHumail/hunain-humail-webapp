@@ -11,11 +11,14 @@ describe("useWorkFilter", () => {
     expect(result.current.filtered).toHaveLength(workSeed.length);
 
     act(() => {
-      result.current.setCategory("fintech");
+      result.current.setCategory("ai-systems");
     });
 
-    expect(result.current.category).toBe("fintech");
-    expect(result.current.filtered).toHaveLength(1);
-    expect(result.current.filtered[0]?.title).toBe("Open finance project");
+    expect(result.current.category).toBe("ai-systems");
+    expect(result.current.filtered).toHaveLength(5);
+    expect(result.current.filtered[0]?.title).toBe("Trinnect");
+    expect(
+      result.current.filtered.every((item) => item.category === "ai-systems"),
+    ).toBe(true);
   });
 });

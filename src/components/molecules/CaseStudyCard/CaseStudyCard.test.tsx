@@ -7,8 +7,8 @@ describe("CaseStudyCard", () => {
     render(
       <CaseStudyCard
         title="Trinnect"
-        categoryLabel="Products"
-        summary="AI-native product pipeline."
+        categoryLabel="AI systems"
+        summary="Location-based social app."
         href="/work/trinnect"
       />,
     );
@@ -16,8 +16,8 @@ describe("CaseStudyCard", () => {
     expect(
       screen.getByRole("heading", { level: 3, name: "Trinnect" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Products")).toBeInTheDocument();
-    expect(screen.getByText("AI-native product pipeline.")).toBeInTheDocument();
+    expect(screen.getByText("AI systems")).toBeInTheDocument();
+    expect(screen.getByText("Location-based social app.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Trinnect/i })).toHaveAttribute(
       "href",
       "/work/trinnect",
@@ -37,5 +37,22 @@ describe("CaseStudyCard", () => {
     );
 
     expect(screen.getByText("Featured")).toBeInTheDocument();
+  });
+
+  it("renders a 4:3 cover image with alt text", () => {
+    const { container } = render(
+      <CaseStudyCard
+        title="Trinnect"
+        categoryLabel="AI systems"
+        summary="Location-based social app."
+        href="/work/trinnect"
+        coverUrl="/projects/trinnect/cover.webp"
+        coverAlt="Trinnect cover"
+      />,
+    );
+
+    const image = screen.getByRole("img", { name: "Trinnect cover" });
+    expect(image).toHaveAttribute("src", "/projects/trinnect/cover.webp");
+    expect(container.querySelector(".aspect-cover")).toBeInTheDocument();
   });
 });

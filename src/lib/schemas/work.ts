@@ -4,13 +4,20 @@ export const workCategorySchema = z.enum([
   "ai-systems",
   "products",
   "client-apps",
-  "fintech",
 ]);
 
 export const workLinkSchema = z.object({
   label: z.string().min(1),
   href: z.string().min(1),
 });
+
+const coverUrlSchema = z
+  .string()
+  .min(1)
+  .refine(
+    (value) => value.startsWith("/") || value.startsWith("https://"),
+    { message: "coverUrl must be a site path or https URL" },
+  );
 
 export const workItemSchema = z.object({
   id: z.string().min(1),
@@ -22,7 +29,7 @@ export const workItemSchema = z.object({
   stack: z.array(z.string().min(1)),
   highlights: z.array(z.string().min(1)),
   body: z.string().min(1),
-  coverUrl: z.string().url().optional(),
+  coverUrl: coverUrlSchema.optional(),
   links: z.array(workLinkSchema).optional(),
   order: z.number(),
   status: z.enum(["draft", "published"]),
