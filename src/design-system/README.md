@@ -1,6 +1,6 @@
 # Design system
 
-Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.css` under `:root` (dark default so utilities resolve before `data-theme` is set), `[data-theme="dark"]`, and `[data-theme="light"]`. Color, spacing, and motion utilities are wired via `@theme inline`. Display type tokens live in a non-inline `@theme` block so `--text-display-*` is emitted on `:root` and `text-display-hero` / `text-display-section` / `text-display-counter` utilities resolve.
+Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.css` under `:root` (dark default so utilities resolve before `data-theme` is set), `[data-theme="dark"]`, and `[data-theme="light"]`. First visit uses dark and ignores `prefers-color-scheme`; light applies only after the visitor chooses it (saved in `localStorage`). Color, spacing, and motion utilities are wired via `@theme inline`. Display type tokens live in a non-inline `@theme` block so `--text-display-*` is emitted on `:root` and `text-display-hero` / `text-display-section` / `text-display-counter` utilities resolve.
 
 ## Color
 

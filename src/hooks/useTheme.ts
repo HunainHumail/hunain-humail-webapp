@@ -1,19 +1,35 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useLayoutEffect, useSyncExternalStore } from "react";
 import {
+  DEFAULT_THEME,
+  resolveTheme,
   THEME_STORAGE_KEY,
   type ThemeMode,
 } from "@/lib/theme/constants";
 
 const listeners = new Set<() => void>();
 
-function readThemeFromDom(): ThemeMode {
-  if (typeof document === "undefined") {
-    return "dark";
+function readStoredTheme(): string | null {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY);
+  } catch {
+    return null;
   }
-  const value = document.documentElement.getAttribute("data-theme");
-  return value === "light" ? "light" : "dark";
+}
+
+function readTheme(): ThemeMode {
+  if (typeof document === "undefined") {
+    return DEFAULT_THEME;
+  }
+  return resolveTheme(readStoredTheme());
+}
+
+function syncThemeAttribute(): void {
+  const next = resolveTheme(readStoredTheme());
+  if (document.documentElement.getAttribute("data-theme") !== next) {
+    document.documentElement.setAttribute("data-theme", next);
+  }
 }
 
 function emitThemeChange(): void {
@@ -34,7 +50,13 @@ function applyTheme(theme: ThemeMode): void {
 
 function subscribe(onStoreChange: () => void): () => void {
   listeners.add(onStoreChange);
-  const onStorage = () => onStoreChange();
+  const onStorage = (event: StorageEvent) => {
+    if (event.key !== null && event.key !== THEME_STORAGE_KEY) {
+      return;
+    }
+    syncThemeAttribute();
+    onStoreChange();
+  };
   window.addEventListener("storage", onStorage);
   return () => {
     listeners.delete(onStoreChange);
@@ -43,7 +65,7 @@ function subscribe(onStoreChange: () => void): () => void {
 }
 
 function getServerSnapshot(): ThemeMode {
-  return "dark";
+  return DEFAULT_THEME;
 }
 
 export function useTheme(): {
@@ -53,16 +75,20 @@ export function useTheme(): {
 } {
   const theme = useSyncExternalStore(
     subscribe,
-    readThemeFromDom,
+    readTheme,
     getServerSnapshot,
   );
+
+  useLayoutEffect(() => {
+    syncThemeAttribute();
+  }, []);
 
   const setTheme = useCallback((next: ThemeMode) => {
     applyTheme(next);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    applyTheme(readThemeFromDom() === "dark" ? "light" : "dark");
+    applyTheme(readTheme() === "dark" ? "light" : "dark");
   }, []);
 
   return { theme, setTheme, toggleTheme };
