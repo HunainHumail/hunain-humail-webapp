@@ -14,8 +14,8 @@
   --color-muted: #94a3b8;
   --color-accent: #22d3ee;
   --color-accent-contrast: #0a0e14;
-  --color-grid: rgba(255, 255, 255, 0.028);
-  --color-grid-hero: rgba(34, 211, 238, 0.07);
+  --color-grid: rgba(255, 255, 255, 0.05);
+  --color-grid-hero: rgba(34, 211, 238, 0.08);
   --color-glow: rgba(34, 211, 238, 0.32);
   --color-focus-ring: #22d3ee;
 }
@@ -29,8 +29,8 @@
   --color-muted: #64748b;
   --color-accent: #22d3ee;
   --color-accent-contrast: #0a0e14;
-  --color-grid: rgba(10, 14, 20, 0.045);
-  --color-grid-hero: rgba(8, 145, 178, 0.1);
+  --color-grid: rgba(10, 14, 20, 0.04);
+  --color-grid-hero: rgba(8, 145, 178, 0.055);
   --color-glow: rgba(8, 145, 178, 0.22);
   --color-focus-ring: #0891b2;
 }
@@ -93,21 +93,6 @@
   --font-mono: var(--font-mono), ui-monospace, monospace;
   --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
 
-  --text-display-xl: clamp(64px, 9vw, 128px);
-  --text-display-xl--line-height: 0.88;
-  --text-display-xl--letter-spacing: -0.05em;
-  --text-display-hero: clamp(64px, 9vw, 128px);
-  --text-display-hero--line-height: 0.88;
-  --text-display-hero--letter-spacing: -0.05em;
-  --text-display-section: clamp(2.75rem, 5vw, 3.75rem);
-  --text-display-section--line-height: 0.92;
-  --text-display-section--letter-spacing: -0.03em;
-  --text-display-counter: clamp(4.5rem, 10vw, 8rem);
-  --text-display-counter--line-height: 0.8;
-  --text-display-counter--letter-spacing: -0.06em;
-  --text-mono-md: 0.9375rem;
-  --text-mono-md--line-height: 1.6;
-
   --tracking-tighter: -0.05em;
   --tracking-tight: -0.03em;
   --tracking-wide: 0.14em;
@@ -146,6 +131,7 @@
   --spacing-section: 5rem;
   --spacing-section-lg: 8.5rem;
   --spacing-terminal: 27.5rem;
+  --spacing-avatar: 6rem;
   --spacing-lift: 0.25rem;
   --spacing-32: 8rem;
   --spacing-40: 10rem;
@@ -193,6 +179,24 @@
   --color-background: var(--background);
 }
 
+/* Non-inline so --text-* exist on :root and generate text-* utilities. */
+@theme {
+  --text-display-xl: clamp(64px, 9vw, 128px);
+  --text-display-xl--line-height: 0.88;
+  --text-display-xl--letter-spacing: -0.05em;
+  --text-display-hero: clamp(64px, 9vw, 128px);
+  --text-display-hero--line-height: 0.88;
+  --text-display-hero--letter-spacing: -0.05em;
+  --text-display-section: clamp(2.75rem, 5vw, 3.75rem);
+  --text-display-section--line-height: 0.92;
+  --text-display-section--letter-spacing: -0.03em;
+  --text-display-counter: clamp(4.5rem, 10vw, 8rem);
+  --text-display-counter--line-height: 0.8;
+  --text-display-counter--letter-spacing: -0.06em;
+  --text-mono-md: 0.9375rem;
+  --text-mono-md--line-height: 1.6;
+}
+
 @keyframes caret-blink {
   0%,
   49% {
@@ -236,11 +240,31 @@
   }
 
   .bg-grid-hero {
+    position: relative;
+    isolation: isolate;
     background-color: var(--color-bg);
+  }
+
+  .bg-grid-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background-image:
       linear-gradient(var(--color-grid-hero) 1px, transparent 1px),
       linear-gradient(90deg, var(--color-grid-hero) 1px, transparent 1px);
     background-size: var(--size-grid-hero) var(--size-grid-hero);
+    mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 28%,
+      black 0%,
+      transparent 72%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 28%,
+      black 0%,
+      transparent 72%
+    );
   }
 
   .counter-stroke {

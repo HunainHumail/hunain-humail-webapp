@@ -27,4 +27,15 @@ describe("Heading", () => {
       /text-display-section/,
     );
   });
+
+  it("does not keep the default h1 size on hero headings", () => {
+    render(
+      <Heading level={1} size="hero">
+        Hero
+      </Heading>,
+    );
+    const className = screen.getByRole("heading", { level: 1, name: "Hero" }).className;
+    expect(className).toMatch(/text-display-hero/);
+    expect(className).not.toMatch(/text-4xl/);
+  });
 });

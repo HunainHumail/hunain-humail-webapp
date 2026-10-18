@@ -9,17 +9,26 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   size?: HeadingSize;
 }
 
-const levelClasses: Record<HeadingLevel, string> = {
-  1: "text-4xl font-display font-semibold tracking-tight",
-  2: "text-display-section font-display font-semibold tracking-tight",
-  3: "text-2xl font-display font-semibold tracking-tight",
-  4: "text-xl font-display font-medium",
-  5: "text-lg font-sans font-medium",
-  6: "text-base font-sans font-medium",
+const levelChrome: Record<HeadingLevel, string> = {
+  1: "font-display font-semibold tracking-tight",
+  2: "font-display font-semibold tracking-tight",
+  3: "font-display font-semibold tracking-tight",
+  4: "font-display font-medium",
+  5: "font-sans font-medium",
+  6: "font-sans font-medium",
 };
 
-const sizeClasses: Record<HeadingSize, string | false> = {
-  default: false,
+const levelSize: Record<HeadingLevel, string> = {
+  1: "text-4xl",
+  2: "text-display-section",
+  3: "text-2xl",
+  4: "text-xl",
+  5: "text-lg",
+  6: "text-base",
+};
+
+const sizeClasses: Record<HeadingSize, string | undefined> = {
+  default: undefined,
   display: "text-display-hero tracking-tighter",
   hero: "text-display-hero tracking-tighter",
   section: "text-display-section tracking-tight",
@@ -34,7 +43,11 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
       `h${level}`,
       {
         ref,
-        className: cn(levelClasses[level], sizeClasses[size], className),
+        className: cn(
+          levelChrome[level],
+          sizeClasses[size] ?? levelSize[level],
+          className,
+        ),
         ...props,
       },
       children,

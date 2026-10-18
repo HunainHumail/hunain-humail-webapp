@@ -20,7 +20,7 @@ export function Terminal({ lines, className }: TerminalProps) {
   return (
     <div
       className={cn(
-        "w-full min-w-0 overflow-hidden rounded-xl border border-border bg-surface lg:min-w-terminal",
+        "flex w-full min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-surface xl:min-w-terminal",
         className,
       )}
       role="group"
@@ -35,7 +35,7 @@ export function Terminal({ lines, className }: TerminalProps) {
       </div>
       <VisuallyHidden>{fullText}</VisuallyHidden>
       <pre
-        className="m-0 min-h-24 overflow-x-auto whitespace-pre-wrap break-words px-4 py-3 font-mono text-mono-md text-accent"
+        className="m-0 min-h-48 flex-1 overflow-x-auto whitespace-pre-wrap break-words px-5 py-4 font-mono text-mono-md text-accent"
         aria-live="off"
         aria-hidden="true"
       >

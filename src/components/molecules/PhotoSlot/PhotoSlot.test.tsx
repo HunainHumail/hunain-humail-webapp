@@ -8,9 +8,11 @@ describe("PhotoSlot", () => {
   });
 
   it("shows initials when no photo", () => {
-    render(<PhotoSlot name="Hunain Humail" />);
+    const { container } = render(<PhotoSlot name="Hunain Humail" />);
     expect(screen.getByText("HH")).toBeInTheDocument();
     expect(screen.getByText("Hunain Humail", { selector: ".sr-only" })).toBeInTheDocument();
+    expect(container.firstElementChild?.className).toMatch(/size-avatar/);
+    expect(container.firstElementChild?.className).toMatch(/rounded-full/);
   });
 
   it("renders image when photoUrl is set", () => {

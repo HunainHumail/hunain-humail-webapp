@@ -55,7 +55,7 @@ export function Hero({
       aria-labelledby="hero-heading"
     >
       <Container>
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="flex min-w-0 flex-col gap-6 lg:col-span-7">
             <PhotoSlot name={name} photoUrl={photoUrl} />
             <MonoLabel>{location}</MonoLabel>
@@ -102,7 +102,7 @@ export function Hero({
             </div>
           </div>
 
-          <div className="min-w-0 lg:col-span-5">
+          <div className="min-w-0 lg:col-span-5 lg:pt-8 xl:min-w-terminal">
             <Terminal lines={terminalLines} />
           </div>
         </div>

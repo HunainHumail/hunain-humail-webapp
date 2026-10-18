@@ -23,7 +23,7 @@ export function PhotoSlot({ name, photoUrl, className }: PhotoSlotProps) {
   return (
     <div
       className={cn(
-        "relative flex h-48 w-36 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-elevated md:h-72 md:w-60",
+        "relative flex size-avatar shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-elevated",
         className,
       )}
     >
@@ -32,7 +32,7 @@ export function PhotoSlot({ name, photoUrl, className }: PhotoSlotProps) {
           src={photoUrl}
           alt=""
           fill
-          sizes="240px"
+          sizes="96px"
           className="object-cover"
           unoptimized={imageUnoptimized()}
           priority

@@ -1,6 +1,6 @@
 # Design system
 
-Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.css` under `:root` (dark default so utilities resolve before `data-theme` is set), `[data-theme="dark"]`, and `[data-theme="light"]`. Tailwind utilities are wired via `@theme inline`.
+Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.css` under `:root` (dark default so utilities resolve before `data-theme` is set), `[data-theme="dark"]`, and `[data-theme="light"]`. Color, spacing, and motion utilities are wired via `@theme inline`. Display type tokens live in a non-inline `@theme` block so `--text-display-*` is emitted on `:root` and `text-display-hero` / `text-display-section` / `text-display-counter` utilities resolve.
 
 ## Color
 
@@ -14,8 +14,8 @@ Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.c
 | muted | `#94a3b8` | `#64748b` | `text-muted` |
 | accent | `#22d3ee` | `#22d3ee` | `bg-accent`, `text-accent` |
 | accent-contrast | `#0a0e14` | `#0a0e14` | `text-accent-contrast` |
-| grid | faint ink | faint ink | `.bg-grid` |
-| grid-hero | faint cyan | faint cyan | `.bg-grid-hero` |
+| grid | 5% white | 4% ink | `.bg-grid` |
+| grid-hero | 8% cyan | 5.5% teal | `.bg-grid-hero` (radial mask) |
 | glow | cyan halo | teal halo | `--color-glow` |
 | focus-ring | cyan | darker cyan | `ring-focus-ring` |
 
@@ -42,6 +42,7 @@ Standard Tailwind scale plus:
 | section | `5rem` | `py-section` |
 | section-lg | `8.5rem` (136px) | `md:py-section-lg` |
 | terminal | `27.5rem` (440px) | `min-w-terminal` |
+| avatar | `6rem` (96px) | `size-avatar` |
 | 32 / 40 | `8rem` / `10rem` | `py-32`, `py-40` |
 | page | `80rem` (1280px) | `max-w-page` |
 
@@ -77,8 +78,8 @@ Used with `.card-lift` for hover glow.
 
 ## Utilities
 
-- **`bg-grid`**: faint site-wide blueprint grid (`--size-grid`).
-- **`bg-grid-hero`**: stronger hero grid (`--size-grid-hero`, cyan-tinted).
+- **`bg-grid`**: faint site-wide blueprint grid (≈4–5% line opacity, `--size-grid`).
+- **`bg-grid-hero`**: stronger cyan-tinted hero grid on a `::before` layer, faded with a radial mask so it does not cover the whole viewport.
 - **`counter-stroke`**: transparent fill + 1px text stroke for outlined counters.
 - **`card-lift`**: 1px border, `translateY(-4px)` + cyan glow on hover, motion-token transitions.
 
