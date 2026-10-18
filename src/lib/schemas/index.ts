@@ -1,4 +1,12 @@
 export {
+  profileCtaSchema,
+  profileSchema,
+  terminalLineSchema,
+  type Profile,
+  type ProfileCta,
+  type TerminalLine,
+} from "./profile";
+export {
   navItemSchema,
   siteSettingsSchema,
   socialLinkSchema,

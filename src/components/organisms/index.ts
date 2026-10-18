@@ -1,3 +1,4 @@
+export { Hero, type HeroProps } from "./Hero";
 export { SiteFooter, type SiteFooterProps } from "./SiteFooter";
 export { SiteHeader, type SiteHeaderProps } from "./SiteHeader";
 export {

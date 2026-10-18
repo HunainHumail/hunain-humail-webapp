@@ -31,13 +31,18 @@ vi.mock("gsap", () => ({
   },
 }));
 
+vi.mock("next/image", () => ({
+  default: (props: { alt: string }) => <img alt={props.alt} />,
+}));
+
 describe("Home", () => {
-  it("renders the page heading inside site shell", async () => {
+  it("renders the hero inside site shell", async () => {
     const ui = await Home();
     render(ui);
     expect(
-      screen.getByRole("heading", { level: 1, name: "Hunain Humail" }),
+      screen.getByRole("heading", { level: 1, name: /Hunain\s+Humail/i }),
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /skip to content/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View work" })).toBeInTheDocument();
   });
 });
