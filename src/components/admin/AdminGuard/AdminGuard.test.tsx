@@ -6,6 +6,10 @@ import { ADMIN_EMAIL } from "@/lib/admin";
 import { useAuth } from "@/hooks/useAuth";
 import { AdminGuard } from "./AdminGuard";
 
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/admin",
+}));
+
 vi.mock("@/hooks/useAuth", () => ({
   useAuth: vi.fn(),
 }));
@@ -96,9 +100,13 @@ describe("AdminGuard", () => {
     render(<AdminGuard />);
 
     expect(screen.getByRole("navigation", { name: "Admin" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { level: 1, name: "Profile" }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Messages" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Messages" })).toHaveAttribute(
+      "href",
+      "/admin/messages",
+    );
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
   });
 });

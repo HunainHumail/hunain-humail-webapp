@@ -1,1 +1,6 @@
-export { ADMIN_SECTIONS, AdminShell, type AdminSection, type AdminShellProps } from "./AdminShell";
+export {
+  ADMIN_NAV,
+  AdminShell,
+  type AdminNavItem,
+  type AdminShellProps,
+} from "./AdminShell";

@@ -52,6 +52,28 @@ describe("firebase env", () => {
     expect(isFirebaseEmulatorEnabled()).toBe(false);
   });
 
+  it("enables storage only for the explicit flag or the emulator", async () => {
+    const disabled = await import("./env");
+    expect(disabled.isFirebaseStorageEnabled()).toBe(false);
+
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_FIREBASE_STORAGE_ENABLED", "true");
+    const enabled = await import("./env");
+    expect(enabled.isFirebaseStorageEnabled()).toBe(true);
+
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_FIREBASE_STORAGE_ENABLED", "false");
+    vi.stubEnv("NEXT_PUBLIC_USE_FIREBASE_EMULATOR", "true");
+    const forcedOff = await import("./env");
+    expect(forcedOff.isFirebaseStorageEnabled()).toBe(false);
+
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_FIREBASE_STORAGE_ENABLED", "");
+    vi.stubEnv("NEXT_PUBLIC_USE_FIREBASE_EMULATOR", "true");
+    const emulator = await import("./env");
+    expect(emulator.isFirebaseStorageEnabled()).toBe(true);
+  });
+
   it("treats STATIC_EXPORT=true as a static export", async () => {
     vi.stubEnv("STATIC_EXPORT", "true");
     const { isStaticExport } = await import("./env");

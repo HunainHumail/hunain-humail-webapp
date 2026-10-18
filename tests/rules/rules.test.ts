@@ -145,11 +145,13 @@ describe("Firebase security rules", () => {
 
     await assertFails(getDoc(doc(guest, "messages", "m1")));
     await assertFails(updateDoc(doc(guest, "messages", "m1"), { topic: "x" }));
+    await assertFails(updateDoc(doc(guest, "messages", "m1"), { read: true }));
     await assertFails(deleteDoc(doc(guest, "messages", "m1")));
 
     const db = admin().firestore();
     await assertSucceeds(getDoc(doc(db, "messages", "m1")));
     await assertFails(updateDoc(doc(db, "messages", "m1"), { topic: "Roles" }));
+    await assertSucceeds(updateDoc(doc(db, "messages", "m1"), { read: true }));
     await assertSucceeds(deleteDoc(doc(db, "messages", "m1")));
   });
 

@@ -29,6 +29,23 @@ vi.stubGlobal(
   MockIntersectionObserver as unknown as typeof IntersectionObserver,
 );
 
+class MockResizeObserver {
+  observe() {
+    return undefined;
+  }
+  unobserve() {
+    return undefined;
+  }
+  disconnect() {
+    return undefined;
+  }
+}
+
+vi.stubGlobal(
+  "ResizeObserver",
+  MockResizeObserver as unknown as typeof ResizeObserver,
+);
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => ({

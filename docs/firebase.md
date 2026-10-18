@@ -27,4 +27,4 @@ The committed `.firebaserc` value `your-firebase-project-id` is a placeholder. R
 
 ## Rules
 
-Published content is publicly readable. Writes require Google Auth with `email == hunainhumail786@gmail.com` and `email_verified`. `messages` are create-only (validated shape); only the admin can read or delete them. Storage `images/**` is public-read; admin writes are limited to images under 5MB.
+Published content is publicly readable. Writes require Google Auth with `email == hunainhumail786@gmail.com` and `email_verified`. `messages` are create-only (validated shape); only the admin can read them, mark them read, or delete them. Storage `images/**` is public-read; admin writes are limited to images under 5MB. The Spark plan does not enable Storage, so the CMS keeps an image URL field and shows upload only when Storage is enabled.

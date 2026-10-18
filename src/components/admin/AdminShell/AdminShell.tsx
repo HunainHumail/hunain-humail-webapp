@@ -1,29 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import type { ReactNode } from "react";
+import Link from "next/link";
 import { Button } from "@/components/admin/ui/button";
 import { cn } from "@/lib/utils/cn";
 
-export const ADMIN_SECTIONS = [
-  "Profile",
-  "Story",
-  "Now",
-  "Work",
-  "Writing",
-  "Settings/SEO",
-  "Messages",
+export const ADMIN_NAV = [
+  { label: "Dashboard", href: "/admin" },
+  { label: "Profile", href: "/admin/profile" },
+  { label: "Story", href: "/admin/story" },
+  { label: "Now", href: "/admin/now" },
+  { label: "Work", href: "/admin/work" },
+  { label: "Writing", href: "/admin/writing" },
+  { label: "Settings/SEO", href: "/admin/settings" },
+  { label: "Messages", href: "/admin/messages" },
 ] as const;
 
-export type AdminSection = (typeof ADMIN_SECTIONS)[number];
+export type AdminNavItem = (typeof ADMIN_NAV)[number];
 
 export interface AdminShellProps {
+  pathname: string;
   onSignOut: () => void;
+  children?: ReactNode;
   className?: string;
 }
 
-export function AdminShell({ onSignOut, className }: AdminShellProps) {
-  const [section, setSection] = useState<AdminSection>("Profile");
+function isCurrent(href: string, pathname: string): boolean {
+  if (href === "/admin") {
+    return pathname === "/admin";
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
+export function AdminShell({
+  pathname,
+  onSignOut,
+  children,
+  className,
+}: AdminShellProps) {
   return (
     <div className={cn("min-h-screen bg-grid text-text", className)}>
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col md:flex-row">
@@ -39,24 +53,23 @@ export function AdminShell({ onSignOut, className }: AdminShellProps) {
           </div>
           <nav aria-label="Admin">
             <ul className="flex gap-2 overflow-x-auto px-4 pb-4 md:flex-col md:px-3">
-              {ADMIN_SECTIONS.map((item) => {
-                const selected = item === section;
+              {ADMIN_NAV.map((item) => {
+                const selected = isCurrent(item.href, pathname);
                 return (
-                  <li key={item}>
-                    <button
-                      type="button"
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
                       aria-current={selected ? "page" : undefined}
-                      onClick={() => setSection(item)}
                       className={cn(
-                        "w-full rounded-md px-3 py-2 text-left font-mono text-xs uppercase tracking-wide",
+                        "block w-full rounded-md px-3 py-2 text-left font-mono text-xs uppercase tracking-wide",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring",
                         selected
                           ? "bg-accent text-accent-contrast"
                           : "text-muted hover:text-text",
                       )}
                     >
-                      {item}
-                    </button>
+                      {item.label}
+                    </Link>
                   </li>
                 );
               })}
@@ -68,12 +81,7 @@ export function AdminShell({ onSignOut, className }: AdminShellProps) {
             </Button>
           </div>
         </aside>
-        <main className="flex-1 px-6 py-10 md:px-10">
-          <p className="font-mono text-xs uppercase tracking-wide text-muted">
-            Dashboard
-          </p>
-          <h1 className="font-display text-4xl tracking-tight">{section}</h1>
-        </main>
+        <main className="flex-1 px-6 py-10 md:px-10">{children}</main>
       </div>
     </div>
   );

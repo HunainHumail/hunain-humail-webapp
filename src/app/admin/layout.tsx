@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { AdminGuard } from "@/components/admin/AdminGuard";
 import { Toaster } from "@/components/admin/ui/sonner";
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      {children}
+      <AdminGuard>{children}</AdminGuard>
       <Toaster />
     </>
   );

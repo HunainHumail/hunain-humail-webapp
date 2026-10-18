@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   limit,
+  onSnapshot,
   orderBy,
   query,
   setDoc,
@@ -16,7 +17,12 @@ import type { ContentCollection } from "../constants";
 import { normalizeDocument } from "../normalizeDocument";
 
 export interface CollectionRepository<T> {
+  list(): Promise<T[]>;
   listPublished(): Promise<T[]>;
+  subscribe(
+    onChange: (items: T[]) => void,
+    onError?: (error: Error) => void,
+  ): () => void;
   getById(id: string): Promise<T | null>;
   getBySlug(slug: string): Promise<T | null>;
   upsert(id: string, data: T): Promise<void>;
@@ -41,6 +47,43 @@ export function createCollectionRepository<T>(
   collectionName: ContentCollection,
 ): CollectionRepository<T> {
   return {
+    async list(): Promise<T[]> {
+      const firestore = requireFirestore();
+      const ordered = query(
+        collection(firestore, collectionName),
+        orderBy("order", "asc"),
+      );
+      const snapshot = await getDocs(ordered);
+      return snapshot.docs.map((snapshotDoc) =>
+        asTypedDocument<T>(snapshotDoc.id, snapshotDoc.data()),
+      );
+    },
+
+    subscribe(onChange, onError) {
+      const firestore = getFirebaseDb();
+      if (!firestore) {
+        onError?.(new Error("Firebase is not configured"));
+        return () => undefined;
+      }
+      const ordered = query(
+        collection(firestore, collectionName),
+        orderBy("order", "asc"),
+      );
+      return onSnapshot(
+        ordered,
+        (snapshot) => {
+          onChange(
+            snapshot.docs.map((snapshotDoc) =>
+              asTypedDocument<T>(snapshotDoc.id, snapshotDoc.data()),
+            ),
+          );
+        },
+        (error) => {
+          onError?.(error);
+        },
+      );
+    },
+
     async listPublished(): Promise<T[]> {
       const firestore = requireFirestore();
       const published = query(

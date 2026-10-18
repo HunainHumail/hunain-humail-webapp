@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/admin/ui/button";
 import {
   Card,
@@ -11,7 +13,8 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { AdminShell } from "../AdminShell";
 
-export function AdminGuard() {
+export function AdminGuard({ children }: { children?: ReactNode }) {
+  const pathname = usePathname() ?? "/admin";
   const {
     configured,
     loading,
@@ -110,5 +113,9 @@ export function AdminGuard() {
     );
   }
 
-  return <AdminShell onSignOut={() => void signOut()} />;
+  return (
+    <AdminShell pathname={pathname} onSignOut={() => void signOut()}>
+      {children}
+    </AdminShell>
+  );
 }

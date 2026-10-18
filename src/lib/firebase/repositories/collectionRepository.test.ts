@@ -8,6 +8,7 @@ const setDoc = vi.fn();
 const deleteDoc = vi.fn();
 const commit = vi.fn();
 const update = vi.fn();
+const onSnapshot = vi.fn();
 
 vi.mock("../client", () => ({
   getFirebaseDb: () => getFirebaseDb(),
@@ -26,6 +27,7 @@ vi.mock("firebase/firestore", () => ({
   getDoc: (...args: unknown[]) => getDoc(...args),
   setDoc: (...args: unknown[]) => setDoc(...args),
   deleteDoc: (...args: unknown[]) => deleteDoc(...args),
+  onSnapshot: (...args: unknown[]) => onSnapshot(...args),
   writeBatch: () => ({ update, commit }),
 }));
 
@@ -47,6 +49,7 @@ describe("createCollectionRepository", () => {
     deleteDoc.mockReset();
     commit.mockReset();
     update.mockReset();
+    onSnapshot.mockReset();
   });
 
   it("throws when Firebase is not configured", async () => {
@@ -54,6 +57,30 @@ describe("createCollectionRepository", () => {
     await expect(repo.listPublished()).rejects.toThrow(
       "Firebase is not configured",
     );
+  });
+
+  it("lists every document and subscribes to changes", async () => {
+    getDocs.mockResolvedValue({
+      docs: [
+        { id: "a", data: () => ({ title: "A", status: "draft", order: 1 }) },
+      ],
+    });
+    await expect(repo.list()).resolves.toEqual([
+      { id: "a", title: "A", status: "draft", order: 1 },
+    ]);
+
+    const onChange = vi.fn();
+    onSnapshot.mockImplementation(
+      (_query: unknown, success: (snapshot: unknown) => void) => {
+        success({
+          docs: [{ id: "a", data: () => ({ title: "A", order: 1 }) }],
+        });
+        return vi.fn();
+      },
+    );
+    const unsubscribe = repo.subscribe(onChange);
+    expect(onChange).toHaveBeenCalledWith([{ id: "a", title: "A", order: 1 }]);
+    expect(typeof unsubscribe).toBe("function");
   });
 
   it("lists published documents in order", async () => {

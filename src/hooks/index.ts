@@ -1,4 +1,8 @@
 export { useAuth, type UseAuthResult } from "./useAuth";
+export { useCollection, type UseCollectionResult } from "./useCollection";
+export { useDocEditor, type UseDocEditorResult } from "./useDocEditor";
+export { useImageUpload } from "./useImageUpload";
+export { useInbox, type UseInboxResult } from "./useInbox";
 export {
   useDubaiClock,
   formatDubaiClockLabel,

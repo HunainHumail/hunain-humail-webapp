@@ -23,6 +23,7 @@ export {
   type ContactMessage,
   type ContactMessageInput,
 } from "./contactMessage";
+export { inboxMessageSchema, type InboxMessage } from "./inboxMessage";
 
 export { storyItemSchema, type StoryItem } from "./story";
 export { nowItemSchema, type NowItem } from "./now";
