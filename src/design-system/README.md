@@ -14,12 +14,14 @@ Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.c
 | muted | `#94a3b8` | `#64748b` | `text-muted` |
 | accent | `#22d3ee` | `#22d3ee` | `bg-accent`, `text-accent` |
 | accent-contrast | `#0a0e14` | `#0a0e14` | `text-accent-contrast` |
+| accent-complement | `#ee22d3` | `#ee22d3` | avatar story ring only |
+| ring-gradient | cyan → magenta conic | same | `--ring-gradient`, `.bg-ring-gradient` |
 | grid | 5% white | 4% ink | `.bg-grid` |
 | grid-hero | 8% cyan | 5.5% teal | `.bg-grid-hero` (radial mask) |
 | glow | cyan halo | teal halo | `--color-glow` |
 | focus-ring | cyan | darker cyan | `ring-focus-ring` |
 
-Accent `#22d3ee` is reserved for the name-dot, active nav, scroll progress, primary pill CTAs, timeline dots/progress, hover borders, terminal prompt/caret, and focus rings.
+Accent `#22d3ee` is reserved for the name-dot, active nav, scroll progress, primary pill CTAs, timeline dots/progress, hover borders, terminal prompt/caret, and focus rings. Magenta `#ee22d3` is only used in `--ring-gradient` for the profile avatar story ring.
 
 ## Typography
 
@@ -41,6 +43,10 @@ Standard Tailwind scale plus:
 | section-lg | `8.5rem` (136px) | `md:py-section-lg` |
 | terminal | `27.5rem` (440px) | `min-w-terminal` |
 | avatar | `6rem` (96px) | `size-avatar` |
+| avatar-sm | `2rem` (32px) | `size-avatar-sm` (nav) |
+| avatar-lg | `clamp(10rem, 18vw, 12.5rem)` (160–200px) | `size-avatar-lg` (hero) |
+| avatar-ring | `0.1875rem` (3px) | `p-avatar-ring` |
+| avatar-gap | `0.1875rem` (3px) | `p-avatar-gap` |
 | 32 / 40 | `8rem` / `10rem` | `py-32`, `py-40` |
 
 ## Layout
@@ -69,6 +75,7 @@ Used for work covers on cards and case-study pages.
 - Durations: `duration-fast` (150ms), `duration-base` (250ms), `duration-slow` (400ms), `duration-reveal` (800ms).
 - Easings: `ease-default`, `ease-in`, `ease-out`, `ease-in-out`, `ease-reveal`.
 - Caret: `animate-caret` (disabled under `prefers-reduced-motion`).
+- Avatar flip: `.avatar-flip-scene` uses `--perspective-avatar` (`50rem`); `.avatar-flip-card` / `.is-flipped` rotate on the Y axis. Disabled under `prefers-reduced-motion`.
 
 ## Shadow
 
@@ -88,6 +95,7 @@ Used with `.card-lift` for hover glow.
 - **`bg-grid-hero`**: stronger cyan-tinted hero grid on a `::before` layer, faded with a radial mask so it does not cover the whole viewport.
 - **`counter-stroke`**: transparent fill + 1px text stroke for outlined counters.
 - **`card-lift`**: 1px border, `translateY(-4px)` + cyan glow on hover, motion-token transitions.
+- **`bg-ring-gradient`**: Instagram-style conic ring (`--ring-gradient`, cyan `#22d3ee` → complement `#ee22d3`).
 
 ## Atoms (`src/components/atoms`)
 

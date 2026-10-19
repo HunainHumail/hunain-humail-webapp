@@ -25,5 +25,9 @@ export const spacing = {
   "section-lg": "8.5rem",
   terminal: "27.5rem",
   avatar: "6rem",
+  "avatar-sm": "2rem",
+  "avatar-lg": "clamp(10rem, 18vw, 12.5rem)",
+  "avatar-ring": "0.1875rem",
+  "avatar-gap": "0.1875rem",
   lift: "0.25rem",
 } as const;

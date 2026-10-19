@@ -7,17 +7,21 @@ import { Link } from "@/components/atoms/Link";
 import { MonoLabel } from "@/components/atoms/MonoLabel";
 import { Text } from "@/components/atoms/Text";
 import { ChipList } from "@/components/molecules/ChipList";
-import { PhotoSlot } from "@/components/molecules/PhotoSlot";
+import { ProfileAvatar } from "@/components/molecules/ProfileAvatar";
 import { Terminal } from "@/components/molecules/Terminal";
 import { useGsapLineReveal } from "@/hooks/useGsapLineReveal";
-import type { ProfileCta, TerminalLine } from "@/lib/schemas/profile";
+import type {
+  ProfileAvatarItem,
+  ProfileCta,
+  TerminalLine,
+} from "@/lib/schemas/profile";
 import { cn } from "@/lib/utils/cn";
 
 export interface HeroProps {
   name: string;
   headline: string;
   location: string;
-  photoUrl?: string;
+  avatars?: readonly ProfileAvatarItem[];
   chips: string[];
   terminalLines: TerminalLine[];
   ctas: ProfileCta[];
@@ -39,7 +43,7 @@ export function Hero({
   name,
   headline,
   location,
-  photoUrl,
+  avatars = [],
   chips,
   terminalLines,
   ctas,
@@ -57,7 +61,9 @@ export function Hero({
       <Container>
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="flex min-w-0 flex-col gap-6 lg:col-span-7">
-            <PhotoSlot name={name} photoUrl={photoUrl} />
+            {avatars.length > 0 ? (
+              <ProfileAvatar images={avatars} size="lg" />
+            ) : null}
             <MonoLabel>{location}</MonoLabel>
             <Heading
               ref={titleRef}

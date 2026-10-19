@@ -8,6 +8,7 @@ import { Text } from "@/components/atoms/Text";
 import { ChipList } from "@/components/molecules/ChipList";
 import { Gallery } from "@/components/organisms/Gallery";
 import { SiteTemplate } from "@/components/templates/SiteTemplate";
+import type { ProfileAvatarItem } from "@/lib/schemas/profile";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import type { WorkItem } from "@/lib/schemas/work";
 import { cn } from "@/lib/utils/cn";
@@ -19,16 +20,18 @@ import { workCoverAlt, workCoverSrc } from "@/lib/utils/workCover";
 export interface CaseStudyTemplateProps {
   settings: SiteSettings;
   item: WorkItem;
+  avatars?: readonly ProfileAvatarItem[];
   className?: string;
 }
 
 export function CaseStudyTemplate({
   settings,
   item,
+  avatars,
   className,
 }: CaseStudyTemplateProps) {
   return (
-    <SiteTemplate settings={settings}>
+    <SiteTemplate settings={settings} avatars={avatars}>
       <article
         className={cn(
           "border-t border-border py-section md:py-section-lg",

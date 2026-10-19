@@ -1,4 +1,23 @@
-import type { Profile } from "@/lib/schemas/profile";
+import type { Profile, ProfileAvatarItem } from "@/lib/schemas/profile";
+import { generatedAvatarNames } from "./avatarManifest";
+
+const AVATARS_BY_NAME: Record<string, ProfileAvatarItem> = {
+  github: {
+    src: "/avatar/github.webp",
+    alt: "Hunain Humail",
+  },
+  linkedin: {
+    src: "/avatar/linkedin.webp",
+    alt: "Hunain Humail",
+  },
+};
+
+function seedAvatars(): ProfileAvatarItem[] {
+  return generatedAvatarNames.flatMap((name) => {
+    const avatar = AVATARS_BY_NAME[name];
+    return avatar ? [avatar] : [];
+  });
+}
 
 export const profileSeed: Profile = {
   status: "published",
@@ -8,6 +27,7 @@ export const profileSeed: Profile = {
   headline:
     "Software engineer building with AI, fintech and open finance.",
   location: "Dubai · 25.20°N 55.27°E",
+  avatars: seedAvatars(),
   chips: [
     "Senior Software Engineer",
     "GenAI Engineer",

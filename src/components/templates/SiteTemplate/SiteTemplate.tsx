@@ -3,18 +3,21 @@ import { ScrollProgressBar } from "@/components/molecules/ScrollProgressBar";
 import { SiteFooter } from "@/components/organisms/SiteFooter";
 import { SiteHeader } from "@/components/organisms/SiteHeader";
 import { SmoothScrollProvider } from "@/components/organisms/SmoothScrollProvider";
+import type { ProfileAvatarItem } from "@/lib/schemas/profile";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import { cn } from "@/lib/utils/cn";
 import { type ReactNode } from "react";
 
 export interface SiteTemplateProps {
   settings: SiteSettings;
+  avatars?: readonly ProfileAvatarItem[];
   children: ReactNode;
   className?: string;
 }
 
 export function SiteTemplate({
   settings,
+  avatars,
   children,
   className,
 }: SiteTemplateProps) {
@@ -28,7 +31,7 @@ export function SiteTemplate({
           Skip to content
         </Link>
         <ScrollProgressBar />
-        <SiteHeader settings={settings} />
+        <SiteHeader settings={settings} avatars={avatars} />
         <main id="content" className="flex-1">
           {children}
         </main>

@@ -32,6 +32,18 @@ describe("collection configs", () => {
     ).toBe(true);
   });
 
+  it("gives profile an image-URL avatar list", () => {
+    const avatars = getCollectionConfig("profile").fields.find(
+      (field) => field.name === "avatars",
+    );
+    expect(avatars?.type).toBe("records");
+    expect(avatars?.fields?.map((field) => field.name)).toEqual(["src", "alt"]);
+    expect(avatars?.fields?.find((field) => field.name === "src")?.type).toBe(
+      "image",
+    );
+    expect(getCollectionConfig("profile").createBlank().avatars).toEqual([]);
+  });
+
   it("gives work a markdown body, cover image, and gallery list", () => {
     const fields = getCollectionConfig("work").fields;
     expect(fields.find((field) => field.name === "body")?.type).toBe("markdown");

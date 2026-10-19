@@ -76,6 +76,11 @@ const socialFields = [
   },
 ] as const satisfies readonly FieldConfig[];
 
+const avatarFields = [
+  { name: "src", label: "Image URL", type: "image" },
+  { name: "alt", label: "Alt text", type: "text" },
+] as const satisfies readonly FieldConfig[];
+
 const profileFields = [
   { name: "name", label: "Name", type: "text" },
   { name: "headline", label: "Headline", type: "textarea" },
@@ -86,6 +91,15 @@ const profileFields = [
     type: "image",
     optional: true,
     description: "Paste an image URL. Upload appears when Storage is enabled.",
+  },
+  {
+    name: "avatars",
+    label: "Avatars",
+    type: "records",
+    optional: true,
+    fields: avatarFields,
+    description:
+      "Image-URL list for the flipping portrait. Drop linkedin.jpg in /workspace/avatar-src and run npm run avatars.",
   },
   { name: "chips", label: "Chips", type: "tags" },
   {
@@ -202,6 +216,7 @@ export const collectionConfigs: Record<AdminCollectionName, CollectionConfig> = 
       name: "",
       headline: "",
       location: "",
+      avatars: [],
       chips: [],
       terminalLines: [{ command: "", output: "" }],
       ctas: [{ label: "", href: "" }],

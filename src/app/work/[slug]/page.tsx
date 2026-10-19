@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { CaseStudyTemplate } from "@/components/templates";
 import { getSiteUrl } from "@/lib/env";
 import { buildWorkMetadata } from "@/lib/seo";
+import { getProfile } from "@/services/profile";
 import { getSiteSettings } from "@/services/siteSettings";
 import { getWork, getWorkBySlug } from "@/services/work";
 
@@ -30,14 +31,21 @@ export default async function WorkCaseStudyPage({
   params,
 }: WorkCaseStudyPageProps) {
   const { slug } = await params;
-  const [settings, item] = await Promise.all([
+  const [settings, item, profile] = await Promise.all([
     getSiteSettings(),
     getWorkBySlug(slug),
+    getProfile(),
   ]);
 
   if (!item) {
     notFound();
   }
 
-  return <CaseStudyTemplate settings={settings} item={item} />;
+  return (
+    <CaseStudyTemplate
+      settings={settings}
+      item={item}
+      avatars={profile.avatars}
+    />
+  );
 }

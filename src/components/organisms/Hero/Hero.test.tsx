@@ -10,6 +10,7 @@ describe("Hero", () => {
         name={profileSeed.name}
         headline={profileSeed.headline}
         location={profileSeed.location}
+        avatars={profileSeed.avatars}
         chips={profileSeed.chips}
         terminalLines={profileSeed.terminalLines}
         ctas={profileSeed.ctas}
@@ -28,5 +29,8 @@ describe("Hero", () => {
       "#work",
     );
     expect(screen.getByRole("group", { name: "Terminal" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: profileSeed.avatars[0]?.alt ?? "" }),
+    ).toHaveAttribute("src", profileSeed.avatars[0]?.src);
   });
 });

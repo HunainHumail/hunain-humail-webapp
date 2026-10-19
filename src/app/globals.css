@@ -14,6 +14,13 @@
   --color-muted: #94a3b8;
   --color-accent: #22d3ee;
   --color-accent-contrast: #0a0e14;
+  --color-accent-complement: #ee22d3;
+  --ring-gradient: conic-gradient(
+    from 210deg,
+    var(--color-accent),
+    var(--color-accent-complement),
+    var(--color-accent)
+  );
   --color-grid: rgba(255, 255, 255, 0.05);
   --color-grid-hero: rgba(34, 211, 238, 0.08);
   --color-glow: rgba(34, 211, 238, 0.32);
@@ -29,6 +36,13 @@
   --color-muted: #64748b;
   --color-accent: #22d3ee;
   --color-accent-contrast: #0a0e14;
+  --color-accent-complement: #ee22d3;
+  --ring-gradient: conic-gradient(
+    from 210deg,
+    var(--color-accent),
+    var(--color-accent-complement),
+    var(--color-accent)
+  );
   --color-grid: rgba(10, 14, 20, 0.04);
   --color-grid-hero: rgba(8, 145, 178, 0.055);
   --color-glow: rgba(8, 145, 178, 0.22);
@@ -83,6 +97,7 @@
   --color-muted: var(--color-muted);
   --color-accent: var(--color-accent);
   --color-accent-contrast: var(--color-accent-contrast);
+  --color-accent-complement: var(--color-accent-complement);
   --color-grid: var(--color-grid);
   --color-grid-hero: var(--color-grid-hero);
   --color-glow: var(--color-glow);
@@ -131,6 +146,11 @@
   --spacing-section-lg: 8.5rem;
   --spacing-terminal: 27.5rem;
   --spacing-avatar: 6rem;
+  --spacing-avatar-sm: 2rem;
+  --spacing-avatar-lg: clamp(10rem, 18vw, 12.5rem);
+  --spacing-avatar-ring: 0.1875rem;
+  --spacing-avatar-gap: 0.1875rem;
+  --perspective-avatar: 50rem;
   --spacing-lift: 0.25rem;
   --spacing-32: 8rem;
   --spacing-40: 10rem;
@@ -272,6 +292,32 @@
     -webkit-text-stroke: var(--stroke-counter) var(--color-text);
   }
 
+  .bg-ring-gradient {
+    background-image: var(--ring-gradient);
+  }
+
+  .avatar-flip-scene {
+    perspective: var(--perspective-avatar);
+  }
+
+  .avatar-flip-card {
+    transform-style: preserve-3d;
+    transition: transform var(--duration-reveal) var(--ease-in-out);
+  }
+
+  .avatar-flip-card.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+  .avatar-flip-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .avatar-flip-face-back {
+    transform: rotateY(180deg);
+  }
+
   .card-lift {
     transition:
       transform var(--duration-base) var(--ease-out),
@@ -292,6 +338,14 @@
 
     .animate-caret {
       animation: none;
+    }
+
+    .avatar-flip-card {
+      transition: none;
+    }
+
+    .avatar-flip-card.is-flipped {
+      transform: none;
     }
   }
 }

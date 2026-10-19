@@ -1,6 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { profileSeed } from "@/lib/seed/profile";
 import { siteSettingsSeed } from "@/lib/seed/settings";
 import { SiteHeader } from "./SiteHeader";
 
@@ -17,8 +18,12 @@ describe("SiteHeader", () => {
     render(
       <SiteHeader
         settings={{ nav: siteSettingsSeed.nav, seo: siteSettingsSeed.seo }}
+        avatars={profileSeed.avatars}
       />,
     );
+    expect(
+      screen.getByRole("img", { name: profileSeed.avatars[0]?.alt ?? "" }),
+    ).toHaveAttribute("src", profileSeed.avatars[0]?.src);
     expect(screen.getByRole("link", { name: /hunain humail home/i })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Primary" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /01\s*Story/i })).toBeInTheDocument();

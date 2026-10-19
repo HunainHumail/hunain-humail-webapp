@@ -16,6 +16,11 @@ export {
   type UseGalleryLightboxResult,
 } from "./useGalleryLightbox";
 export { useReducedMotion } from "./useReducedMotion";
+export {
+  useAvatarFlip,
+  type UseAvatarFlipOptions,
+  type UseAvatarFlipResult,
+} from "./useAvatarFlip";
 export { useXlViewport, XL_MEDIA_QUERY } from "./useXlViewport";
 export { useScrollProgress } from "./useScrollProgress";
 export { useTheme } from "./useTheme";

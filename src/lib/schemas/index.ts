@@ -1,8 +1,10 @@
 export {
+  profileAvatarSchema,
   profileCtaSchema,
   profileSchema,
   terminalLineSchema,
   type Profile,
+  type ProfileAvatarItem,
   type ProfileCta,
   type TerminalLine,
 } from "./profile";

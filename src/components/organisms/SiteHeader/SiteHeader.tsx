@@ -7,14 +7,17 @@ import { Icon } from "@/components/atoms/Icon";
 import { Link } from "@/components/atoms/Link";
 import { DubaiClock } from "@/components/molecules/DubaiClock";
 import { NavItem } from "@/components/molecules/NavItem";
+import { ProfileAvatar } from "@/components/molecules/ProfileAvatar";
 import { ThemeToggle } from "@/components/molecules/ThemeToggle";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useXlViewport } from "@/hooks/useXlViewport";
+import type { ProfileAvatarItem } from "@/lib/schemas/profile";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import { cn } from "@/lib/utils/cn";
 
 export interface SiteHeaderProps {
   settings: Pick<SiteSettings, "nav" | "seo">;
+  avatars?: readonly ProfileAvatarItem[];
   className?: string;
 }
 
@@ -22,7 +25,7 @@ function brandFromTitle(title: string): string {
   return title.trim().split(/\s+/)[0]?.toLowerCase() ?? title;
 }
 
-export function SiteHeader({ settings, className }: SiteHeaderProps) {
+export function SiteHeader({ settings, avatars = [], className }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
   const closeMenu = useCallback(() => setMenuOpen(false), []);
@@ -63,11 +66,16 @@ export function SiteHeader({ settings, className }: SiteHeaderProps) {
       <Container className="flex items-center justify-between gap-4 py-4">
         <Link
           href="/"
-          className="font-display text-lg font-semibold tracking-tight text-text no-underline"
+          className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight text-text no-underline"
           aria-label="Hunain Humail home"
         >
-          {brand}
-          <span className="text-accent">.</span>
+          {avatars.length > 0 ? (
+            <ProfileAvatar images={avatars} size="sm" />
+          ) : null}
+          <span>
+            {brand}
+            <span className="text-accent">.</span>
+          </span>
         </Link>
 
         <nav

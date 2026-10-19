@@ -43,12 +43,12 @@ export function HomeTemplate({
   const contactNav = navFor(settings, "#contact");
 
   return (
-    <SiteTemplate settings={settings}>
+    <SiteTemplate settings={settings} avatars={profile.avatars}>
       <Hero
         name={profile.name}
         headline={profile.headline}
         location={profile.location}
-        photoUrl={profile.photoUrl}
+        avatars={profile.avatars}
         chips={profile.chips}
         terminalLines={profile.terminalLines}
         ctas={profile.ctas}
