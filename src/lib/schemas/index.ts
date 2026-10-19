@@ -43,4 +43,9 @@ export {
   type WritingItem,
   type WritingType,
 } from "./writing";
+export {
+  linkedinPostSchema,
+  linkedinPostsSchema,
+  type LinkedInPost,
+} from "./linkedinPost";
 

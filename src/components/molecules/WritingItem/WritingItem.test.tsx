@@ -25,21 +25,34 @@ describe("WritingItem", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 
-  it("wraps the row in a link with an arrow when href is set", () => {
+  it("renders a LinkedIn post card with image, date, and external permalink", () => {
+    const href =
+      "https://www.linkedin.com/feed/update/urn:li:activity:7516513022803222528/";
     render(
       <WritingItem
-        {...baseProps}
-        title="AI-native delivery"
-        href="https://www.linkedin.com/in/hunain-humail"
+        dateLabel="Oct 2026"
+        typeLabel="Post"
+        title="OpenAI DevDay Exchange — Community event, Dubai"
+        href={href}
+        ctaLabel="View on LinkedIn"
+        imageSrc="/writing/openai-devday-exchange.webp"
+        imageAlt="OpenAI DevDay Exchange community event in Dubai"
       />,
     );
 
-    const link = screen.getByRole("link", { name: /AI-native delivery/i });
-    expect(link).toHaveAttribute(
-      "href",
-      "https://www.linkedin.com/in/hunain-humail",
-    );
+    const link = screen.getByRole("link", {
+      name: /OpenAI DevDay Exchange — Community event, Dubai/i,
+    });
+    expect(link).toHaveAttribute("href", href);
     expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByText("Oct 2026 · Post")).toBeInTheDocument();
+    expect(screen.getByText("View on LinkedIn")).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", {
+        name: "OpenAI DevDay Exchange community event in Dubai",
+      }),
+    ).toHaveAttribute("src", "/writing/openai-devday-exchange.webp");
     expect(link.querySelector("svg")).not.toBeNull();
   });
 });

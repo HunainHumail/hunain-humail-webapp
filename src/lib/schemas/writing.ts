@@ -10,6 +10,8 @@ export const writingItemSchema = z.object({
   date: z.string().min(1),
   url: z.string().url().optional(),
   summary: z.string().min(1),
+  image: z.string().min(1).optional(),
+  imageAlt: z.string().min(1).optional(),
   order: z.number(),
   status: z.enum(["draft", "published"]),
   updatedAt: z.string().min(1),

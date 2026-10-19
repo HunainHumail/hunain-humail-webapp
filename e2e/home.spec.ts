@@ -31,7 +31,7 @@ const sections = [
     id: "#writing",
     index: "04",
     heading: "Thinking out loud.",
-    seed: "AI-native delivery",
+    seed: "OpenAI DevDay Exchange",
     nav: "Writing",
   },
   {

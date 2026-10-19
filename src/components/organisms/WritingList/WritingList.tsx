@@ -34,7 +34,7 @@ function WritingCards({
 }) {
   return (
     <ul
-      className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2"
+      className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3"
       aria-label={listLabel}
     >
       {items.map((item) => (
@@ -43,9 +43,12 @@ function WritingCards({
             dateLabel={formatWritingDate(item.date)}
             typeLabel={WRITING_TYPE_LABELS[item.type]}
             title={item.title}
-            venue={item.venue}
-            summary={item.summary}
+            venue={item.type === "post" ? undefined : item.venue}
+            summary={item.type === "post" ? undefined : item.summary}
             href={item.url}
+            ctaLabel={item.type === "post" ? "View on LinkedIn" : undefined}
+            imageSrc={item.image}
+            imageAlt={item.imageAlt}
           />
         </li>
       ))}

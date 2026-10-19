@@ -95,17 +95,29 @@ describe("Home", () => {
       "https://www.linkedin.com/in/hunain-humail",
     );
     expect(jsonLd?.textContent).toContain("mailto:raohunain@hotmail.com");
+    const socialNav = screen.getByRole("navigation", { name: "Social links" });
     for (const social of siteSettingsSeed.socials) {
-      const links = screen.getAllByRole("link", {
-        name: new RegExp(social.label, "i"),
+      const link = within(socialNav).getByRole("link", {
+        name: new RegExp(`^${social.label}$`, "i"),
       });
-      expect(links.length).toBeGreaterThan(0);
-      for (const link of links) {
-        expect(link).toHaveAttribute("href", social.href);
-        expect(link).toHaveAttribute("target", "_blank");
-        expect(link).toHaveAttribute("rel", "noopener noreferrer");
-      }
+      expect(link).toHaveAttribute("href", social.href);
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
     }
+    expect(
+      within(socialNav).getByRole("link", { name: /^LinkedIn$/i }),
+    ).toHaveAttribute("href", "https://www.linkedin.com/in/hunain-humail");
+
+    const openai = screen.getByRole("link", {
+      name: /OpenAI DevDay Exchange — Community event, Dubai/i,
+    });
+    expect(openai).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/feed/update/urn:li:activity:7516513022803222528/",
+    );
+    expect(openai).toHaveAttribute("target", "_blank");
+    expect(openai).toHaveAttribute("rel", "noopener noreferrer");
+    expect(openai).toHaveTextContent("View on LinkedIn");
   });
 
   it("generateMetadata uses settings SEO and the site url", async () => {

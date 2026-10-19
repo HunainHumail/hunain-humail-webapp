@@ -25,6 +25,12 @@ describe("rewriteLinkedInUrls", () => {
     }
   });
 
+  it("leaves LinkedIn activity permalinks unchanged", () => {
+    const activity =
+      "https://www.linkedin.com/feed/update/urn:li:activity:7516513022803222528/";
+    expect(rewriteLinkedInUrls(activity)).toBe(activity);
+  });
+
   it("leaves github, mailto, and the LinkedIn label untouched", () => {
     expect(rewriteLinkedInUrls("https://github.com/hunainhumail")).toBe(
       "https://github.com/hunainhumail",

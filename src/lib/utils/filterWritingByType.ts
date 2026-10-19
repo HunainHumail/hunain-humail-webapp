@@ -14,20 +14,45 @@ export const WRITING_TYPE_GROUP_LABELS: Record<WritingType, string> = {
   post: "Posts",
 };
 
-export const WRITING_TYPE_ORDER: WritingType[] = ["talk", "award", "post"];
+export const WRITING_TYPE_ORDER: WritingType[] = ["post", "talk", "award"];
 
 export const WRITING_FILTER_TABS: { value: WritingFilterType; label: string }[] =
   [
     { value: "all", label: "All" },
+    { value: "post", label: "Posts" },
     { value: "talk", label: "Talks" },
     { value: "award", label: "Awards" },
-    { value: "post", label: "Posts" },
   ];
 
 export interface WritingTypeGroup {
   type: WritingType;
   label: string;
   items: WritingItem[];
+}
+
+export function compareWritingItems(a: WritingItem, b: WritingItem): number {
+  const aPost = a.type === "post";
+  const bPost = b.type === "post";
+  if (aPost && bPost) {
+    const byDate = b.date.localeCompare(a.date);
+    if (byDate !== 0) {
+      return byDate;
+    }
+    return a.order - b.order;
+  }
+  if (aPost) {
+    return -1;
+  }
+  if (bPost) {
+    return 1;
+  }
+  return a.order - b.order;
+}
+
+export function sortWritingItems(
+  items: readonly WritingItem[],
+): WritingItem[] {
+  return items.slice().sort(compareWritingItems);
 }
 
 export function filterWritingByType(
@@ -39,7 +64,7 @@ export function filterWritingByType(
       ? items.slice()
       : items.filter((item) => item.type === type);
 
-  return next.sort((a, b) => a.order - b.order);
+  return sortWritingItems(next);
 }
 
 export function groupWritingByType(
@@ -48,8 +73,6 @@ export function groupWritingByType(
   return WRITING_TYPE_ORDER.map((type) => ({
     type,
     label: WRITING_TYPE_GROUP_LABELS[type],
-    items: items
-      .filter((item) => item.type === type)
-      .sort((a, b) => a.order - b.order),
+    items: sortWritingItems(items.filter((item) => item.type === type)),
   })).filter((group) => group.items.length > 0);
 }

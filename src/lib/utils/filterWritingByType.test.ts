@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { WritingItem } from "@/lib/schemas/writing";
 import { writingSeed } from "@/lib/seed/writing";
+import { getLinkedInWritingItems } from "@/services/writing";
 import {
   filterWritingByType,
   groupWritingByType,
@@ -18,14 +19,20 @@ const baseItem: WritingItem = {
   updatedAt: "2026-01-01T00:00:00.000Z",
 };
 
+const writingItems = [...getLinkedInWritingItems(), ...writingSeed];
+
 describe("filterWritingByType", () => {
-  it("returns all items sorted by order when type is all", () => {
+  it("returns posts newest first, then talks and awards by order", () => {
     const items: WritingItem[] = [
       { ...baseItem, id: "b", order: 1, type: "award" },
+      { ...baseItem, id: "older", order: 9, type: "post", date: "2026-01-01" },
       { ...baseItem, id: "c", order: 0, type: "talk" },
+      { ...baseItem, id: "newer", order: 8, type: "post", date: "2026-10-16" },
     ];
 
     expect(filterWritingByType(items, "all").map((item) => item.id)).toEqual([
+      "newer",
+      "older",
       "c",
       "b",
     ]);
@@ -54,16 +61,21 @@ describe("filterWritingByType", () => {
 });
 
 describe("groupWritingByType", () => {
-  it("groups seed items in talk, award, post order", () => {
-    const groups = groupWritingByType(writingSeed);
+  it("groups items in post, talk, award order with posts newest first", () => {
+    const groups = groupWritingByType(writingItems);
     expect(groups.map((group) => group.type)).toEqual([
+      "post",
       "talk",
       "award",
-      "post",
     ]);
-    expect(groups[0]?.label).toBe("Talks");
+    expect(groups[0]?.label).toBe("Posts");
+    expect(groups[0]?.items.map((item) => item.date)).toEqual([
+      "2026-10-16",
+      "2026-10-05",
+      "2026-09-26",
+    ]);
     expect(groups[1]?.items).toHaveLength(1);
-    expect(groups[2]?.items).toHaveLength(3);
+    expect(groups[2]?.items).toHaveLength(1);
   });
 
   it("omits empty type groups", () => {

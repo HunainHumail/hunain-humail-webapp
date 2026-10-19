@@ -1,5 +1,4 @@
 import type { WritingItem } from "@/lib/schemas/writing";
-import { LINKEDIN_PROFILE_URL } from "@/lib/utils/rewriteLinkedInUrls";
 
 const updatedAt = "2026-10-18T00:00:00.000Z";
 
@@ -25,45 +24,6 @@ export const writingSeed: WritingItem[] = [
     summary:
       "Winner of a Google Hackathon — a product sprint that shipped a working prototype under a tight deadline.",
     order: 1,
-    status: "published",
-    updatedAt,
-  },
-  {
-    id: "writing-ai-native-delivery",
-    type: "post",
-    title: "AI-native delivery",
-    venue: "LinkedIn",
-    date: "2026-09-12",
-    url: LINKEDIN_PROFILE_URL,
-    summary:
-      "Prompt to PR — automated build, test, and release so GenAI work ships on a boring, repeatable train.",
-    order: 2,
-    status: "published",
-    updatedAt,
-  },
-  {
-    id: "writing-agentic-sdlc",
-    type: "post",
-    title: "Agentic SDLC",
-    venue: "LinkedIn",
-    date: "2026-07-08",
-    url: LINKEDIN_PROFILE_URL,
-    summary:
-      "Where agents sit in the software loop: specs, patches, tests, and a human gate before production.",
-    order: 3,
-    status: "published",
-    updatedAt,
-  },
-  {
-    id: "writing-production-evals",
-    type: "post",
-    title: "Production evals for agents",
-    venue: "LinkedIn",
-    date: "2026-05-20",
-    url: LINKEDIN_PROFILE_URL,
-    summary:
-      "Placeholder notes on eval harnesses and guardrails that keep agent workflows reliable in production.",
-    order: 4,
     status: "published",
     updatedAt,
   },
