@@ -20,6 +20,7 @@ export interface HomeTemplateProps {
   now: NowItem[];
   work: WorkItem[];
   writing: WritingItem[];
+  knownWorkSlugs?: readonly string[];
 }
 
 function navFor(settings: SiteSettings, href: string): NavItem | undefined {
@@ -35,6 +36,7 @@ export function HomeTemplate({
   now,
   work,
   writing,
+  knownWorkSlugs,
 }: HomeTemplateProps) {
   const storyNav = navFor(settings, "#story");
   const nowNav = navFor(settings, "#now");
@@ -66,6 +68,7 @@ export function HomeTemplate({
         label={workNav?.label}
         viewAllHref="/work"
         showFilters={false}
+        knownWorkSlugs={knownWorkSlugs}
       />
       <WritingList
         items={writing}

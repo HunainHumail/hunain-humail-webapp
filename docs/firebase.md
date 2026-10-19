@@ -39,6 +39,6 @@ Public pages fall back to `src/lib/seed` when Firebase env is missing, a collect
 Spark hosting serves static files only. Production is a static export:
 
 - `npm run build:static` (or `STATIC_EXPORT=true npm run build`) writes `out/`.
-- `firebase.json` hosting `public` is `out/`, with `cleanUrls` and a rewrite of unknown `/admin/**` paths to `/admin.html`. `predeploy` runs `npm run build:static`.
-- Public pages read Firestore with the client SDK at build time and fall back to seed when a collection is empty or the read fails. Admin pages are static shells; the Firebase JS SDK runs in the browser and security rules enforce the admin email.
+- `firebase.json` hosting `public` is `out/`, with `cleanUrls`, a rewrite of unknown `/admin/**` paths to `/admin.html`, and unknown `/work/**` paths to `/work/view.html` (new CMS slugs after the last export). `predeploy` runs `npm run build:static`.
+- Public pages bake Firestore or seed into static HTML, then hydrate and read published docs live (see `docs/live-content.md`). Admin pages are static shells; the Firebase JS SDK runs in the browser and security rules enforce the admin email.
 - `npm run lhci` scores the exported site (performance, accessibility, best practices, SEO at 0.95). It is not part of the default build.

@@ -19,6 +19,8 @@
 /.next/
 /.next-3200/
 /.next-build/
+/.next-verify/
+/.next-verify-static/
 /out/
 /.lighthouseci/
 

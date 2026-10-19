@@ -1,0 +1,3 @@
+# Live CMS content
+
+The static export bakes published seed/Firestore into HTML so first paint and SEO stay instant. After hydration, `useLiveContent` lazily loads the Firebase JS SDK and reads each public collection once (shared cache, ~4s timeout). Firestore documents override that HTML by `id`/`slug`; empty, draft, failed, or slow reads keep the static payload so the page never blanks. Public queries and rules both require `status == "published"`. New work slugs added after the last build open at `/work/view?slug=…` (cards link there; Hosting also rewrites unknown `/work/**` to that page). Rebuild when you need fresh crawler HTML, Open Graph images, sitemap entries, or statically generated `/work/[slug]` files.

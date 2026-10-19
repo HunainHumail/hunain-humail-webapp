@@ -1,4 +1,5 @@
 export { useAuth, type UseAuthResult } from "./useAuth";
+export { useClientSeoTitle, useLiveContent } from "./useLiveContent";
 export { useCollection, type UseCollectionResult } from "./useCollection";
 export { useDocEditor, type UseDocEditorResult } from "./useDocEditor";
 export { useImageUpload } from "./useImageUpload";

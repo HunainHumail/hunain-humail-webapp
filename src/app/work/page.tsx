@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WorkIndexTemplate } from "@/components/templates";
+import { WorkIndexLive } from "@/app/_live/WorkIndexLive";
 import { getSiteUrl } from "@/lib/env";
 import { buildWorkIndexMetadata } from "@/lib/seo";
 import { getProfile } from "@/services/profile";
@@ -19,10 +19,6 @@ export default async function WorkIndexPage() {
     getProfile(),
   ]);
   return (
-    <WorkIndexTemplate
-      settings={settings}
-      items={items}
-      avatars={profile.avatars}
-    />
+    <WorkIndexLive settings={settings} items={items} profile={profile} />
   );
 }

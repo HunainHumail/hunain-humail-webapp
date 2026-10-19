@@ -119,6 +119,31 @@ describe("WorkGrid", () => {
     expect(featuredItem).toHaveClass("lg:col-span-3");
   });
 
+  it("links CMS-only slugs to the client fallback route", () => {
+    const seed = workSeed[0];
+    if (!seed) {
+      throw new Error("Expected work seed");
+    }
+    const extra = {
+      ...seed,
+      id: "work-cms-new",
+      slug: "cms-new",
+      title: "CMS New Project",
+    };
+
+    render(
+      <WorkGrid
+        items={[extra]}
+        knownWorkSlugs={workSeed.map((item) => item.slug)}
+        showFilters={false}
+      />,
+    );
+
+    expect(
+      screen.getByRole("link", { name: /CMS New Project/i }),
+    ).toHaveAttribute("href", "/work/view?slug=cms-new");
+  });
+
   it("pages the grid with Load more", async () => {
     const user = userEvent.setup();
     render(<WorkGrid items={workSeed} pageSize={12} />);

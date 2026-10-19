@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { HomeTemplate } from "@/components/templates";
+import { HomeLive } from "@/app/_live/HomeLive";
 import { getSiteUrl } from "@/lib/env";
 import { buildHomeMetadata, buildPersonJsonLd, serializeJsonLd } from "@/lib/seo";
 import { getProfile } from "@/services/profile";
@@ -36,7 +36,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
-      <HomeTemplate
+      <HomeLive
         settings={settings}
         profile={profile}
         story={story}

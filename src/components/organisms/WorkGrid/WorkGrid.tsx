@@ -17,6 +17,7 @@ import {
   type WorkFilterCategory,
 } from "@/lib/utils/filterWorkByCategory";
 import { workCoverAlt } from "@/lib/utils/workCover";
+import { workDetailHref } from "@/lib/utils/workHref";
 import { workMetaLabel } from "@/lib/utils/workMeta";
 
 export interface WorkGridProps {
@@ -31,6 +32,7 @@ export interface WorkGridProps {
   totalCount?: number;
   showFilters?: boolean;
   pageSize?: number;
+  knownWorkSlugs?: readonly string[];
   className?: string;
 }
 
@@ -46,6 +48,7 @@ export function WorkGrid({
   totalCount,
   showFilters = true,
   pageSize,
+  knownWorkSlugs,
   className,
 }: WorkGridProps) {
   const { category, setCategory, filtered, visible, canLoadMore, loadMore } =
@@ -113,7 +116,7 @@ export function WorkGrid({
                     title={item.title}
                     categoryLabel={WORK_CATEGORY_LABELS[item.category]}
                     summary={item.summary}
-                    href={`/work/${item.slug}`}
+                    href={workDetailHref(item.slug, knownWorkSlugs)}
                     featured={item.featured}
                     meta={workMetaLabel(item)}
                     coverUrl={item.coverUrl}

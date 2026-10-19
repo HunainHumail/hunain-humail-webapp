@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CaseStudyTemplate } from "@/components/templates";
+import { WorkDetailLive } from "@/app/_live/WorkDetailLive";
 import { getSiteUrl } from "@/lib/env";
 import { buildWorkMetadata } from "@/lib/seo";
 import { getProfile } from "@/services/profile";
@@ -42,10 +42,6 @@ export default async function WorkCaseStudyPage({
   }
 
   return (
-    <CaseStudyTemplate
-      settings={settings}
-      item={item}
-      avatars={profile.avatars}
-    />
+    <WorkDetailLive settings={settings} item={item} profile={profile} />
   );
 }

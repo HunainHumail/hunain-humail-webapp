@@ -9,12 +9,14 @@ export interface WorkIndexTemplateProps {
   settings: SiteSettings;
   items: WorkItem[];
   avatars?: readonly ProfileAvatarItem[];
+  knownWorkSlugs?: readonly string[];
 }
 
 export function WorkIndexTemplate({
   settings,
   items,
   avatars,
+  knownWorkSlugs,
 }: WorkIndexTemplateProps) {
   const workNav =
     settings.nav.find((item) => item.href === "/work") ??
@@ -31,6 +33,7 @@ export function WorkIndexTemplate({
         headingLevel={1}
         sectionId="all-projects"
         pageSize={WORK_INDEX_PAGE_SIZE}
+        knownWorkSlugs={knownWorkSlugs}
       />
     </SiteTemplate>
   );
