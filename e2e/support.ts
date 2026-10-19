@@ -34,6 +34,7 @@ export const allCaseStudies = [
   { slug: "savesor", title: "Savesor Smart Hotel Rooms", category: "client-apps" },
   { slug: "tecobi", title: "Tecobi", category: "client-apps" },
   { slug: "freelance-android", title: "Freelance Android", category: "client-apps" },
+  { slug: "purevpn", title: "PureVPN", category: "products" },
 ] as const;
 
 export const homePreviewCaseStudies = [

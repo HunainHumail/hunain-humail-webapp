@@ -944,6 +944,33 @@ That stretch is how I started shipping mobile software for real clients, before 
     featured: false,
     updatedAt,
   },
+  {
+    id: "work-purevpn",
+    slug: "purevpn",
+    title: "PureVPN",
+    category: "products",
+    summary:
+      "Cross-platform React Native VPN SDK for Android, iOS, Windows, and macOS, built at Disrupt / PureSquare.",
+    role: "GenAI engineer",
+    company: "Disrupt / PureSquare",
+    period: "2023–2025",
+    stack: ["React Native", "Swift", "Kotlin", "Redux", "Node.js"],
+    highlights: [
+      "Senior then Lead on the React Native VPN SDK",
+      "Shared business-logic module for native and React Native",
+      "Android, iOS, Windows, and macOS from one core",
+    ],
+    body: `I spent February 2023 to August 2025 at Disrupt / PureSquare in the cybersecurity team, first as a senior engineer and then as lead.
+
+The work was a cross-platform VPN SDK for Android, iOS, Windows, and macOS. Native bridges in Swift and Kotlin sit under a shared business-logic module that React Native apps call into. Redux and Node.js cover the shared app layer.
+
+I also built VPN apps on that SDK. One core, instead of a new networking stack for every brand.`,
+    coverUrl: "/projects/purevpn/cover.webp",
+    order: 29,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
 ];
 
 export const workSeed: WorkItem[] = workItems.slice().sort((a, b) => a.order - b.order);

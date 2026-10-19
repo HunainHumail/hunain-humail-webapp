@@ -41,6 +41,7 @@ const ALLOWED_SLUGS = [
   "mh1",
   "my-float",
   "omanoil",
+  "purevpn",
   "royal-gas",
   "savesor",
   "shopscope",

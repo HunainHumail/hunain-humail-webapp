@@ -1,11 +1,12 @@
 # Work projects import
 
-Compared `/workspace/Projects`, LinkedIn, inventory, the Projects doc, Upwork copy, and `/workspace/To be uploaded` against `src/lib/seed/work.ts` (17 published cards).
+Compared `/workspace/Projects`, LinkedIn, inventory, the Projects doc, Upwork copy, and `/workspace/To be uploaded` against `src/lib/seed/work.ts` (30 published cards).
 
 ## Added
 
 | title | slug | category | source |
 | --- | --- | --- | --- |
+| PureVPN | purevpn | Products | LinkedIn + inventory + Projects doc |
 | ShopScope | shopscope | Products | Projects/INDEX + details |
 | Coachendo | coachendo | AI systems | LinkedIn + Projects details |
 | Boon & Bliss | boon-and-bliss | Products | Projects doc + details |

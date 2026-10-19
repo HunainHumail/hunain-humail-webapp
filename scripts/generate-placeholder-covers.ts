@@ -46,6 +46,11 @@ export const PLACEHOLDER_COVERS: PlaceholderCover[] = [
     title: "Freelance Android",
     label: "Freelancer.com / 2017-2020",
   },
+  {
+    slug: "purevpn",
+    title: "PureVPN",
+    label: "Disrupt / PureSquare / 2023-2025",
+  },
 ];
 
 function escapeXml(value: string): string {
