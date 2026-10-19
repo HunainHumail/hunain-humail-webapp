@@ -13,7 +13,10 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  serverTimestamp,
   setDoc,
+  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { getBytes, ref, uploadBytes } from "firebase/storage";
@@ -206,5 +209,57 @@ describe("Firebase security rules", () => {
 
   it("keeps the admin email aligned with the product rules", () => {
     expect(ADMIN_EMAIL).toBe("hunainhumail786@gmail.com");
+  });
+
+  it("lets only the verified admin create and delete CLI sessions", async () => {
+    const payload = {
+      refreshToken: "refresh-token",
+      email: ADMIN_EMAIL,
+      code: "AB12CD",
+      createdAt: serverTimestamp(),
+    };
+
+    await assertFails(
+      setDoc(doc(unauth().firestore(), "cliSessions", "s1"), payload),
+    );
+    await assertFails(
+      setDoc(doc(admin({ email: "other@example.com" }).firestore(), "cliSessions", "s1"), payload),
+    );
+    await assertFails(
+      setDoc(
+        doc(admin().firestore(), "cliSessions", "s1"),
+        { ...payload, email: "other@example.com" },
+      ),
+    );
+    await assertSucceeds(
+      setDoc(doc(admin().firestore(), "cliSessions", "s1"), payload),
+    );
+    await assertFails(
+      updateDoc(doc(admin().firestore(), "cliSessions", "s1"), { code: "ZZZZZZ" }),
+    );
+    await assertFails(getDocs(collection(unauth().firestore(), "cliSessions")));
+    await assertFails(deleteDoc(doc(unauth().firestore(), "cliSessions", "s1")));
+    await assertSucceeds(deleteDoc(doc(admin().firestore(), "cliSessions", "s1")));
+  });
+
+  it("allows unauthenticated get of a CLI session only for ten minutes", async () => {
+    await testEnv.withSecurityRulesDisabled(async (context) => {
+      const db = context.firestore();
+      await setDoc(doc(db, "cliSessions", "fresh"), {
+        refreshToken: "refresh-token",
+        email: ADMIN_EMAIL,
+        code: "AB12CD",
+        createdAt: Timestamp.fromMillis(Date.now() - 60_000),
+      });
+      await setDoc(doc(db, "cliSessions", "stale"), {
+        refreshToken: "refresh-token",
+        email: ADMIN_EMAIL,
+        code: "AB12CD",
+        createdAt: Timestamp.fromMillis(Date.now() - 11 * 60_000),
+      });
+    });
+
+    await assertSucceeds(getDoc(doc(unauth().firestore(), "cliSessions", "fresh")));
+    await assertFails(getDoc(doc(unauth().firestore(), "cliSessions", "stale")));
   });
 });

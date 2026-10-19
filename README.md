@@ -1,6 +1,6 @@
 # hunain-humail-webapp
 
-Personal profile website of **Hunain Humail**: software engineer building with AI, fintech and open finance. Includes a built-in CMS (`/admin`).
+Personal profile website of **Hunain Humail**: software engineer building with AI, fintech and open finance. Includes a built-in CMS (`/admin`) and a terminal CMS CLI (`npm run cms`). See [`docs/cms-cli.md`](docs/cms-cli.md).
 
 Live site: [https://hunain-humail-webapp.web.app](https://hunain-humail-webapp.web.app)
 
@@ -31,7 +31,7 @@ Auth `:9099`, Firestore `:8080`, Storage `:9199`, emulator UI `:4000`. For local
 
 Published pages read Firestore at build time and fall back to `src/lib/seed` when a collection is empty or the read fails.
 
-There is no service account in this setup. Sign in at `/admin` with the admin Google account, then use **Import seed data** on the dashboard. That write is admin-only and an idempotent upsert of `profile`, `settings`, `story`, `now`, `work`, and `writing`.
+There is no service account in this setup. Sign in at `/admin` with the admin Google account, then use **Import seed data** on the dashboard — or run `npm run cms -- seed` after `npm run cms -- login`. Both writes are admin-only and an idempotent upsert of `profile`, `settings`, `story`, `now`, `work`, and `writing`. See [`docs/cms-cli.md`](docs/cms-cli.md).
 
 `npm run seed` is optional and only for the emulator or a machine that already has `GOOGLE_APPLICATION_CREDENTIALS`.
 

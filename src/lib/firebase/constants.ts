@@ -9,11 +9,12 @@ export const COLLECTIONS = {
   testimonials: "testimonials",
   settings: "settings",
   messages: "messages",
+  cliSessions: "cliSessions",
 } as const;
 
 export type ContentCollection = Exclude<
   (typeof COLLECTIONS)[keyof typeof COLLECTIONS],
-  "messages"
+  "messages" | "cliSessions"
 >;
 
 export const PROFILE_DOC_ID = "main";

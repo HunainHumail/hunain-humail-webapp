@@ -57,4 +57,8 @@ export {
   linkedinPostsSchema,
   type LinkedInPost,
 } from "./linkedinPost";
+export {
+  cliSessionWriteSchema,
+  type CliSessionWrite,
+} from "./cliSession";
 

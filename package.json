@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:rules": "firebase emulators:exec --only firestore,storage --project demo-hunain-humail --config firebase.json \"vitest run --config vitest.rules.config.ts\"",
+    "cms": "tsx scripts/cms.ts",
     "seed": "tsx scripts/seed.ts",
     "import-covers": "tsx scripts/import-covers.ts",
     "import-screenshot-covers": "tsx scripts/import-screenshot-covers.ts",

@@ -30,7 +30,7 @@ Set the same project id in both places:
 
 ## Rules
 
-Published content is publicly readable. Writes require Google Auth with `email == hunainhumail786@gmail.com` and `email_verified`. `messages` are create-only (validated shape); only the admin can read them, mark them read, or delete them. `storage.rules` keeps the same admin check for `images/**` (public read, admin writes under 5MB) but Storage is not a deploy target: the Spark plan has not enabled it. The CMS keeps an image URL field and shows upload only when Storage is enabled.
+Published content is publicly readable. Writes require Google Auth with `email == hunainhumail786@gmail.com` and `email_verified`. `messages` are create-only (validated shape); only the admin can read them, mark them read, or delete them. `cliSessions` is used by the CMS CLI login: admin create/delete, public get for 10 minutes, no list or update. See [`docs/cms-cli.md`](cms-cli.md). `storage.rules` keeps the same admin check for `images/**` (public read, admin writes under 5MB) but Storage is not a deploy target: the Spark plan has not enabled it. The CMS keeps an image URL field and shows upload only when Storage is enabled.
 
 Public pages fall back to `src/lib/seed` when Firebase env is missing, a collection is empty, or a read fails. With no service account, the admin dashboard **Import seed data** button upserts that seed after the owner signs in. The write is limited to the admin email and is safe to run again.
 

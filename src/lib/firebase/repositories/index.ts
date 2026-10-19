@@ -17,6 +17,10 @@ export {
   type ContactMessageDoc,
   type MessagesRepository,
 } from "./messagesRepository";
+export {
+  createCliSession,
+  type CliSessionCreateInput,
+} from "./cliSessionsRepository";
 
 export const profileRepository =
   createCollectionRepository<Profile>(COLLECTIONS.profile);

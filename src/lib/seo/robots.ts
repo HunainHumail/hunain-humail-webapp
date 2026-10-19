@@ -7,7 +7,7 @@ export function buildRobots(siteUrl: string): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/admin",
+      disallow: ["/admin", "/cli-login"],
     },
     sitemap: `${base}/sitemap.xml`,
   };

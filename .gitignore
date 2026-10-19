@@ -54,3 +54,6 @@ pubsub-debug.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local CMS CLI scratch files
+.hh-cms*

@@ -8,3 +8,7 @@ export {
   WorkIndexTemplate,
   type WorkIndexTemplateProps,
 } from "./WorkIndexTemplate";
+export {
+  CliLoginTemplate,
+  type CliLoginTemplateProps,
+} from "./CliLoginTemplate";
