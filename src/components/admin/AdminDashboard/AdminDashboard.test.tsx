@@ -16,6 +16,7 @@ vi.mock("@/hooks/useAuth", () => ({
 
 vi.mock("@/services/importSeed", () => ({
   importSeedData: vi.fn(),
+  formatSeedImportSummary: vi.fn(),
 }));
 
 describe("AdminDashboard", () => {

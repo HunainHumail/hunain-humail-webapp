@@ -12,6 +12,7 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
+import { stripUndefined } from "@/lib/utils/stripUndefined";
 import { getFirebaseDb } from "../client";
 import type { ContentCollection } from "../constants";
 import { normalizeDocument } from "../normalizeDocument";
@@ -124,9 +125,17 @@ export function createCollectionRepository<T>(
 
     async upsert(id: string, data: T): Promise<void> {
       const firestore = requireFirestore();
+      const payload = stripUndefined({ ...(data as Record<string, unknown>) });
+      if (
+        typeof payload !== "object" ||
+        payload === null ||
+        Array.isArray(payload)
+      ) {
+        throw new Error("Document is invalid");
+      }
       await setDoc(
         doc(firestore, collectionName, id),
-        { ...(data as Record<string, unknown>) },
+        payload as Record<string, unknown>,
         { merge: true },
       );
     },

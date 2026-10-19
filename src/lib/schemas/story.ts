@@ -5,8 +5,8 @@ export const storyItemSchema = z.object({
   year: z.string().min(1),
   title: z.string().min(1),
   body: z.string().min(1),
-  tags: z.array(z.string().min(1)),
-  order: z.number(),
+  tags: z.array(z.string().min(1)).default([]),
+  order: z.number().default(0),
   status: z.enum(["draft", "published"]),
   updatedAt: z.string().min(1),
 });

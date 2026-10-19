@@ -5,7 +5,7 @@ export const nowItemSchema = z.object({
   label: z.string().min(1),
   title: z.string().min(1),
   body: z.string().min(1),
-  order: z.number(),
+  order: z.number().default(0),
   status: z.enum(["draft", "published"]),
   updatedAt: z.string().min(1),
 });

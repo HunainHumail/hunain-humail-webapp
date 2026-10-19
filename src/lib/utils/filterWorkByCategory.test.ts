@@ -17,6 +17,8 @@ const baseItem: WorkItem = {
   stack: ["TypeScript"],
   highlights: ["One"],
   body: "Body",
+  gallery: [],
+  links: [],
   order: 2,
   status: "published",
   featured: false,

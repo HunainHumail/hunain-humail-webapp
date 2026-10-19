@@ -41,6 +41,13 @@ describe("workItemSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  it("defaults missing gallery and links so admin parse stays tolerant", () => {
+    const parsed = workItemSchema.parse(valid);
+    expect(parsed.gallery).toEqual([]);
+    expect(parsed.links).toEqual([]);
+    expect(parsed.featured).toBe(true);
+  });
+
   it("accepts an optional gallery of image URLs", () => {
     const parsed = workItemSchema.parse({
       ...valid,

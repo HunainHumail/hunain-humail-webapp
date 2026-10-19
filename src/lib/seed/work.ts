@@ -1,4 +1,8 @@
-import type { WorkGalleryItem, WorkItem } from "@/lib/schemas/work";
+import {
+  workItemSchema,
+  type WorkGalleryItem,
+  type WorkItem,
+} from "@/lib/schemas/work";
 
 const VPN_GALLERY_APPS = [
   { slug: "aviteovpn", caption: "AviteoVPN" },
@@ -30,7 +34,7 @@ function vpnGalleryItems(): WorkGalleryItem[] {
 
 const updatedAt = "2026-10-18T00:00:00.000Z";
 
-const workItems: WorkItem[] = [
+const workItems = [
   {
     id: "work-trinnect",
     slug: "trinnect",
@@ -973,5 +977,8 @@ I also built VPN apps on that SDK. One core, instead of a new networking stack f
   },
 ];
 
-export const workSeed: WorkItem[] = workItems.slice().sort((a, b) => a.order - b.order);
+export const workSeed: WorkItem[] = workItems
+  .slice()
+  .sort((a, b) => a.order - b.order)
+  .map((item) => workItemSchema.parse(item));
 

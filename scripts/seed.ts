@@ -1,39 +1,29 @@
 import { getAdminFirestore } from "../src/lib/firebase/admin";
 import {
-  COLLECTIONS,
-  PROFILE_DOC_ID,
-  SETTINGS_DOC_ID,
-} from "../src/lib/firebase/constants";
-import { nowSeed } from "../src/lib/seed/now";
-import { profileSeed } from "../src/lib/seed/profile";
-import { siteSettingsSeed } from "../src/lib/seed/settings";
-import { storySeed } from "../src/lib/seed/story";
-import { workSeed } from "../src/lib/seed/work";
-import { writingSeed } from "../src/lib/seed/writing";
+  buildSeedImportPayload,
+} from "../src/lib/seed/importPayload";
+import { chunkItems } from "../src/lib/utils/chunkItems";
 
 async function seed(): Promise<void> {
   const db = getAdminFirestore();
+  const payload = buildSeedImportPayload();
 
-  await db.collection(COLLECTIONS.profile).doc(PROFILE_DOC_ID).set(profileSeed);
-  await db
-    .collection(COLLECTIONS.settings)
-    .doc(SETTINGS_DOC_ID)
-    .set(siteSettingsSeed);
-
-  for (const item of storySeed) {
-    await db.collection(COLLECTIONS.story).doc(item.id).set(item);
-  }
-  for (const item of nowSeed) {
-    await db.collection(COLLECTIONS.now).doc(item.id).set(item);
-  }
-  for (const item of workSeed) {
-    await db.collection(COLLECTIONS.work).doc(item.id).set(item);
-  }
-  for (const item of writingSeed) {
-    await db.collection(COLLECTIONS.writing).doc(item.id).set(item);
+  for (const chunk of chunkItems(payload.documents)) {
+    const batch = db.batch();
+    for (const document of chunk) {
+      batch.set(
+        db.collection(document.collection).doc(document.id),
+        document.data,
+        { merge: true },
+      );
+    }
+    await batch.commit();
   }
 
-  process.stdout.write("Seed complete.\n");
+  const summary = Object.entries(payload.counts)
+    .map(([name, count]) => `${name} ${count}`)
+    .join(", ");
+  process.stdout.write(`Seed complete (${summary}).\n`);
 }
 
 seed().catch((error: unknown) => {

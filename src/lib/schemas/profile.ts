@@ -25,7 +25,7 @@ export const profileAvatarSchema = z.object({
 
 export const profileSchema = z.object({
   status: z.enum(["draft", "published"]),
-  order: z.number(),
+  order: z.number().default(0),
   updatedAt: z.string().min(1),
   name: z.string().min(1),
   headline: z.string().min(1),

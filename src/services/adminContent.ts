@@ -1,4 +1,8 @@
-import type { AdminCollectionName } from "@/lib/admin/collections";
+import {
+  getCollectionConfig,
+  type AdminCollectionName,
+} from "@/lib/admin/collections";
+import { hydrateDocument } from "@/lib/admin/documentForm";
 import { isRecord } from "@/lib/admin/record";
 import type { CollectionRepository } from "@/lib/firebase";
 import {
@@ -32,23 +36,30 @@ function asAdminDocument(value: unknown): AdminDocument | null {
   return value as AdminDocument;
 }
 
-function wrap<T>(repository: CollectionRepository<T>): AdminRepository {
+function wrap<T>(
+  name: AdminCollectionName,
+  repository: CollectionRepository<T>,
+): AdminRepository {
+  const schema = getCollectionConfig(name).schema;
+
+  function toDocuments(items: T[]): AdminDocument[] {
+    return items.flatMap((item) => {
+      const document = asAdminDocument(item);
+      if (!document) {
+        return [];
+      }
+      const hydrated = asAdminDocument(hydrateDocument(schema, document));
+      return hydrated ? [hydrated] : [];
+    });
+  }
+
   return {
     async list() {
-      const items = await repository.list();
-      return items.flatMap((item) => {
-        const document = asAdminDocument(item);
-        return document ? [document] : [];
-      });
+      return toDocuments(await repository.list());
     },
     subscribe(onChange, onError) {
       return repository.subscribe((items) => {
-        onChange(
-          items.flatMap((item) => {
-            const document = asAdminDocument(item);
-            return document ? [document] : [];
-          }),
-        );
+        onChange(toDocuments(items));
       }, onError);
     },
     async upsert(id, data) {
@@ -64,12 +75,12 @@ function wrap<T>(repository: CollectionRepository<T>): AdminRepository {
 }
 
 const repositories: Record<AdminCollectionName, AdminRepository> = {
-  profile: wrap(profileRepository),
-  settings: wrap(settingsRepository),
-  story: wrap(storyRepository),
-  now: wrap(nowRepository),
-  work: wrap(workRepository),
-  writing: wrap(writingRepository),
+  profile: wrap("profile", profileRepository),
+  settings: wrap("settings", settingsRepository),
+  story: wrap("story", storyRepository),
+  now: wrap("now", nowRepository),
+  work: wrap("work", workRepository),
+  writing: wrap("writing", writingRepository),
 };
 
 export function getAdminRepository(name: AdminCollectionName): AdminRepository {

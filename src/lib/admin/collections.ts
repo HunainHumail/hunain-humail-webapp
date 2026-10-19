@@ -179,6 +179,14 @@ const writingFields = [
   { name: "date", label: "Date", type: "date" },
   { name: "url", label: "URL", type: "url", optional: true },
   { name: "summary", label: "Summary", type: "textarea" },
+  {
+    name: "image",
+    label: "Image",
+    type: "image",
+    optional: true,
+    description: "Optional card image. LinkedIn posts use /writing/<slug>.webp.",
+  },
+  { name: "imageAlt", label: "Image alt", type: "text", optional: true },
 ] as const satisfies readonly FieldConfig[];
 
 const settingsFields = [

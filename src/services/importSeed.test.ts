@@ -1,44 +1,24 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ADMIN_EMAIL } from "@/lib/admin";
-import { PROFILE_DOC_ID, SETTINGS_DOC_ID } from "@/lib/firebase/constants";
-import { nowSeed } from "@/lib/seed/now";
-import { profileSeed } from "@/lib/seed/profile";
-import { siteSettingsSeed } from "@/lib/seed/settings";
-import { storySeed } from "@/lib/seed/story";
-import { workSeed } from "@/lib/seed/work";
-import { writingSeed } from "@/lib/seed/writing";
+import { ADMIN_COLLECTION_NAMES } from "@/lib/admin/collections";
+import { buildSeedImportPayload } from "@/lib/seed/importPayload";
 
-const repos = vi.hoisted(() => ({
-  profile: { upsert: vi.fn() },
-  settings: { upsert: vi.fn() },
-  story: { upsert: vi.fn() },
-  now: { upsert: vi.fn() },
-  work: { upsert: vi.fn() },
-  writing: { upsert: vi.fn() },
-}));
-
+const commitBatchSets = vi.hoisted(() => vi.fn());
 const getFirebaseAuth = vi.hoisted(() => vi.fn());
 
 vi.mock("@/lib/firebase/client", () => ({
   getFirebaseAuth: () => getFirebaseAuth(),
 }));
 
-vi.mock("@/lib/firebase/repositories", () => ({
-  profileRepository: repos.profile,
-  settingsRepository: repos.settings,
-  storyRepository: repos.story,
-  nowRepository: repos.now,
-  workRepository: repos.work,
-  writingRepository: repos.writing,
+vi.mock("@/lib/firebase/batchWrite", () => ({
+  commitBatchSets: (...args: unknown[]) => commitBatchSets(...args),
 }));
 
 describe("importSeedData", () => {
   beforeEach(() => {
     getFirebaseAuth.mockReset();
-    for (const repo of Object.values(repos)) {
-      repo.upsert.mockReset();
-      repo.upsert.mockResolvedValue(undefined);
-    }
+    commitBatchSets.mockReset();
+    commitBatchSets.mockResolvedValue(undefined);
   });
 
   it("refuses to write when the signed-in user is not the admin", async () => {
@@ -47,26 +27,39 @@ describe("importSeedData", () => {
     await expect(importSeedData()).rejects.toThrow(
       "Only the admin can import seed data",
     );
-    expect(repos.profile.upsert).not.toHaveBeenCalled();
+    expect(commitBatchSets).not.toHaveBeenCalled();
   });
 
-  it("writes every seed collection for the admin", async () => {
+  it("writes every seed collection in admin-editor order and returns counts", async () => {
     getFirebaseAuth.mockReturnValue({
       currentUser: { email: ADMIN_EMAIL, emailVerified: true },
     });
     const { importSeedData } = await import("./importSeed");
-    await importSeedData();
-    expect(repos.profile.upsert).toHaveBeenCalledWith(
-      PROFILE_DOC_ID,
-      profileSeed,
+    const result = await importSeedData(() => "2026-10-19T12:00:00.000Z");
+    const payload = buildSeedImportPayload(() => "2026-10-19T12:00:00.000Z");
+
+    expect(result.counts).toEqual(payload.counts);
+    expect(result.total).toBe(payload.documents.length);
+    expect(commitBatchSets).toHaveBeenCalledTimes(ADMIN_COLLECTION_NAMES.length);
+
+    for (const [index, name] of ADMIN_COLLECTION_NAMES.entries()) {
+      const ops = commitBatchSets.mock.calls[index]?.[0] as Array<{
+        collection: string;
+        id: string;
+      }>;
+      expect(ops?.every((operation) => operation.collection === name)).toBe(true);
+      expect(ops).toHaveLength(payload.counts[name]);
+    }
+  });
+
+  it("surfaces the collection name when a batch fails", async () => {
+    getFirebaseAuth.mockReturnValue({
+      currentUser: { email: ADMIN_EMAIL, emailVerified: true },
+    });
+    commitBatchSets.mockRejectedValueOnce(new Error("permission-denied"));
+    const { importSeedData } = await import("./importSeed");
+    await expect(importSeedData()).rejects.toThrow(
+      /Failed to import profile \(1 docs\): permission-denied/,
     );
-    expect(repos.settings.upsert).toHaveBeenCalledWith(
-      SETTINGS_DOC_ID,
-      siteSettingsSeed,
-    );
-    expect(repos.story.upsert).toHaveBeenCalledTimes(storySeed.length);
-    expect(repos.now.upsert).toHaveBeenCalledTimes(nowSeed.length);
-    expect(repos.work.upsert).toHaveBeenCalledTimes(workSeed.length);
-    expect(repos.writing.upsert).toHaveBeenCalledTimes(writingSeed.length);
   });
 });

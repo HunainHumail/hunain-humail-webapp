@@ -26,10 +26,10 @@ export const seoSchema = z.object({
 
 export const siteSettingsSchema = z.object({
   status: z.enum(["draft", "published"]),
-  order: z.number(),
+  order: z.number().default(0),
   updatedAt: z.string().min(1),
   nav: z.array(navItemSchema).min(1),
-  socials: z.array(socialLinkSchema),
+  socials: z.array(socialLinkSchema).default([]),
   contact: contactSettingsSchema,
   seo: seoSchema,
 });

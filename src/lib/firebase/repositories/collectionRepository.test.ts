@@ -36,6 +36,7 @@ interface SampleDoc {
   title: string;
   status: string;
   order: number;
+  company?: string;
 }
 
 const repo = createCollectionRepository<SampleDoc>("story");
@@ -128,8 +129,12 @@ describe("createCollectionRepository", () => {
       status: "published",
       order: 0,
     };
-    await repo.upsert("a", data);
-    expect(setDoc).toHaveBeenCalled();
+    await repo.upsert("a", { ...data, company: undefined });
+    expect(setDoc).toHaveBeenCalledWith(
+      { path: "story/a" },
+      data,
+      { merge: true },
+    );
 
     await repo.delete("a");
     expect(deleteDoc).toHaveBeenCalled();

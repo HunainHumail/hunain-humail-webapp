@@ -12,7 +12,7 @@ export const writingItemSchema = z.object({
   summary: z.string().min(1),
   image: z.string().min(1).optional(),
   imageAlt: z.string().min(1).optional(),
-  order: z.number(),
+  order: z.number().default(0),
   status: z.enum(["draft", "published"]),
   updatedAt: z.string().min(1),
 });

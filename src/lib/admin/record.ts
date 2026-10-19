@@ -95,18 +95,4 @@ export function deletePath(
   return { ...source, [head]: deletePath(child, rest.join(".")) };
 }
 
-export function stripUndefined(value: unknown): unknown {
-  if (Array.isArray(value)) {
-    return value.map(stripUndefined);
-  }
-  if (!isRecord(value)) {
-    return value;
-  }
-  const entries = Object.entries(value).flatMap(([key, nested]) => {
-    if (nested === undefined) {
-      return [];
-    }
-    return [[key, stripUndefined(nested)] as const];
-  });
-  return Object.fromEntries(entries);
-}
+export { stripUndefined } from "@/lib/utils/stripUndefined";

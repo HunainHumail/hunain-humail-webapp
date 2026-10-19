@@ -38,11 +38,11 @@ export const workItemSchema = z.object({
   highlights: z.array(z.string().min(1)),
   body: z.string().min(1),
   coverUrl: imageUrlSchema.optional(),
-  gallery: z.array(workGalleryItemSchema).optional(),
-  links: z.array(workLinkSchema).optional(),
-  order: z.number(),
+  gallery: z.array(workGalleryItemSchema).default([]),
+  links: z.array(workLinkSchema).default([]),
+  order: z.number().default(0),
   status: z.enum(["draft", "published"]),
-  featured: z.boolean(),
+  featured: z.boolean().default(false),
   updatedAt: z.string().min(1),
 });
 

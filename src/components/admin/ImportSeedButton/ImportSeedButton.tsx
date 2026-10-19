@@ -11,8 +11,12 @@ import {
   DialogTitle,
 } from "@/components/admin/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
-import { importSeedData } from "@/services/importSeed";
+import {
+  formatSeedImportSummary,
+  importSeedData,
+} from "@/services/importSeed";
 import { cn } from "@/lib/utils/cn";
+import { toast } from "sonner";
 
 export interface ImportSeedButtonProps {
   className?: string;
@@ -34,13 +38,16 @@ export function ImportSeedButton({ className }: ImportSeedButtonProps) {
     setError(null);
     setNotice(null);
     try {
-      await importSeedData();
-      setNotice("Seed data imported.");
+      const result = await importSeedData();
+      const summary = formatSeedImportSummary(result.counts);
+      setNotice(summary);
+      toast.success(summary);
       setOpen(false);
     } catch (caught) {
-      setError(
-        caught instanceof Error ? caught.message : "Could not import seed data.",
-      );
+      const message =
+        caught instanceof Error ? caught.message : "Could not import seed data.";
+      setError(message);
+      toast.error(message);
     } finally {
       setPending(false);
     }
@@ -52,16 +59,18 @@ export function ImportSeedButton({ className }: ImportSeedButtonProps) {
         Import seed data
       </Button>
       {notice ? <p role="status">{notice}</p> : null}
-      {error ? <p role="alert">{error}</p> : null}
+      {!open && error ? <p role="alert">{error}</p> : null}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Import seed data?</DialogTitle>
             <DialogDescription>
-              This writes the built-in profile, story, now, work, writing, and
-              settings into Firestore.
+              This upserts the same profile, story, now, work (30 projects),
+              writing (talks, awards, and LinkedIn posts), and settings the
+              public site uses.
             </DialogDescription>
           </DialogHeader>
+          {error ? <p role="alert">{error}</p> : null}
           <DialogFooter>
             <Button
               type="button"

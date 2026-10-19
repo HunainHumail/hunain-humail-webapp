@@ -104,6 +104,28 @@ export function parseDocument(
   return { ok: true, data };
 }
 
+export function hydrateDocument(
+  schema: ZodTypeAny,
+  document: Record<string, unknown>,
+): Record<string, unknown> {
+  const parsed = schema.safeParse(document);
+  if (!parsed.success || !isRecord(parsed.data)) {
+    return document;
+  }
+  const stripped = stripUndefined(parsed.data);
+  if (!isRecord(stripped)) {
+    return document;
+  }
+  const id = typeof document.id === "string" ? document.id : undefined;
+  return id ? { ...stripped, id } : stripped;
+}
+
+export function formatSchemaIssues(error: ZodError): string {
+  return error.issues
+    .map((issue) => `${issue.path.join(".") || "document"}: ${issue.message}`)
+    .join("; ");
+}
+
 export function blankFromFields(
   fields: readonly FieldConfig[],
 ): Record<string, unknown> {

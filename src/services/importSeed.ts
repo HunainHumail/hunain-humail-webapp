@@ -1,36 +1,56 @@
 import { isAdmin } from "@/lib/admin";
+import { ADMIN_COLLECTION_NAMES } from "@/lib/admin/collections";
+import { commitBatchSets } from "@/lib/firebase/batchWrite";
 import { getFirebaseAuth } from "@/lib/firebase/client";
+import type { ContentCollection } from "@/lib/firebase/constants";
 import {
-  PROFILE_DOC_ID,
-  SETTINGS_DOC_ID,
-} from "@/lib/firebase/constants";
-import {
-  nowRepository,
-  profileRepository,
-  settingsRepository,
-  storyRepository,
-  workRepository,
-  writingRepository,
-} from "@/lib/firebase/repositories";
-import { nowSeed } from "@/lib/seed/now";
-import { profileSeed } from "@/lib/seed/profile";
-import { siteSettingsSeed } from "@/lib/seed/settings";
-import { storySeed } from "@/lib/seed/story";
-import { workSeed } from "@/lib/seed/work";
-import { writingSeed } from "@/lib/seed/writing";
+  buildSeedImportPayload,
+  type SeedImportResult,
+} from "@/lib/seed/importPayload";
 
-export async function importSeedData(): Promise<void> {
+export {
+  buildSeedImportPayload,
+  formatSeedImportSummary,
+  type SeedImportPayload,
+  type SeedImportResult,
+} from "@/lib/seed/importPayload";
+
+function writeErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Unknown Firestore error";
+}
+
+export async function importSeedData(
+  now: () => string = () => new Date().toISOString(),
+): Promise<SeedImportResult> {
   const user = getFirebaseAuth()?.currentUser ?? null;
   if (!isAdmin(user)) {
     throw new Error("Only the admin can import seed data");
   }
 
-  await profileRepository.upsert(PROFILE_DOC_ID, profileSeed);
-  await settingsRepository.upsert(SETTINGS_DOC_ID, siteSettingsSeed);
-  await Promise.all([
-    ...storySeed.map((item) => storyRepository.upsert(item.id, item)),
-    ...nowSeed.map((item) => nowRepository.upsert(item.id, item)),
-    ...workSeed.map((item) => workRepository.upsert(item.id, item)),
-    ...writingSeed.map((item) => writingRepository.upsert(item.id, item)),
-  ]);
+  const payload = buildSeedImportPayload(now);
+
+  for (const name of ADMIN_COLLECTION_NAMES) {
+    const documents = payload.documents.filter(
+      (document) => document.collection === name,
+    );
+    try {
+      await commitBatchSets(
+        documents.map((document) => ({
+          collection: name as ContentCollection,
+          id: document.id,
+          data: document.data,
+        })),
+      );
+    } catch (error: unknown) {
+      throw new Error(
+        `Failed to import ${name} (${documents.length} docs): ${writeErrorMessage(error)}`,
+      );
+    }
+  }
+
+  return {
+    counts: payload.counts,
+    total: payload.documents.length,
+  };
 }
+

@@ -42,4 +42,29 @@ describe("getAdminRepository", () => {
     const { getAdminRepository } = await import("./adminContent");
     await expect(getAdminRepository("story").list()).resolves.toEqual([]);
   });
+
+  it("applies schema defaults so work editors show gallery and links", async () => {
+    profile.list.mockResolvedValue([
+      {
+        id: "work-trinnect",
+        slug: "trinnect",
+        title: "Trinnect",
+        category: "ai-systems",
+        summary: "Summary",
+        role: "GenAI engineer",
+        stack: ["React"],
+        highlights: ["One"],
+        body: "Body",
+        featured: true,
+        order: 0,
+        status: "published",
+        updatedAt: "2026-10-18T00:00:00.000Z",
+      },
+    ]);
+    const { getAdminRepository } = await import("./adminContent");
+    const items = await getAdminRepository("work").list();
+    expect(items[0]?.id).toBe("work-trinnect");
+    expect(items[0]?.gallery).toEqual([]);
+    expect(items[0]?.links).toEqual([]);
+  });
 });
