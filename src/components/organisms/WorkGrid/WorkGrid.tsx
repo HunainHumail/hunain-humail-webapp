@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/atoms/Button";
 import { Container } from "@/components/atoms/Container";
 import { Link } from "@/components/atoms/Link";
 import { Text } from "@/components/atoms/Text";
@@ -16,6 +17,7 @@ import {
   type WorkFilterCategory,
 } from "@/lib/utils/filterWorkByCategory";
 import { workCoverAlt } from "@/lib/utils/workCover";
+import { workMetaLabel } from "@/lib/utils/workMeta";
 
 export interface WorkGridProps {
   items: WorkItem[];
@@ -26,6 +28,9 @@ export interface WorkGridProps {
   headingLevel?: 1 | 2;
   sectionId?: string;
   viewAllHref?: string;
+  totalCount?: number;
+  showFilters?: boolean;
+  pageSize?: number;
   className?: string;
 }
 
@@ -38,10 +43,15 @@ export function WorkGrid({
   headingLevel = 2,
   sectionId = "work",
   viewAllHref,
+  totalCount,
+  showFilters = true,
+  pageSize,
   className,
 }: WorkGridProps) {
-  const { category, setCategory, filtered } = useWorkFilter(items);
+  const { category, setCategory, filtered, visible, canLoadMore, loadMore } =
+    useWorkFilter(items, pageSize);
   const tabs = workFilterTabs(items);
+  const viewAllCount = totalCount ?? items.length;
 
   return (
     <section
@@ -57,38 +67,47 @@ export function WorkGrid({
           titleId={titleId}
           headingLevel={headingLevel}
         />
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <FilterTabs<WorkFilterCategory>
-            tabs={tabs}
-            value={category}
-            onChange={setCategory}
-            aria-label="Filter work by category"
-          />
+        <div
+          className={cn(
+            "mb-8 flex gap-4",
+            showFilters
+              ? "flex-col sm:flex-row sm:items-center sm:justify-between"
+              : "justify-end",
+          )}
+        >
+          {showFilters ? (
+            <FilterTabs<WorkFilterCategory>
+              tabs={tabs}
+              value={category}
+              onChange={setCategory}
+              aria-label="Filter work by category"
+            />
+          ) : null}
           {viewAllHref ? (
             <Link
               href={viewAllHref}
               className="inline-flex shrink-0 font-mono text-xs uppercase tracking-wide"
             >
-              {`View all projects (${items.length})`}
+              {`View all projects (${viewAllCount})`}
             </Link>
           ) : null}
         </div>
         <p className="sr-only" aria-live="polite">
           {filtered.length} {filtered.length === 1 ? "case study" : "case studies"}
         </p>
-        {filtered.length === 0 ? (
+        {visible.length === 0 ? (
           <Text variant="muted">No case studies in this category.</Text>
         ) : (
           <RevealGroup>
             <ul
-              className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2"
+              className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3"
               aria-label="Case studies"
             >
-              {filtered.map((item) => (
+              {visible.map((item) => (
                 <li
                   key={item.id}
                   data-reveal
-                  className={item.featured ? "sm:col-span-2" : undefined}
+                  className={item.featured ? "sm:col-span-2 lg:col-span-3" : undefined}
                 >
                   <CaseStudyCard
                     title={item.title}
@@ -96,6 +115,7 @@ export function WorkGrid({
                     summary={item.summary}
                     href={`/work/${item.slug}`}
                     featured={item.featured}
+                    meta={workMetaLabel(item)}
                     coverUrl={item.coverUrl}
                     coverAlt={workCoverAlt(item.title)}
                     priority={item.order === 0}
@@ -105,6 +125,18 @@ export function WorkGrid({
             </ul>
           </RevealGroup>
         )}
+        {canLoadMore ? (
+          <div className="mt-8 flex justify-center">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={loadMore}
+              className="w-full sm:w-auto"
+            >
+              Load more
+            </Button>
+          </div>
+        ) : null}
       </Container>
     </section>
   );

@@ -1,9 +1,17 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { siteSettingsSeed } from "@/lib/seed/settings";
 import { workSeed } from "@/lib/seed/work";
 import { workFilterTabs } from "@/lib/utils/filterWorkByCategory";
 import { WorkIndexTemplate } from "./WorkIndexTemplate";
+
+async function revealAllProjects(): Promise<void> {
+  const user = userEvent.setup();
+  while (screen.queryByRole("button", { name: "Load more" })) {
+    await user.click(screen.getByRole("button", { name: "Load more" }));
+  }
+}
 
 vi.mock("lenis", () => ({
   default: class MockLenis {
@@ -42,13 +50,14 @@ vi.mock("gsap", () => ({
 }));
 
 describe("WorkIndexTemplate", () => {
-  it("renders every project under an All projects heading", () => {
+  it("renders every project under an All projects heading", async () => {
     render(<WorkIndexTemplate settings={siteSettingsSeed} items={workSeed} />);
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "All projects",
     );
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    await revealAllProjects();
     const list = screen.getByRole("list", { name: "Case studies" });
     expect(within(list).getAllByRole("heading", { level: 3 })).toHaveLength(
       workSeed.length,

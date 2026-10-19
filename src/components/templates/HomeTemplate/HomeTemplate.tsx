@@ -11,6 +11,7 @@ import type { NavItem, SiteSettings } from "@/lib/schemas/siteSettings";
 import type { StoryItem } from "@/lib/schemas/story";
 import type { WorkItem } from "@/lib/schemas/work";
 import type { WritingItem } from "@/lib/schemas/writing";
+import { homeWorkPreview } from "@/lib/utils/homeWorkPreview";
 
 export interface HomeTemplateProps {
   settings: SiteSettings;
@@ -59,10 +60,12 @@ export function HomeTemplate({
       />
       <NowSection items={now} index={nowNav?.number} label={nowNav?.label} />
       <WorkGrid
-        items={work}
+        items={homeWorkPreview(work)}
+        totalCount={work.length}
         index={workNav?.number}
         label={workNav?.label}
         viewAllHref="/work"
+        showFilters={false}
       />
       <WritingList
         items={writing}

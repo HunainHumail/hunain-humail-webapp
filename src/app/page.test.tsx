@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { getSiteUrl } from "@/lib/env";
 import { siteSettingsSeed } from "@/lib/seed/settings";
 import { workSeed } from "@/lib/seed/work";
-import { workFilterTabs } from "@/lib/utils/filterWorkByCategory";
+import { homeWorkPreview } from "@/lib/utils/homeWorkPreview";
 import Home, { generateMetadata } from "./page";
 
 vi.mock("lenis", () => ({
@@ -58,16 +58,18 @@ describe("Home", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Things I've built." }),
     ).toBeInTheDocument();
-    const allTab = workFilterTabs(workSeed).find((tab) => tab.value === "all");
-    expect(screen.getByRole("button", { name: allTab?.label })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
-    const workList = screen.getByRole("list", { name: "Case studies" });
-    expect(within(workList).getAllByRole("listitem")).toHaveLength(workSeed.length);
     expect(
-      screen.getByRole("heading", { level: 3, name: "Tecobi" }),
+      screen.queryByRole("group", { name: "Filter work by category" }),
+    ).not.toBeInTheDocument();
+    const workList = screen.getByRole("list", { name: "Case studies" });
+    const preview = homeWorkPreview(workSeed);
+    expect(within(workList).getAllByRole("listitem")).toHaveLength(preview.length);
+    expect(
+      screen.getByRole("heading", { level: 3, name: "OmanOil" }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { level: 3, name: "Tecobi" }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByRole("link", {
         name: `View all projects (${workSeed.length})`,

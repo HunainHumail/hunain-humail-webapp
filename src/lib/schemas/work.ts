@@ -32,6 +32,8 @@ export const workItemSchema = z.object({
   category: workCategorySchema,
   summary: z.string().min(1),
   role: z.string().min(1),
+  company: z.string().min(1).optional(),
+  period: z.string().min(1).optional(),
   stack: z.array(z.string().min(1)),
   highlights: z.array(z.string().min(1)),
   body: z.string().min(1),

@@ -1,8 +1,16 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { getSiteUrl } from "@/lib/env";
 import { workSeed } from "@/lib/seed/work";
 import WorkIndexPage, { generateMetadata } from "./page";
+
+async function revealAllProjects(): Promise<void> {
+  const user = userEvent.setup();
+  while (screen.queryByRole("button", { name: "Load more" })) {
+    await user.click(screen.getByRole("button", { name: "Load more" }));
+  }
+}
 
 vi.mock("lenis", () => ({
   default: class MockLenis {
@@ -48,6 +56,7 @@ describe("WorkIndexPage", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "All projects" }),
     ).toBeInTheDocument();
+    await revealAllProjects();
     const list = screen.getByRole("list", { name: "Case studies" });
     expect(within(list).getAllByRole("heading", { level: 3 })).toHaveLength(
       workSeed.length,

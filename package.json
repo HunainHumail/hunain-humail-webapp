@@ -14,6 +14,8 @@
     "test:rules": "firebase emulators:exec --only firestore,storage --project demo-hunain-humail --config firebase.json \"vitest run --config vitest.rules.config.ts\"",
     "seed": "tsx scripts/seed.ts",
     "import-covers": "tsx scripts/import-covers.ts",
+    "import-screenshot-covers": "tsx scripts/import-screenshot-covers.ts",
+    "generate-placeholder-covers": "tsx scripts/generate-placeholder-covers.ts",
     "emulators": "firebase emulators:start --only firestore,auth,storage,ui",
     "e2e": "playwright test",
     "format": "prettier --write ."

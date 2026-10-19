@@ -70,6 +70,16 @@ describe("workItemSchema", () => {
     ]);
   });
 
+  it("accepts optional company and period", () => {
+    const parsed = workItemSchema.parse({
+      ...valid,
+      company: "Cubix",
+      period: "2021–2023",
+    });
+    expect(parsed.company).toBe("Cubix");
+    expect(parsed.period).toBe("2021–2023");
+  });
+
   it("rejects a gallery image that is not a path or https URL", () => {
     const result = workItemSchema.safeParse({
       ...valid,

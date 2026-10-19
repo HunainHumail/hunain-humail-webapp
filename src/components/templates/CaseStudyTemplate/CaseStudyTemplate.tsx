@@ -12,6 +12,7 @@ import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import type { WorkItem } from "@/lib/schemas/work";
 import { cn } from "@/lib/utils/cn";
 import { WORK_CATEGORY_LABELS } from "@/lib/utils/filterWorkByCategory";
+import { workMetaLabel } from "@/lib/utils/workMeta";
 import { imageUnoptimized } from "@/lib/utils/imageUnoptimized";
 import { workCoverAlt, workCoverSrc } from "@/lib/utils/workCover";
 
@@ -44,6 +45,11 @@ export function CaseStudyTemplate({
           <Heading level={1} size="section" className="mb-4">
             {item.title}
           </Heading>
+          {workMetaLabel(item) ? (
+            <MonoLabel as="p" className="mb-3">
+              {workMetaLabel(item)}
+            </MonoLabel>
+          ) : null}
           <Text variant="muted" className="mb-8">
             {item.summary}
           </Text>

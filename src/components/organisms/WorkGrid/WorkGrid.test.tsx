@@ -38,6 +38,7 @@ describe("WorkGrid", () => {
       "src",
       "/projects/trinnect/cover.webp",
     );
+    expect(screen.getByText("Trinnect · 2026")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: tabLabel("all") })).toHaveAttribute(
       "aria-pressed",
       "true",
@@ -57,8 +58,18 @@ describe("WorkGrid", () => {
     }
   });
 
-  it("links to the full project index", () => {
-    render(<WorkGrid items={workSeed} viewAllHref="/work" />);
+  it("links to the full project index using the total count", () => {
+    render(
+      <WorkGrid
+        items={workSeed.slice(0, 5)}
+        totalCount={workSeed.length}
+        viewAllHref="/work"
+        showFilters={false}
+      />,
+    );
+    expect(
+      screen.queryByRole("group", { name: "Filter work by category" }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByRole("link", {
         name: `View all projects (${workSeed.length})`,
@@ -105,5 +116,22 @@ describe("WorkGrid", () => {
       .getByRole("heading", { level: 3, name: "Trinnect" })
       .closest("li");
     expect(featuredItem).toHaveClass("sm:col-span-2");
+    expect(featuredItem).toHaveClass("lg:col-span-3");
+  });
+
+  it("pages the grid with Load more", async () => {
+    const user = userEvent.setup();
+    render(<WorkGrid items={workSeed} pageSize={12} />);
+
+    const list = screen.getByRole("list", { name: "Case studies" });
+    expect(within(list).getAllByRole("heading", { level: 3 })).toHaveLength(12);
+    expect(
+      screen.queryByRole("heading", { level: 3, name: "Freelance Android" }),
+    ).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Load more" }));
+    expect(within(list).getAllByRole("heading", { level: 3 }).length).toBeGreaterThan(
+      12,
+    );
   });
 });

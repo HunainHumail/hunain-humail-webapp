@@ -3,32 +3,38 @@ import {
   allCaseStudies,
   expectNoHorizontalOverflow,
   featuredCaseStudies,
+  homePreviewCaseStudies,
   isMobileProject,
+  revealAllWork,
   settleMotion,
+  workCategoryCount,
 } from "./support";
 
 test.beforeEach(async ({ page }) => {
   await settleMotion(page);
 });
 
-test("home work defaults to every project", async ({ page }) => {
+test("home work shows featured plus a curated subset", async ({ page }) => {
   await page.goto("/#work");
   const work = page.locator("#work");
 
   await expect(
-    work.getByRole("button", { name: `All (${allCaseStudies.length})`, exact: true }),
-  ).toHaveAttribute("aria-pressed", "true");
+    work.getByRole("group", { name: "Filter work by category" }),
+  ).toHaveCount(0);
   await expect(
     work.getByRole("link", {
       name: `View all projects (${allCaseStudies.length})`,
     }),
   ).toHaveAttribute("href", "/work");
 
-  for (const item of allCaseStudies) {
+  for (const item of homePreviewCaseStudies) {
     await expect(
       work.getByRole("heading", { level: 3, name: item.title }),
     ).toBeVisible();
   }
+  await expect(
+    work.getByRole("heading", { level: 3, name: "Tecobi" }),
+  ).toHaveCount(0);
 });
 
 test("work index lists every project", async ({ page }) => {
@@ -42,6 +48,8 @@ test("work index lists every project", async ({ page }) => {
   await expect(
     work.getByRole("button", { name: `All (${allCaseStudies.length})`, exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
+
+  await revealAllWork(page);
   await expect(work.getByRole("heading", { level: 3 })).toHaveCount(
     allCaseStudies.length,
   );
@@ -56,14 +64,17 @@ test("work index lists every project", async ({ page }) => {
 test("filters case studies by category", async ({ page }) => {
   await page.goto("/work");
   const work = page.locator("#all-projects");
+  const products = `Products (${workCategoryCount("products")})`;
+  const clients = `Client apps (${workCategoryCount("client-apps")})`;
+  const ai = `AI systems (${workCategoryCount("ai-systems")})`;
 
   await expect(
     work.getByRole("heading", { level: 3, name: "Trinnect" }),
   ).toBeVisible();
 
-  await work.getByRole("button", { name: "Products (5)", exact: true }).click();
+  await work.getByRole("button", { name: products, exact: true }).click();
   await expect(
-    work.getByRole("button", { name: "Products (5)", exact: true }),
+    work.getByRole("button", { name: products, exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   await expect(
     work.getByRole("heading", { level: 3, name: "Wellspent Screen Time SDK" }),
@@ -72,25 +83,26 @@ test("filters case studies by category", async ({ page }) => {
     work.getByRole("heading", { level: 3, name: "Trinnect" }),
   ).toHaveCount(0);
 
-  await work.getByRole("button", { name: "Client apps (7)", exact: true }).click();
+  await work.getByRole("button", { name: clients, exact: true }).click();
   await expect(
-    work.getByRole("heading", { level: 3, name: "Al Rayyan TV" }),
+    work.getByRole("heading", { level: 3, name: "OmanOil" }),
   ).toBeVisible();
   await expect(
     work.getByRole("heading", { level: 3, name: "Wellspent Screen Time SDK" }),
   ).toHaveCount(0);
 
-  await work.getByRole("button", { name: "AI systems (5)", exact: true }).click();
+  await work.getByRole("button", { name: ai, exact: true }).click();
   await expect(
     work.getByRole("heading", { level: 3, name: "Trinnect" }),
   ).toBeVisible();
   await expect(
-    work.getByRole("heading", { level: 3, name: "Al Rayyan TV" }),
+    work.getByRole("heading", { level: 3, name: "OmanOil" }),
   ).toHaveCount(0);
 
   await work
     .getByRole("button", { name: `All (${allCaseStudies.length})`, exact: true })
     .click();
+  await revealAllWork(page);
   await expect(
     work.getByRole("heading", { level: 3, name: "Trinnect" }),
   ).toBeVisible();

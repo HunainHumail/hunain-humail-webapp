@@ -25,6 +25,20 @@ describe("CaseStudyCard", () => {
     expect(screen.queryByText("Featured")).not.toBeInTheDocument();
   });
 
+  it("shows optional company and period meta", () => {
+    render(
+      <CaseStudyCard
+        title="OmanOil"
+        categoryLabel="Client apps"
+        summary="Fuel and loyalty app."
+        href="/work/omanoil"
+        meta="Cubix · 2021–2023"
+      />,
+    );
+
+    expect(screen.getByText("Cubix · 2021–2023")).toBeInTheDocument();
+  });
+
   it("shows a featured badge when featured", () => {
     render(
       <CaseStudyCard

@@ -13,6 +13,7 @@ export interface CaseStudyCardProps {
   summary: string;
   href: string;
   featured?: boolean;
+  meta?: string;
   coverUrl?: string;
   coverAlt?: string;
   priority?: boolean;
@@ -25,6 +26,7 @@ export function CaseStudyCard({
   summary,
   href,
   featured = false,
+  meta,
   coverUrl,
   coverAlt,
   priority = false,
@@ -58,6 +60,7 @@ export function CaseStudyCard({
         <div className="flex flex-1 flex-col p-5">
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <MonoLabel>{categoryLabel}</MonoLabel>
+            {meta ? <MonoLabel>{meta}</MonoLabel> : null}
             {featured ? <Badge status="success">Featured</Badge> : null}
           </div>
           <Heading level={3} className={featured ? "text-2xl" : "text-xl"}>

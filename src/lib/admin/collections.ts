@@ -125,6 +125,8 @@ const workFields = [
   },
   { name: "summary", label: "Summary", type: "textarea" },
   { name: "role", label: "Role", type: "text" },
+  { name: "company", label: "Company", type: "text", optional: true },
+  { name: "period", label: "Period", type: "text", optional: true },
   { name: "stack", label: "Stack", type: "tags" },
   { name: "highlights", label: "Highlights", type: "tags" },
   { name: "body", label: "Body", type: "markdown" },

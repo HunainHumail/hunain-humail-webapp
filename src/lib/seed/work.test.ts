@@ -24,24 +24,36 @@ const BANNED_PATTERNS = [
 const ALLOWED_SLUGS = [
   "al-rayyan-tv",
   "banoon",
+  "boon-and-bliss",
   "bring-itt",
+  "coachendo",
   "emdee",
   "escrow-trakker-landlords",
   "escrow-trakker-lawyers",
   "fast-brix",
+  "freelance-android",
+  "golflinks",
+  "grocery",
+  "high-end-crypto-demo",
+  "innerspark",
   "lions-clubs-connect",
   "luviq",
+  "mh1",
   "my-float",
+  "omanoil",
+  "royal-gas",
   "savesor",
+  "shopscope",
   "tecobi",
   "terranzo",
+  "tickfilm",
   "trinnect",
   "vigil",
   "wellspent",
 ] as const;
 
 describe("workSeed", () => {
-  it("publishes the 16 allowed projects and the optional VPN card", () => {
+  it("publishes every imported project plus the VPN card", () => {
     const slugs = workSeed.map((item) => item.slug);
     expect(new Set(slugs)).toEqual(
       new Set<string>([...ALLOWED_SLUGS, "white-label-vpn-sdk"]),
@@ -53,6 +65,7 @@ describe("workSeed", () => {
   it("parses every item and keeps slugs unique", () => {
     const slugs = workSeed.map((item) => item.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
+    expect(new Set(workSeed.map((item) => item.order)).size).toBe(workSeed.length);
 
     for (const item of workSeed) {
       expect(() => workItemSchema.parse(item)).not.toThrow();

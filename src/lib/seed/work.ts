@@ -30,7 +30,7 @@ function vpnGalleryItems(): WorkGalleryItem[] {
 
 const updatedAt = "2026-10-18T00:00:00.000Z";
 
-export const workSeed: WorkItem[] = [
+const workItems: WorkItem[] = [
   {
     id: "work-trinnect",
     slug: "trinnect",
@@ -39,6 +39,8 @@ export const workSeed: WorkItem[] = [
     summary:
       "A location-based social app for meeting people nearby, shipped from a Lovable web app through pipelines that build, test, and go live on the web and the App Store.",
     role: "GenAI engineer",
+    company: "Trinnect",
+    period: "2026",
     stack: ["React", "Capacitor", "Supabase", "React Native"],
     highlights: [
       "Lovable prompt to a live web and App Store release",
@@ -70,6 +72,8 @@ RAYKIRI PTY LTD can keep moving without a separate release ritual. Prompt in Lov
     summary:
       "Research and plan a move abroad — a Lovable web app that pipelines ship live to the web and the stores, with Capgo over-the-air updates.",
     role: "GenAI engineer",
+    company: "Terranzo",
+    period: "2025–2026",
     stack: ["React", "Supabase", "Capacitor", "Swift/SwiftUI", "Capgo"],
     highlights: [
       "Lovable prompt to live web, App Store, and Google Play",
@@ -105,6 +109,8 @@ Terranzo LLC runs the product themselves. They prompt. It ships.`,
     summary:
       "Float-tank control from a Lovable web app, turned into iOS and Android with Capacitor, Capgo live updates, and pipelines that ship a prompt to production.",
     role: "GenAI engineer",
+    company: "I-Sense",
+    period: "2026",
     stack: ["React", "TypeScript", "Supabase", "Capacitor", "Capgo"],
     highlights: [
       "Lovable CRM web app turned into iOS and Android",
@@ -140,6 +146,8 @@ They maintain it themselves. A prompt in Lovable is enough to ship.`,
     summary:
       "Family brick-building challenges on web and mobile, shipped from a Lovable prompt through pipelines to the App Store and Google Play.",
     role: "GenAI engineer",
+    company: "America Learns",
+    period: "2026",
     stack: ["React", "Supabase", "Capacitor", "Firebase"],
     highlights: [
       "Lovable prompt to live web and both app stores",
@@ -175,6 +183,8 @@ A feature prompt is enough to go live. They run the product themselves.`,
     summary:
       "Daily scripture reflection and journaling, started in Lovable and shipped to the App Store with a dedicated iPad layout.",
     role: "GenAI engineer",
+    company: "Vigil Interactive",
+    period: "2026",
     stack: ["Capacitor", "Supabase", "JavaScript"],
     highlights: [
       "Lovable web app carried through to a store release",
@@ -206,6 +216,8 @@ Vigil Interactive LLC has it on the App Store as Vigil: Daily Reflection.`,
     summary:
       "A React Native wrapper around a native Swift screen-time SDK, so RN apps can plug those features in without rewriting Swift.",
     role: "GenAI engineer",
+    company: "Wellspent",
+    period: "2025",
     stack: ["React Native", "Swift", "Native Modules"],
     highlights: [
       "React Native bridge over a native Swift SDK",
@@ -237,6 +249,8 @@ Most of the work was the bridge: native APIs on one side, JavaScript on the othe
     summary:
       "A white-label VPN SDK and app platform for Android, iOS, Windows, and macOS, shipped as multiple branded VPN apps from one shared core.",
     role: "GenAI engineer",
+    company: "PureSquare",
+    period: "2023–2025",
     stack: ["React Native", "Swift", "Kotlin", "Redux", "Node.js"],
     highlights: [
       "Modular SDK for branded VPN apps",
@@ -263,6 +277,8 @@ A team gets a production VPN app without starting the networking and security st
     summary:
       "Relationship insights app I led on iOS and Android, from sign-in and core features through to push notifications.",
     role: "GenAI engineer",
+    company: "LuvIQ",
+    period: "2026",
     stack: ["React Native", "TypeScript", "Firebase", "Zustand"],
     highlights: [
       "Main developer on iOS and Android",
@@ -276,7 +292,7 @@ I was the main developer on the iOS and Android app, from sign-in and the core f
 It shipped as a full mobile app, wired for purchases and notifications, not a throwaway prototype.`,
     coverUrl: "/projects/luviq/cover.webp",
     links: [{ label: "Live", href: "https://luviq.app" }],
-    order: 7,
+    order: 8,
     status: "published",
     featured: false,
     updatedAt,
@@ -289,6 +305,8 @@ It shipped as a full mobile app, wired for purchases and notifications, not a th
     summary:
       "Property app for tracking tenant deposits, leases, and trust accounting so landlords stay on the right side of state deposit rules.",
     role: "GenAI engineer",
+    company: "Code Avenue",
+    period: "2021",
     stack: ["React Native", "Firebase"],
     highlights: [
       "Tenant, property, and deposit tracking in one app",
@@ -301,7 +319,7 @@ I built the app in React Native with Firebase. Landlords add tenants and propert
 
 Everything lives in the cloud, so it works on a phone, tablet, or desktop, with a passcode or fingerprint on the way in.`,
     coverUrl: "/projects/escrow-trakker-landlords/cover.webp",
-    order: 8,
+    order: 13,
     status: "published",
     featured: false,
     updatedAt,
@@ -314,6 +332,8 @@ Everything lives in the cloud, so it works on a phone, tablet, or desktop, with 
     summary:
       "Trust and IOLTA accounting for law firms, replacing spreadsheet ledgers with tagged transactions and automated reconciliation.",
     role: "GenAI engineer",
+    company: "Code Avenue",
+    period: "2020–2021",
     stack: ["React Native", "Cloud"],
     highlights: [
       "Trust and IOLTA accounts in one ledger",
@@ -326,7 +346,7 @@ I built it in React Native on a cloud backend. You can run a large set of trust 
 
 Charts break balances down by job, client, lawyer, or the whole firm. That is the difference between a ledger and a tool people will actually open.`,
     coverUrl: "/projects/escrow-trakker-lawyers/cover.webp",
-    order: 9,
+    order: 14,
     status: "published",
     featured: false,
     updatedAt,
@@ -339,6 +359,8 @@ Charts break balances down by job, client, lawyer, or the whole firm. That is th
     summary:
       "Live TV and programs app for a Qatari satellite channel, built in Ionic and Angular and live on both stores.",
     role: "GenAI engineer — client delivery",
+    company: "Al Rayyan Productions",
+    period: "2022–2023",
     stack: ["Ionic", "Angular"],
     highlights: [
       "Live broadcast and program guide in one app",
@@ -361,7 +383,7 @@ It is on the App Store and Google Play. Android is past 50,000 installs.`,
         href: "https://play.google.com/store/apps/details?id=com.LinkDev.Alrayyan.App",
       },
     ],
-    order: 10,
+    order: 17,
     status: "published",
     featured: false,
     updatedAt,
@@ -374,6 +396,8 @@ It is on the App Store and Google Play. Android is past 50,000 installs.`,
     summary:
       "Kids and baby shopping app for a Riyadh store, with filters, fast delivery, and app-only deals on iOS and Android.",
     role: "GenAI engineer — client delivery",
+    company: "Banoon",
+    period: "2024–2025",
     stack: ["iOS", "Android"],
     highlights: [
       "Full store range for newborns through teens",
@@ -396,7 +420,7 @@ It has been on both stores since 2025 and has kept getting regular updates, incl
         href: "https://play.google.com/store/apps/details?id=com.wearbanoon.android",
       },
     ],
-    order: 11,
+    order: 18,
     status: "published",
     featured: false,
     updatedAt,
@@ -409,6 +433,8 @@ It has been on both stores since 2025 and has kept getting regular updates, incl
     summary:
       "Travel-and-earn marketplace in React Native: buyers order from abroad, travellers bring the item and get paid.",
     role: "GenAI engineer — client delivery",
+    company: "Code Avenue",
+    period: "2020",
     stack: ["React Native"],
     highlights: [
       "First version of the buyer and traveller marketplace",
@@ -427,7 +453,7 @@ It went on to 5,000+ installs on Google Play.`,
         href: "https://play.google.com/store/apps/details?id=com.traer",
       },
     ],
-    order: 12,
+    order: 22,
     status: "published",
     featured: false,
     updatedAt,
@@ -440,6 +466,8 @@ It went on to 5,000+ installs on Google Play.`,
     summary:
       "US telehealth app for booking nearby doctors and joining video consultations, with Twilio calls and full RTL support.",
     role: "GenAI engineer — client delivery",
+    company: "Cubix",
+    period: "2021–2023",
     stack: ["Ionic React", "Twilio", "i18n"],
     highlights: [
       "Appointment booking for patients and doctors",
@@ -450,9 +478,11 @@ It went on to 5,000+ installs on Google Play.`,
 
 I built the app in Ionic React. Appointment scheduling, video calls on Twilio, and full internationalisation including right-to-left layout across the whole app.
 
-The point was a consultation that works in more than one language and writing direction, not only English left-to-right.`,
+The point was a consultation that works in more than one language and writing direction, not only English left-to-right.
+
+I also built the admin panel the team uses to run the platform day to day, in React.`,
     coverUrl: "/projects/emdee/cover.webp",
-    order: 13,
+    order: 20,
     status: "published",
     featured: false,
     updatedAt,
@@ -465,6 +495,8 @@ The point was a consultation that works in more than one language and writing di
     summary:
       "Members app for Lions District 318A in India: directory, notices, donors, chat, and dues in one React Native app.",
     role: "GenAI engineer — client delivery",
+    company: "Freelance",
+    period: "2020",
     stack: ["React Native"],
     highlights: [
       "Directory, notices, and club services in one place",
@@ -487,7 +519,7 @@ It is on both stores. Google Play is at 10,000+ installs.`,
         href: "https://play.google.com/store/apps/details?id=com.sparkitlionsclubsconnect.f12",
       },
     ],
-    order: 14,
+    order: 25,
     status: "published",
     featured: false,
     updatedAt,
@@ -500,6 +532,8 @@ It is on both stores. Google Play is at 10,000+ installs.`,
     summary:
       "Android IoT app that commissions in-room devices over Bluetooth and TCP/UDP so a hotel room can be controlled from a phone.",
     role: "GenAI engineer — client delivery",
+    company: "Freelance",
+    period: "2022",
     stack: ["Android", "Java", "React Native", "IoT", "Bluetooth"],
     highlights: [
       "Device commissioning wizard for in-room hardware",
@@ -518,7 +552,7 @@ Once a device is commissioned, the room can be controlled from a phone instead o
         href: "https://play.google.com/store/apps/details?id=com.savesor.tech",
       },
     ],
-    order: 15,
+    order: 26,
     status: "published",
     featured: false,
     updatedAt,
@@ -531,6 +565,8 @@ Once a device is commissioned, the room can be controlled from a phone instead o
     summary:
       "SMS and customer messaging app for car dealerships, so staff can run conversations and inventory questions from their phones.",
     role: "GenAI engineer — client delivery",
+    company: "Freelance",
+    period: "2020",
     stack: ["React Native"],
     highlights: [
       "Dealership SMS threads on iOS and Android",
@@ -553,9 +589,362 @@ It is on the App Store and Google Play, with 5,000+ installs on Android.`,
         href: "https://play.google.com/store/apps/details?id=com.tecobi.tecobiapp",
       },
     ],
+    order: 27,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-shopscope",
+    slug: "shopscope",
+    title: "ShopScope",
+    category: "products",
+    summary:
+      "Swipe-based shopping app with an AI feed, wishlists, and checkout at the retailer's own cart — mobile app, Shopify backend, and web admin.",
+    role: "GenAI engineer",
+    company: "ShopScope",
+    period: "2024–2026",
+    stack: ["React Native", "Shopify"],
+    highlights: [
+      "Full product: app, Shopify backend, and web admin",
+      "Swipe feed that refines as you save or skip",
+      "Multi-brand wishlist and in-app retailer checkout",
+    ],
+    body: `ShopScope is a swipe-based shopping app. It learns what you like and surfaces fashion from Australian and international brands. Save a wishlist, check out at the retailer's own checkout, and shop more than one brand in a session.
+
+I built the full product: the React Native app, the Shopify-connected backend, and the web admin.
+
+It is live at shopscope.app and on the App Store.`,
+    coverUrl: "/projects/shopscope/cover.webp",
+    links: [
+      { label: "Live", href: "https://www.shopscope.app/" },
+      {
+        label: "App Store",
+        href: "https://apps.apple.com/us/app/shopscope/id6499134678",
+      },
+    ],
+    order: 7,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-coachendo",
+    slug: "coachendo",
+    title: "Coachendo",
+    category: "ai-systems",
+    summary:
+      "AI career-coaching app from Sweden: GraphQL on the client, store releases, and automated CI so builds reached testers and the stores.",
+    role: "GenAI engineer",
+    company: "Coachendo",
+    period: "2021–2022",
+    stack: ["React Native", "GraphQL", "GitHub Actions"],
+    highlights: [
+      "Frontend on the mobile app, including GraphQL",
+      "Published to Google Play and the App Store",
+      "CI/CD so testers and stores got builds automatically",
+    ],
+    body: `Coachendo is an AI career coach from Sweden. It combines the product with human coaches so companies can give teams a personal development plan.
+
+I was the frontend engineer on the mobile app: UI from the designs, GraphQL on the client, and the store releases. I also set up GitHub Actions so builds reached testers and the stores without a manual ritual.
+
+The team was spread across countries. The app is React Native.`,
+    coverUrl: "/projects/coachendo/cover.webp",
+    links: [
+      { label: "The Hub", href: "https://thehub.io/startups/urkip" },
+    ],
+    order: 9,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-boon-and-bliss",
+    slug: "boon-and-bliss",
+    title: "Boon & Bliss",
+    category: "products",
+    summary:
+      "Group-gifting app: friends chip in on a dream gift for a birthday, wedding, or any other occasion.",
+    role: "GenAI engineer",
+    company: "Boon & Bliss",
+    period: "2023",
+    stack: ["React Native"],
+    highlights: [
+      "Event-based group gifting in React Native",
+      "Invite friends, collect contributions, change the gift",
+      "Shipped on the App Store and Google Play",
+    ],
+    body: `Boon & Bliss was a group-gifting app from the Netherlands. Friends chip in on a dream gift for a birthday, wedding, or any other occasion, instead of guessing at socks.
+
+I built the React Native app: create a dream, invite people, collect contributions, and let the receiver change the gift if they want.
+
+The product has since shut down. The stores no longer list it.`,
+    coverUrl: "/projects/boon-and-bliss/cover.webp",
+    order: 10,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-tickfilm",
+    slug: "tickfilm",
+    title: "TickFilm",
+    category: "products",
+    summary:
+      "Social app for movie lovers: Ticklists, recommendations, chat, and a library of more than a million trailers.",
+    role: "GenAI engineer",
+    company: "Code Avenue",
+    period: "2020–2021",
+    stack: ["React Native"],
+    highlights: [
+      "Watchlists, sharing, and in-app chat",
+      "Library of more than a million trailers",
+      "Shipped on the App Store and Google Play",
+    ],
+    body: `TickFilm was a social app for people who watch a lot of films. You could build Ticklists, share recommendations, chat, and browse a library of more than a million trailers.
+
+I built it in React Native at Code Avenue: watchlists, sharing, and the social pieces the product needed.
+
+The store listings are gone now. The work was a full consumer app, not a prototype.`,
+    coverUrl: "/projects/tickfilm/cover.webp",
+    order: 11,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-high-end-crypto-demo",
+    slug: "high-end-crypto-demo",
+    title: "High-End Crypto Demo",
+    category: "products",
+    summary:
+      "Crypto demo with live market data, candlestick and line charts, filters, and smooth motion.",
+    role: "GenAI engineer",
+    company: "BurjX",
+    period: "2025–2026",
+    stack: ["React Native", "Victory", "Reanimated"],
+    highlights: [
+      "Live market data with candlestick and line charts",
+      "Interactive filters and Reanimated motion",
+      "Biometric unlock on real devices",
+    ],
+    body: `A crypto demo with live market data, candlestick and line charts, interactive filters, and motion that stays smooth.
+
+I built it in React Native with Victory Native, Reanimated, and Skia, including biometric unlock on real devices.`,
+    coverUrl: "/projects/high-end-crypto-demo/cover.webp",
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/HunainHumail/BurjXDemo",
+      },
+    ],
+    order: 12,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-omanoil",
+    slug: "omanoil",
+    title: "OmanOil",
+    category: "client-apps",
+    summary:
+      "Fuel and loyalty app for Oman Oil Marketing Company, with NFC payments, BLE promotions, and hundreds of thousands of daily users.",
+    role: "GenAI engineer — client delivery",
+    company: "Cubix",
+    period: "2021–2023",
+    stack: ["React Native", "Redux", "NFC", "BLE", "Twilio"],
+    highlights: [
+      "Main developer on the live OmanOil app",
+      "NFC payments and BLE beacon promotions",
+      "Basma Plus cards, top-ups, loyalty, and station finder",
+    ],
+    body: `OmanOil is the official app for Oman Oil Marketing Company. Drivers in Oman use it for Basma Plus fuel cards, top-ups, loyalty, e-vouchers, station finding, and reviews.
+
+I was the main developer at Cubix. I kept the live app moving and added NFC payments, BLE beacon promotions, and Twilio where the product needed it. The app sees 500k+ daily users.
+
+It is on the App Store and Google Play.`,
+    coverUrl: "/projects/omanoil/cover.webp",
+    links: [
+      {
+        label: "App Store",
+        href: "https://apps.apple.com/si/app/omanoil/id1473560939",
+      },
+      {
+        label: "Google Play",
+        href: "https://play.google.com/store/apps/details?id=com.oomcoapp",
+      },
+    ],
+    order: 15,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-royal-gas",
+    slug: "royal-gas",
+    title: "Royal Gas",
+    category: "client-apps",
+    summary:
+      "Official customer app for Royal Development Gas Works in Abu Dhabi: accounts, bills, payments, and meter readings.",
+    role: "GenAI engineer — client delivery",
+    company: "Royal Gas",
+    period: "2025",
+    stack: ["React Native"],
+    highlights: [
+      "Account, bills, and payment history in one app",
+      "Meter readings submitted from the phone",
+      "Live on the App Store and Google Play",
+    ],
+    body: `Royal Gas is the official customer app for Royal Development Gas Works in Abu Dhabi. People manage their account, check bills, pay, and send meter readings from the phone.
+
+I built the React Native app so customers can read company info, reach support, and handle their own account without a call.
+
+It is on the App Store and Google Play.`,
+    coverUrl: "/projects/royal-gas/cover.webp",
+    links: [
+      {
+        label: "App Store",
+        href: "https://apps.apple.com/ae/app/royalgas/id1193057561",
+      },
+      {
+        label: "Google Play",
+        href: "https://play.google.com/store/apps/details?id=com.royalgas",
+      },
+    ],
     order: 16,
     status: "published",
     featured: false,
     updatedAt,
   },
+  {
+    id: "work-mh1",
+    slug: "mh1",
+    title: "MH1",
+    category: "client-apps",
+    summary:
+      "Interactive hockey training app from Maddie Hinch, with profiles, a feed, and a goalkeeper skills library.",
+    role: "GenAI engineer — client delivery",
+    company: "Code Avenue",
+    period: "2020–2021",
+    stack: ["React Native"],
+    highlights: [
+      "Profiles, home feed, and discussions",
+      "Goalkeeper skills library with close-ups and split-screen",
+      "React Native app plus the admin web",
+    ],
+    body: `MH1 is an interactive hockey training app from Olympic goalkeeper Maddie Hinch. Athletes, coaches, and parents get profiles, a home feed, discussions, and a goalkeeper skills library with close-ups, step-by-step walkthroughs, and split-screen analysis.
+
+I built the React Native app at Code Avenue, plus the admin web used to run it.
+
+The stores have since taken the listings down.`,
+    coverUrl: "/projects/mh1/cover.webp",
+    order: 19,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-innerspark",
+    slug: "innerspark",
+    title: "InnerSpark",
+    category: "client-apps",
+    summary:
+      "Daily companion from a UK client: affirmations, meditations, and relaxation exercises.",
+    role: "GenAI engineer — client delivery",
+    company: "Upwork",
+    period: "2025",
+    stack: ["React Native", "TypeScript", "Firebase"],
+    highlights: [
+      "Affirmations, meditations, and relaxation exercises",
+      "Firebase auth and messaging",
+      "Google, Apple, and Facebook sign-in",
+    ],
+    body: `InnerSpark is a daily companion app from a UK Upwork client: positive affirmations, meditations, and relaxation exercises.
+
+I built the React Native app with TypeScript, Redux Toolkit, and Firebase for auth and messaging, plus Google, Apple, and Facebook sign-in.
+
+The Play listing is no longer up.`,
+    coverUrl: "/projects/innerspark/cover.webp",
+    order: 21,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-golflinks",
+    slug: "golflinks",
+    title: "Golflinks",
+    category: "client-apps",
+    summary:
+      "Golfer app from Code Avenue: profiles, round scheduling, Google Maps tracking, and chat.",
+    role: "GenAI engineer — client delivery",
+    company: "Code Avenue",
+    period: "2020",
+    stack: ["React Native", "Google Maps"],
+    highlights: [
+      "Player profiles and home components",
+      "Calendar scheduling and Google Maps tracking",
+      "In-app chat",
+    ],
+    body: `Golflinks is an app for finding other golfers nearby. Profiles, round scheduling, Google Maps tracking, and chat.
+
+I built those pieces in React Native during my time at Code Avenue.`,
+    coverUrl: "/projects/golflinks/cover.webp",
+    order: 23,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-grocery",
+    slug: "grocery",
+    title: "Grocery App",
+    category: "client-apps",
+    summary:
+      "Marketplace for healthy and organic food, from meat and fish to fruit, vegetables, and spices, with a quick checkout.",
+    role: "GenAI engineer — client delivery",
+    stack: ["React Native", "TypeScript"],
+    highlights: [
+      "Browse meat, fish, fruit, vegetables, and spices",
+      "Simple browsing and a quick checkout",
+      "React Native and TypeScript",
+    ],
+    body: `A grocery marketplace for healthy and organic food — meat, fish, fruit, vegetables, and spices — with simple browsing and a quick checkout.
+
+I built the app in React Native and TypeScript.`,
+    coverUrl: "/projects/grocery/cover.webp",
+    order: 24,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
+  {
+    id: "work-freelance-android",
+    slug: "freelance-android",
+    title: "Freelance Android",
+    category: "client-apps",
+    summary:
+      "Native Android work in Java for Freelancer.com clients, from 2017 to 2020.",
+    role: "GenAI engineer — client delivery",
+    company: "Freelancer.com",
+    period: "2017–2020",
+    stack: ["Java", "Android"],
+    highlights: [
+      "Native Android apps in Java",
+      "Client work across a three-year stretch",
+      "Shipped features and builds onto phones",
+    ],
+    body: `From 2017 to 2020 I took native Android work on Freelancer.com. The jobs were Java apps for clients: shipping features, talking to APIs, and getting builds onto phones.
+
+That stretch is how I started shipping mobile software for real clients, before React Native and the later product work.`,
+    coverUrl: "/projects/freelance-android/cover.webp",
+    order: 28,
+    status: "published",
+    featured: false,
+    updatedAt,
+  },
 ];
+
+export const workSeed: WorkItem[] = workItems.slice().sort((a, b) => a.order - b.order);
+
