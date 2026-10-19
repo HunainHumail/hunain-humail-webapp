@@ -37,6 +37,7 @@ describe("buildSeedImportPayload", () => {
       now: nowSeed.length,
       work: 30,
       writing: writingSeed.length + linkedinPosts.length,
+      testimonials: 0,
       settings: 1,
     });
     expect(payload.counts.work).toBe(workSeed.length);
@@ -52,7 +53,13 @@ describe("buildSeedImportPayload", () => {
       ...new Set(payload.documents.map((document) => document.collection)),
     ].sort();
 
-    expect(names).toEqual([...ADMIN_COLLECTION_NAMES].slice().sort());
+    expect(names).toEqual(
+      [...ADMIN_COLLECTION_NAMES]
+        .filter((name) => payload.counts[name] > 0)
+        .sort(),
+    );
+    expect(payload.counts.testimonials).toBe(0);
+    expect(docs(payload, "testimonials")).toEqual([]);
     expect(getCollectionConfig("profile").name).toBe(COLLECTIONS.profile);
     expect(getCollectionConfig("settings").name).toBe(COLLECTIONS.settings);
     expect(getCollectionConfig("story").name).toBe(COLLECTIONS.story);
@@ -167,7 +174,7 @@ describe("formatSeedImportSummary", () => {
   it("lists per-collection counts", () => {
     const payload = buildSeedImportPayload(() => FIXED);
     expect(formatSeedImportSummary(payload.counts)).toBe(
-      "Imported profile 1, story 4, now 4, work 30, writing 5, settings 1.",
+      "Imported profile 1, story 4, now 4, work 30, writing 5, testimonials 0, settings 1.",
     );
   });
 });

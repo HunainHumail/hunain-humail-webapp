@@ -3,6 +3,7 @@ import type { Profile } from "@/lib/schemas/profile";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import type { StoryItem } from "@/lib/schemas/story";
 import type { WorkItem } from "@/lib/schemas/work";
+import type { Testimonial } from "@/lib/schemas/testimonial";
 import type { WritingItem } from "@/lib/schemas/writing";
 import { COLLECTIONS } from "../constants";
 import { createCollectionRepository } from "./collectionRepository";
@@ -29,3 +30,5 @@ export const workRepository =
   createCollectionRepository<WorkItem>(COLLECTIONS.work);
 export const writingRepository =
   createCollectionRepository<WritingItem>(COLLECTIONS.writing);
+export const testimonialsRepository =
+  createCollectionRepository<Testimonial>(COLLECTIONS.testimonials);

@@ -18,6 +18,7 @@ export {
   publishedWorkItems,
 } from "./work";
 export { getWriting, publishedWritingItems } from "./writing";
+export { getTestimonials, publishedTestimonials } from "./testimonials";
 export {
   submitContactMessage,
   type SubmitContactMessageResult,

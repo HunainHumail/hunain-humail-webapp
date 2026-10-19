@@ -16,6 +16,7 @@ import { profileSeed } from "./profile";
 import { siteSettingsSeed } from "./settings";
 import { storySeed } from "./story";
 import { workSeed } from "./work";
+import { testimonialsSeed } from "./testimonials";
 import { writingImportItems } from "./writing";
 
 export { FIRESTORE_WRITE_CHUNK_SIZE };
@@ -102,6 +103,7 @@ function emptyCounts(): SeedImportCounts {
     now: 0,
     work: 0,
     writing: 0,
+    testimonials: 0,
     settings: 0,
   };
 }
@@ -117,6 +119,7 @@ export function buildSeedImportPayload(
     ...listDocuments("now", nowSeed, updatedAt),
     ...listDocuments("work", workSeed, updatedAt),
     ...listDocuments("writing", writingImportItems(), updatedAt),
+    ...listDocuments("testimonials", testimonialsSeed, updatedAt),
   ];
 
   const counts = emptyCounts();

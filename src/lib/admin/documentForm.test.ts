@@ -15,6 +15,26 @@ describe("parseDocument", () => {
     expect(prepared.updatedAt).toBe("2026-10-18T00:00:00.000Z");
   });
 
+  it("drops an empty optional rating select", () => {
+    const prepared = prepareDocument(
+      { name: "Ada", rating: "" },
+      [
+        {
+          name: "rating",
+          label: "Rating",
+          type: "select",
+          optional: true,
+          options: [
+            { value: "", label: "None" },
+            { value: "5", label: "5" },
+          ],
+        },
+      ],
+      "2026-10-18T00:00:00.000Z",
+    );
+    expect(prepared.rating).toBeUndefined();
+  });
+
   it("returns a field error when the document is invalid", () => {
     const config = getCollectionConfig("profile");
     const result = parseDocument(

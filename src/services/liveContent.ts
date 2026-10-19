@@ -7,6 +7,10 @@ import {
 } from "@/lib/schemas/siteSettings";
 import { storyItemSchema, type StoryItem } from "@/lib/schemas/story";
 import { workItemSchema, type WorkItem } from "@/lib/schemas/work";
+import {
+  testimonialSchema,
+  type Testimonial,
+} from "@/lib/schemas/testimonial";
 import { writingItemSchema, type WritingItem } from "@/lib/schemas/writing";
 import { sortWritingItems } from "@/lib/utils/filterWritingByType";
 import { rewriteLinkedInInTree } from "@/lib/utils/rewriteLinkedInUrls";
@@ -19,7 +23,8 @@ export type LiveCollection =
   | "story"
   | "now"
   | "work"
-  | "writing";
+  | "writing"
+  | "testimonials";
 
 export interface LiveDataMap {
   profile: Profile;
@@ -28,6 +33,7 @@ export interface LiveDataMap {
   now: NowItem[];
   work: WorkItem[];
   writing: WritingItem[];
+  testimonials: Testimonial[];
 }
 
 const inflight = new Map<LiveCollection, Promise<unknown>>();
@@ -174,6 +180,14 @@ export function mergeLiveContent<K extends LiveCollection>(
       );
       return rewriteLinkedInInTree(
         sortWritingItems(mergeById(initialData as WritingItem[], liveItems)),
+      ) as LiveDataMap[K];
+    }
+    case "testimonials": {
+      const liveItems = parsePublishedList(live, (item) =>
+        testimonialSchema.parse(item),
+      );
+      return mergeById(initialData as Testimonial[], liveItems).sort(
+        (a, b) => a.order - b.order,
       ) as LiveDataMap[K];
     }
     default: {

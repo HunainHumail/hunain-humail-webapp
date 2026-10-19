@@ -71,6 +71,11 @@ service cloud.firestore {
       allow write: if isAdmin() && isContentWrite();
     }
 
+    match /testimonials/{id} {
+      allow read: if isAdmin() || isPublished();
+      allow write: if isAdmin() && isContentWrite();
+    }
+
     match /messages/{id} {
       allow create: if isValidMessage();
       allow read, delete: if isAdmin();

@@ -85,6 +85,12 @@ describe("Home", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Got something to build?" }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "What clients say." }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: /Testimonials/i }),
+    ).not.toBeInTheDocument();
     const jsonLd = container.querySelector(
       'script[type="application/ld+json"]',
     );

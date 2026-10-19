@@ -46,6 +46,13 @@ export {
   type WritingType,
 } from "./writing";
 export {
+  testimonialRatingSchema,
+  testimonialSchema,
+  testimonialSourceSchema,
+  type Testimonial,
+  type TestimonialSource,
+} from "./testimonial";
+export {
   linkedinPostSchema,
   linkedinPostsSchema,
   type LinkedInPost,

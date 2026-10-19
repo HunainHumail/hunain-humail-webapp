@@ -11,6 +11,7 @@ import {
   settingsRepository,
   storyRepository,
   workRepository,
+  testimonialsRepository,
   writingRepository,
 } from "@/lib/firebase/repositories";
 
@@ -81,6 +82,7 @@ const repositories: Record<AdminCollectionName, AdminRepository> = {
   now: wrap("now", nowRepository),
   work: wrap("work", workRepository),
   writing: wrap("writing", writingRepository),
+  testimonials: wrap("testimonials", testimonialsRepository),
 };
 
 export function getAdminRepository(name: AdminCollectionName): AdminRepository {

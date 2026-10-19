@@ -66,8 +66,8 @@ export function ImportSeedButton({ className }: ImportSeedButtonProps) {
             <DialogTitle>Import seed data?</DialogTitle>
             <DialogDescription>
               This upserts the same profile, story, now, work (30 projects),
-              writing (talks, awards, and LinkedIn posts), and settings the
-              public site uses.
+              writing (talks, awards, and LinkedIn posts), testimonials
+              (none in seed), and settings the public site uses.
             </DialogDescription>
           </DialogHeader>
           {error ? <p role="alert">{error}</p> : null}

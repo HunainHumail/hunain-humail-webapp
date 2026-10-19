@@ -3,6 +3,7 @@ import { Hero } from "@/components/organisms/Hero";
 import { NowSection } from "@/components/organisms/NowSection";
 import { StoryTimeline } from "@/components/organisms/StoryTimeline";
 import { WorkGrid } from "@/components/organisms/WorkGrid";
+import { Testimonials } from "@/components/organisms/Testimonials";
 import { WritingList } from "@/components/organisms/WritingList";
 import { SiteTemplate } from "@/components/templates/SiteTemplate";
 import type { Profile } from "@/lib/schemas/profile";
@@ -10,8 +11,10 @@ import type { NowItem } from "@/lib/schemas/now";
 import type { NavItem, SiteSettings } from "@/lib/schemas/siteSettings";
 import type { StoryItem } from "@/lib/schemas/story";
 import type { WorkItem } from "@/lib/schemas/work";
+import type { Testimonial } from "@/lib/schemas/testimonial";
 import type { WritingItem } from "@/lib/schemas/writing";
 import { homeWorkPreview } from "@/lib/utils/homeWorkPreview";
+import { navWithTestimonials } from "@/lib/utils/navWithTestimonials";
 
 export interface HomeTemplateProps {
   settings: SiteSettings;
@@ -20,6 +23,7 @@ export interface HomeTemplateProps {
   now: NowItem[];
   work: WorkItem[];
   writing: WritingItem[];
+  testimonials?: Testimonial[];
   knownWorkSlugs?: readonly string[];
 }
 
@@ -36,16 +40,20 @@ export function HomeTemplate({
   now,
   work,
   writing,
+  testimonials = [],
   knownWorkSlugs,
 }: HomeTemplateProps) {
-  const storyNav = navFor(settings, "#story");
-  const nowNav = navFor(settings, "#now");
-  const workNav = navFor(settings, "/work") ?? navFor(settings, "#work");
-  const writingNav = navFor(settings, "#writing");
-  const contactNav = navFor(settings, "#contact");
+  const nav = navWithTestimonials(settings.nav, testimonials.length > 0);
+  const publicSettings = { ...settings, nav };
+  const storyNav = navFor(publicSettings, "#story");
+  const nowNav = navFor(publicSettings, "#now");
+  const workNav = navFor(publicSettings, "/work") ?? navFor(publicSettings, "#work");
+  const writingNav = navFor(publicSettings, "#writing");
+  const testimonialsNav = navFor(publicSettings, "#testimonials");
+  const contactNav = navFor(publicSettings, "#contact");
 
   return (
-    <SiteTemplate settings={settings} avatars={profile.avatars}>
+    <SiteTemplate settings={publicSettings} avatars={profile.avatars}>
       <Hero
         name={profile.name}
         headline={profile.headline}
@@ -74,6 +82,11 @@ export function HomeTemplate({
         items={writing}
         index={writingNav?.number}
         label={writingNav?.label}
+      />
+      <Testimonials
+        items={testimonials}
+        index={testimonialsNav?.number}
+        label={testimonialsNav?.label}
       />
       <ContactSection
         contact={settings.contact}

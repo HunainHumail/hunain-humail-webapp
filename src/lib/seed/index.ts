@@ -9,6 +9,7 @@ export {
   writingImportItems,
   writingSeed,
 } from "./writing";
+export { testimonialsSeed } from "./testimonials";
 export {
   FIRESTORE_WRITE_CHUNK_SIZE,
   buildSeedImportPayload,

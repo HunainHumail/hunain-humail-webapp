@@ -93,6 +93,8 @@ describe("Firebase security rules", () => {
       await setDoc(doc(db, "now", "n1"), publishedContent);
       await setDoc(doc(db, "work", "w1"), publishedContent);
       await setDoc(doc(db, "writing", "wr1"), publishedContent);
+      await setDoc(doc(db, "testimonials", "tm1"), publishedContent);
+      await setDoc(doc(db, "testimonials", "tm-draft"), draftContent);
     });
 
     const db = unauth().firestore();
@@ -103,6 +105,8 @@ describe("Firebase security rules", () => {
     await assertSucceeds(getDoc(doc(db, "now", "n1")));
     await assertSucceeds(getDoc(doc(db, "work", "w1")));
     await assertSucceeds(getDoc(doc(db, "writing", "wr1")));
+    await assertSucceeds(getDoc(doc(db, "testimonials", "tm1")));
+    await assertFails(getDoc(doc(db, "testimonials", "tm-draft")));
   });
 
   it("allows only the verified admin to write content", async () => {

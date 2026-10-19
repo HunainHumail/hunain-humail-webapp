@@ -8,6 +8,7 @@ import { profileSchema } from "@/lib/schemas/profile";
 import { siteSettingsSchema } from "@/lib/schemas/siteSettings";
 import { storyItemSchema } from "@/lib/schemas/story";
 import { workItemSchema } from "@/lib/schemas/work";
+import { testimonialSchema } from "@/lib/schemas/testimonial";
 import { writingItemSchema } from "@/lib/schemas/writing";
 import type { FieldConfig } from "./fields";
 
@@ -17,6 +18,7 @@ export const ADMIN_COLLECTION_NAMES = [
   "now",
   "work",
   "writing",
+  "testimonials",
   "settings",
 ] as const;
 
@@ -163,6 +165,44 @@ const workFields = [
   { name: "featured", label: "Featured", type: "switch" },
 ] as const satisfies readonly FieldConfig[];
 
+const testimonialFields = [
+  { name: "name", label: "Name", type: "text" },
+  { name: "role", label: "Role / company", type: "text" },
+  {
+    name: "source",
+    label: "Source",
+    type: "select",
+    options: [
+      { value: "linkedin", label: "LinkedIn" },
+      { value: "upwork", label: "Upwork" },
+    ],
+  },
+  { name: "text", label: "Quote", type: "textarea" },
+  {
+    name: "rating",
+    label: "Rating",
+    type: "select",
+    optional: true,
+    options: [
+      { value: "", label: "None" },
+      { value: "1", label: "1" },
+      { value: "2", label: "2" },
+      { value: "3", label: "3" },
+      { value: "4", label: "4" },
+      { value: "5", label: "5" },
+    ],
+  },
+  { name: "date", label: "Date", type: "date" },
+  {
+    name: "avatarUrl",
+    label: "Avatar",
+    type: "image",
+    optional: true,
+    description: "Paste an image URL. Upload appears when Storage is enabled.",
+  },
+  { name: "link", label: "Source URL", type: "url", optional: true },
+] as const satisfies readonly FieldConfig[];
+
 const writingFields = [
   {
     name: "type",
@@ -298,6 +338,23 @@ export const collectionConfigs: Record<AdminCollectionName, CollectionConfig> = 
       venue: "",
       date: "",
       summary: "",
+      ...meta(),
+    }),
+  },
+  testimonials: {
+    name: "testimonials",
+    label: "Testimonials",
+    titleField: "name",
+    addLabel: "Add testimonial",
+    schema: testimonialSchema,
+    fields: testimonialFields,
+    createBlank: () => ({
+      id: "",
+      name: "",
+      role: "",
+      source: "linkedin",
+      text: "",
+      date: "",
       ...meta(),
     }),
   },

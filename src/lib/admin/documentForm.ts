@@ -14,6 +14,7 @@ const OPTIONAL_TEXT_TYPES = new Set<FieldConfig["type"]>([
   "url",
   "image",
   "date",
+  "select",
 ]);
 
 export function zodFieldErrors(error: ZodError): Record<string, string> {

@@ -18,6 +18,10 @@ export {
   type FilterTabsProps,
 } from "./FilterTabs";
 export { WritingItem, type WritingItemProps } from "./WritingItem";
+export {
+  TestimonialCard,
+  type TestimonialCardProps,
+} from "./TestimonialCard";
 export { FormField, type FormFieldProps } from "./FormField";
 export { SectionHeader, type SectionHeaderProps } from "./SectionHeader";
 export { RevealGroup, type RevealGroupProps } from "./RevealGroup";

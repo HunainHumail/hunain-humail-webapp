@@ -2,7 +2,7 @@
 description: Firebase data layer and security
 globs: src/lib/firebase/**,src/services/**,firestore.rules,storage.rules
 ---
-- Collections: `profile` (doc `main`), `story`, `now`, `work`, `writing`, `settings` (doc `site`, incl. SEO), `messages` (contact form).
+- Collections: `profile` (doc `main`), `story`, `now`, `work`, `writing`, `testimonials`, `settings` (doc `site`, incl. SEO), `messages` (contact form).
 - Every content doc: `status: 'draft'|'published'`, `order: number`, `updatedAt`. Public site reads only `published`.
 - Repositories in `src/lib/firebase/*`, consumed only by `src/services/*`. Services return typed, zod-parsed objects.
 - Security rules: public read of published content; writes only for `request.auth.token.email == 'hunainhumail786@gmail.com'` with `email_verified`. `messages`: anyone may create (validated shape), only admin reads. Same admin check in `storage.rules`.

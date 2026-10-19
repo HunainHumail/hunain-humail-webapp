@@ -35,6 +35,18 @@ describe("CollectionEditor", () => {
     expect(screen.queryByLabelText("Upload image")).not.toBeInTheDocument();
   });
 
+  it("opens testimonials fields for source, rating, and avatar", async () => {
+    const user = userEvent.setup();
+    render(<CollectionEditor collection="testimonials" />);
+
+    await user.click(screen.getByRole("button", { name: "Add testimonial" }));
+
+    expect(screen.getByLabelText("Source")).toBeInTheDocument();
+    expect(screen.getByLabelText("Rating")).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Image URL" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Quote" })).toBeInTheDocument();
+  });
+
   it("shows the profile form without a collection list", () => {
     render(<CollectionEditor collection="profile" />);
 

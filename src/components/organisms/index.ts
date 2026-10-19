@@ -10,5 +10,6 @@ export { NowSection, type NowSectionProps } from "./NowSection";
 export { Gallery, type GalleryProps } from "./Gallery";
 export { WorkGrid, type WorkGridProps } from "./WorkGrid";
 export { WritingList, type WritingListProps } from "./WritingList";
+export { Testimonials, type TestimonialsProps } from "./Testimonials";
 export { ContactSection, type ContactSectionProps } from "./ContactSection";
 

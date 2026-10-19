@@ -14,6 +14,7 @@ export function HomeLive({
   now: initialNow,
   work: initialWork,
   writing: initialWriting,
+  testimonials: initialTestimonials = [],
 }: HomeTemplateProps) {
   const [knownWorkSlugs] = useState(() =>
     initialWork.map((item) => item.slug),
@@ -24,6 +25,7 @@ export function HomeLive({
   const now = useLiveContent("now", initialNow);
   const work = useLiveContent("work", initialWork);
   const writing = useLiveContent("writing", initialWriting);
+  const testimonials = useLiveContent("testimonials", initialTestimonials);
   useClientSeoTitle(settings.seo.title);
 
   return (
@@ -34,6 +36,7 @@ export function HomeLive({
       now={now}
       work={work}
       writing={writing}
+      testimonials={testimonials}
       knownWorkSlugs={knownWorkSlugs}
     />
   );

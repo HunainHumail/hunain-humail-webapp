@@ -98,6 +98,9 @@ describe("collection configs", () => {
     expect(getCollectionConfig("profile").name).toBe(COLLECTIONS.profile);
     expect(getCollectionConfig("work").name).toBe(COLLECTIONS.work);
     expect(getCollectionConfig("writing").name).toBe(COLLECTIONS.writing);
+    expect(getCollectionConfig("testimonials").name).toBe(
+      COLLECTIONS.testimonials,
+    );
     expect(byCollection.get("profile")?.map((document) => document.id)).toEqual([
       PROFILE_DOC_ID,
     ]);
@@ -113,6 +116,7 @@ describe("collection configs", () => {
     expect(byCollection.get("writing")).toHaveLength(
       writingSeed.length + 3,
     );
+    expect(byCollection.get("testimonials")).toEqual([]);
 
     for (const document of payload.documents) {
       expect(
@@ -120,6 +124,49 @@ describe("collection configs", () => {
           .success,
       ).toBe(true);
     }
+  });
+
+  it("gives testimonials source, rating, and avatar image fields", () => {
+    const config = getCollectionConfig("testimonials");
+    const names = config.fields.map((field) => field.name);
+    expect(names).toEqual(
+      expect.arrayContaining([
+        "name",
+        "role",
+        "source",
+        "text",
+        "rating",
+        "date",
+        "avatarUrl",
+        "link",
+      ]),
+    );
+    expect(config.fields.find((field) => field.name === "source")?.type).toBe(
+      "select",
+    );
+    expect(
+      config.fields.find((field) => field.name === "source")?.options?.map(
+        (option) => option.value,
+      ),
+    ).toEqual(["linkedin", "upwork"]);
+    const rating = config.fields.find((field) => field.name === "rating");
+    expect(rating?.type).toBe("select");
+    expect(rating?.optional).toBe(true);
+    expect(rating?.options?.map((option) => option.value)).toEqual([
+      "",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+    ]);
+    expect(config.fields.find((field) => field.name === "avatarUrl")?.type).toBe(
+      "image",
+    );
+    expect(config.createBlank()).toMatchObject({
+      source: "linkedin",
+      status: "draft",
+    });
   });
 
   it("gives writing optional image fields for LinkedIn posts", () => {

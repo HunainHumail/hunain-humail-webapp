@@ -27,6 +27,7 @@ export {
   settingsRepository,
   storyRepository,
   workRepository,
+  testimonialsRepository,
   writingRepository,
   type CollectionRepository,
   type ContactMessageDoc,

@@ -10,6 +10,7 @@ export async function fetchLivePublished(
     profileRepository,
     settingsRepository,
     storyRepository,
+    testimonialsRepository,
     workRepository,
     writingRepository,
   } = await import("@/lib/firebase");
@@ -27,5 +28,7 @@ export async function fetchLivePublished(
       return workRepository.listPublished();
     case "writing":
       return writingRepository.listPublished();
+    case "testimonials":
+      return testimonialsRepository.listPublished();
   }
 }

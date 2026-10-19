@@ -18,6 +18,7 @@ vi.mock("@/lib/firebase/repositories", () => ({
   nowRepository: profile,
   workRepository: profile,
   writingRepository: profile,
+  testimonialsRepository: profile,
 }));
 
 describe("getAdminRepository", () => {

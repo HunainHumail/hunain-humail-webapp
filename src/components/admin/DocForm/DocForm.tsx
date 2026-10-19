@@ -218,7 +218,7 @@ function FieldControl({
         <Label htmlFor={id}>{field.label}</Label>
         <select
           id={id}
-          value={readString(value)}
+          value={typeof value === "number" ? String(value) : readString(value)}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
           className="h-8 rounded-lg border border-border bg-surface px-2 text-sm text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"

@@ -52,5 +52,29 @@ describe("mergeLiveContent", () => {
     );
     expect(mergeLiveContent("writing", writingSeed, [])).toEqual(writingSeed);
     expect(mergeLiveContent("story", storySeed, [])).toEqual(storySeed);
+    expect(mergeLiveContent("testimonials", [], [])).toEqual([]);
+  });
+
+  it("adds published testimonials from live data and skips drafts", () => {
+    const published = {
+      id: "t-live",
+      name: "Ada Lovelace",
+      role: "Engineering lead",
+      source: "upwork" as const,
+      text: "Shipped the agent.",
+      rating: 5,
+      date: "2026-03-01",
+      order: 0,
+      status: "published" as const,
+      updatedAt: "2026-10-18T00:00:00.000Z",
+    };
+
+    const merged = mergeLiveContent("testimonials", [], [
+      published,
+      { ...published, id: "t-draft", status: "draft", order: 1 },
+    ]);
+
+    expect(merged.map((item) => item.id)).toEqual(["t-live"]);
+    expect(merged[0]?.rating).toBe(5);
   });
 });

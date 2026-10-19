@@ -6,6 +6,7 @@ export const COLLECTIONS = {
   now: "now",
   work: "work",
   writing: "writing",
+  testimonials: "testimonials",
   settings: "settings",
   messages: "messages",
 } as const;
