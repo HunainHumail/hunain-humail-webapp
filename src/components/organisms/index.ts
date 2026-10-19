@@ -7,6 +7,7 @@ export {
 } from "./SmoothScrollProvider";
 export { StoryTimeline, type StoryTimelineProps } from "./StoryTimeline";
 export { NowSection, type NowSectionProps } from "./NowSection";
+export { Gallery, type GalleryProps } from "./Gallery";
 export { WorkGrid, type WorkGridProps } from "./WorkGrid";
 export { WritingList, type WritingListProps } from "./WritingList";
 export { ContactSection, type ContactSectionProps } from "./ContactSection";

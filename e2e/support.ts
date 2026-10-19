@@ -11,7 +11,7 @@ export const featuredCaseStudies = [
 export const allCaseStudies = [
   ...featuredCaseStudies,
   { slug: "wellspent", title: "Wellspent Screen Time SDK" },
-  { slug: "white-label-vpn-sdk", title: "White-label VPN SDK" },
+  { slug: "white-label-vpn-sdk", title: "White Label VPN SDK" },
   { slug: "luviq", title: "LuvIQ" },
   { slug: "escrow-trakker-landlords", title: "Escrow Trakker for Landlords" },
   { slug: "escrow-trakker-lawyers", title: "Escrow Trakker for Lawyers" },

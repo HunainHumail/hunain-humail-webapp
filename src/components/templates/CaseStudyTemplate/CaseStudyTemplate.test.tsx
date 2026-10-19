@@ -83,4 +83,20 @@ describe("CaseStudyTemplate", () => {
       "https://apps.apple.com/ae/app/trinnect/id6758113133",
     );
   });
+
+  it("renders a gallery when the work item has one", () => {
+    const item = workSeed.find((entry) => entry.slug === "white-label-vpn-sdk");
+    if (!item) {
+      throw new Error("Expected VPN work seed");
+    }
+
+    render(<CaseStudyTemplate settings={siteSettingsSeed} item={item} />);
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "White Label VPN SDK" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Gallery" })).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "Project gallery" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "GatewayVPN cover" })).toBeInTheDocument();
+  });
 });

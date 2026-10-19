@@ -32,10 +32,20 @@ describe("collection configs", () => {
     ).toBe(true);
   });
 
-  it("gives work a markdown body and a cover image field", () => {
+  it("gives work a markdown body, cover image, and gallery list", () => {
     const fields = getCollectionConfig("work").fields;
     expect(fields.find((field) => field.name === "body")?.type).toBe("markdown");
     expect(fields.find((field) => field.name === "coverUrl")?.type).toBe("image");
+    const gallery = fields.find((field) => field.name === "gallery");
+    expect(gallery?.type).toBe("records");
+    expect(gallery?.fields?.map((field) => field.name)).toEqual([
+      "src",
+      "alt",
+      "caption",
+    ]);
+    expect(gallery?.fields?.find((field) => field.name === "src")?.type).toBe(
+      "image",
+    );
   });
 
   it("covers settings nav, socials, contact, and SEO", () => {

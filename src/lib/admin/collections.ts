@@ -48,6 +48,12 @@ const linkFields = [
   { name: "href", label: "URL", type: "url" },
 ] as const satisfies readonly FieldConfig[];
 
+const galleryFields = [
+  { name: "src", label: "Image URL", type: "image" },
+  { name: "alt", label: "Alt text", type: "text" },
+  { name: "caption", label: "Caption", type: "text", optional: true },
+] as const satisfies readonly FieldConfig[];
+
 const navFields = [
   { name: "number", label: "Number", type: "text" },
   { name: "label", label: "Label", type: "text" },
@@ -128,6 +134,14 @@ const workFields = [
     type: "image",
     optional: true,
     description: "Paste an image URL. Upload appears when Storage is enabled.",
+  },
+  {
+    name: "gallery",
+    label: "Gallery",
+    type: "records",
+    optional: true,
+    fields: galleryFields,
+    description: "Optional case-study image list. Each item needs a URL and alt text.",
   },
   { name: "links", label: "Links", type: "records", fields: linkFields },
   { name: "featured", label: "Featured", type: "switch" },
@@ -239,6 +253,7 @@ export const collectionConfigs: Record<AdminCollectionName, CollectionConfig> = 
       stack: [],
       highlights: [],
       body: "",
+      gallery: [],
       links: [],
       featured: false,
       ...meta(),

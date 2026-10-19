@@ -29,9 +29,11 @@ export { storyItemSchema, type StoryItem } from "./story";
 export { nowItemSchema, type NowItem } from "./now";
 export {
   workCategorySchema,
+  workGalleryItemSchema,
   workItemSchema,
   workLinkSchema,
   type WorkCategory,
+  type WorkGalleryItem,
   type WorkItem,
   type WorkLink,
 } from "./work";

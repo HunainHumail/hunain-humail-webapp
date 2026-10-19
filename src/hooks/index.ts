@@ -10,6 +10,11 @@ export {
 } from "./useDubaiClock";
 export { useTypewriter, type UseTypewriterOptions } from "./useTypewriter";
 export { useLenis } from "./useLenis";
+export { useFocusTrap } from "./useFocusTrap";
+export {
+  useGalleryLightbox,
+  type UseGalleryLightboxResult,
+} from "./useGalleryLightbox";
 export { useReducedMotion } from "./useReducedMotion";
 export { useXlViewport, XL_MEDIA_QUERY } from "./useXlViewport";
 export { useScrollProgress } from "./useScrollProgress";

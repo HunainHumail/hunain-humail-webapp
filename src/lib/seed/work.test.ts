@@ -75,6 +75,28 @@ describe("workSeed", () => {
     expect(featured.every((item) => item.status === "published")).toBe(true);
   });
 
+  it("names the VPN card White Label VPN SDK and seeds its gallery files", () => {
+    const vpn = workSeed.find((item) => item.slug === "white-label-vpn-sdk");
+    expect(vpn?.title).toBe("White Label VPN SDK");
+    expect(vpn?.coverUrl).toBe("/projects/white-label-vpn-sdk/cover.webp");
+    expect(vpn?.gallery).toHaveLength(33);
+    expect(vpn?.gallery?.every((item) => item.caption)).toBe(true);
+    expect(
+      new Set(vpn?.gallery?.map((item) => item.caption)),
+    ).toEqual(
+      new Set(["AviteoVPN", "Digitunnel VPN", "GatewayVPN", "VpnSec"]),
+    );
+
+    for (const shot of vpn?.gallery ?? []) {
+      expect(shot.src.startsWith("/projects/white-label-vpn-sdk/gallery/")).toBe(
+        true,
+      );
+      expect(
+        existsSync(resolve(process.cwd(), "public", shot.src.slice(1))),
+      ).toBe(true);
+    }
+  });
+
   it("points every coverUrl at a file in public, including the 2x variant", () => {
     for (const item of workSeed) {
       if (!item.coverUrl) {

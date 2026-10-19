@@ -11,13 +11,19 @@ export const workLinkSchema = z.object({
   href: z.string().min(1),
 });
 
-const coverUrlSchema = z
+const imageUrlSchema = z
   .string()
   .min(1)
   .refine(
     (value) => value.startsWith("/") || value.startsWith("https://"),
-    { message: "coverUrl must be a site path or https URL" },
+    { message: "image URL must be a site path or https URL" },
   );
+
+export const workGalleryItemSchema = z.object({
+  src: imageUrlSchema,
+  alt: z.string().min(1),
+  caption: z.string().min(1).optional(),
+});
 
 export const workItemSchema = z.object({
   id: z.string().min(1),
@@ -29,7 +35,8 @@ export const workItemSchema = z.object({
   stack: z.array(z.string().min(1)),
   highlights: z.array(z.string().min(1)),
   body: z.string().min(1),
-  coverUrl: coverUrlSchema.optional(),
+  coverUrl: imageUrlSchema.optional(),
+  gallery: z.array(workGalleryItemSchema).optional(),
   links: z.array(workLinkSchema).optional(),
   order: z.number(),
   status: z.enum(["draft", "published"]),
@@ -39,4 +46,5 @@ export const workItemSchema = z.object({
 
 export type WorkCategory = z.infer<typeof workCategorySchema>;
 export type WorkLink = z.infer<typeof workLinkSchema>;
+export type WorkGalleryItem = z.infer<typeof workGalleryItemSchema>;
 export type WorkItem = z.infer<typeof workItemSchema>;

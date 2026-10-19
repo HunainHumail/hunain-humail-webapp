@@ -6,6 +6,7 @@ import { Markdown } from "@/components/atoms/Markdown";
 import { MonoLabel } from "@/components/atoms/MonoLabel";
 import { Text } from "@/components/atoms/Text";
 import { ChipList } from "@/components/molecules/ChipList";
+import { Gallery } from "@/components/organisms/Gallery";
 import { SiteTemplate } from "@/components/templates/SiteTemplate";
 import type { SiteSettings } from "@/lib/schemas/siteSettings";
 import type { WorkItem } from "@/lib/schemas/work";
@@ -84,6 +85,9 @@ export function CaseStudyTemplate({
             </ul>
           </div>
           <Markdown source={item.body} />
+          {item.gallery && item.gallery.length > 0 ? (
+            <Gallery items={item.gallery} />
+          ) : null}
           {item.links && item.links.length > 0 ? (
             <ul className="mt-10 flex flex-col gap-2" aria-label="Project links">
               {item.links.map((link) => (

@@ -1,4 +1,32 @@
-import type { WorkItem } from "@/lib/schemas/work";
+import type { WorkGalleryItem, WorkItem } from "@/lib/schemas/work";
+
+const VPN_GALLERY_APPS = [
+  { slug: "aviteovpn", caption: "AviteoVPN" },
+  { slug: "digitunnel-vpn", caption: "Digitunnel VPN" },
+  { slug: "gatewayvpn", caption: "GatewayVPN" },
+  { slug: "vpnsec", caption: "VpnSec" },
+] as const;
+
+function vpnGalleryItems(): WorkGalleryItem[] {
+  const cover: WorkGalleryItem = {
+    src: "/projects/white-label-vpn-sdk/gallery/gatewayvpn-cover.webp",
+    alt: "GatewayVPN cover",
+    caption: "GatewayVPN",
+  };
+
+  const shots = VPN_GALLERY_APPS.flatMap(({ slug, caption }) =>
+    Array.from({ length: 8 }, (_, index) => {
+      const frame = String(index + 1).padStart(2, "0");
+      return {
+        src: `/projects/white-label-vpn-sdk/gallery/${slug}-${frame}.webp`,
+        alt: `${caption} screenshot`,
+        caption,
+      };
+    }),
+  );
+
+  return [cover, ...shots];
+}
 
 const updatedAt = "2026-10-18T00:00:00.000Z";
 
@@ -204,22 +232,24 @@ Most of the work was the bridge: native APIs on one side, JavaScript on the othe
   {
     id: "work-white-label-vpn-sdk",
     slug: "white-label-vpn-sdk",
-    title: "White-label VPN SDK",
+    title: "White Label VPN SDK",
     category: "products",
     summary:
-      "A white-label VPN SDK and app platform for iOS, Android, Windows, and macOS, so a branded VPN app can ship from a shared core.",
+      "A white-label VPN SDK and app platform for Android, iOS, Windows, and macOS, shipped as multiple branded VPN apps from one shared core.",
     role: "GenAI engineer",
     stack: ["React Native", "Swift", "Kotlin", "Redux", "Node.js"],
     highlights: [
       "Modular SDK for branded VPN apps",
       "Native bridges in Swift and Kotlin",
-      "Shared app layer across mobile and desktop",
+      "AviteoVPN, Digitunnel VPN, GatewayVPN, VpnSec, and InnoviaShield VPN",
     ],
-    body: `I built a white-label VPN SDK and app platform that branded VPN apps can sit on. Native bridges in Swift and Kotlin carry the sensitive work; React Native, Redux, and Node.js cover the shared app layer across iOS, Android, Windows, and macOS.
+    body: `I built a white-label VPN SDK and app platform that branded VPN apps sit on. Native bridges in Swift and Kotlin carry the sensitive work; React Native, Redux, and Node.js cover the shared app layer across Android, iOS, Windows, and macOS.
 
-The idea is one core, many skins. A team gets a production VPN app without starting the networking and security stack from zero.
+The same SDK shipped as AviteoVPN, Digitunnel VPN, GatewayVPN, VpnSec, and InnoviaShield VPN. One core, a different brand on the home screen.
 
-I kept the platform generic on purpose. Same SDK, different brand on the home screen.`,
+A team gets a production VPN app without starting the networking and security stack from zero.`,
+    coverUrl: "/projects/white-label-vpn-sdk/cover.webp",
+    gallery: vpnGalleryItems(),
     order: 6,
     status: "published",
     featured: false,

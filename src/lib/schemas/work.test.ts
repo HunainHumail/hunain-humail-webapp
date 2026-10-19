@@ -40,4 +40,41 @@ describe("workItemSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("accepts an optional gallery of image URLs", () => {
+    const parsed = workItemSchema.parse({
+      ...valid,
+      gallery: [
+        {
+          src: "/projects/white-label-vpn-sdk/gallery/aviteovpn-01.webp",
+          alt: "AviteoVPN screenshot",
+          caption: "AviteoVPN",
+        },
+        {
+          src: "https://cdn.example/vpn.webp",
+          alt: "GatewayVPN screenshot",
+        },
+      ],
+    });
+
+    expect(parsed.gallery).toEqual([
+      {
+        src: "/projects/white-label-vpn-sdk/gallery/aviteovpn-01.webp",
+        alt: "AviteoVPN screenshot",
+        caption: "AviteoVPN",
+      },
+      {
+        src: "https://cdn.example/vpn.webp",
+        alt: "GatewayVPN screenshot",
+      },
+    ]);
+  });
+
+  it("rejects a gallery image that is not a path or https URL", () => {
+    const result = workItemSchema.safeParse({
+      ...valid,
+      gallery: [{ src: "ftp://example.com/shot.webp", alt: "Shot" }],
+    });
+    expect(result.success).toBe(false);
+  });
 });
