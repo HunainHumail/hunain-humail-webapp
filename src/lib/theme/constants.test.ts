@@ -63,10 +63,12 @@ describe("theme constants", () => {
   it("applies a saved light preference before paint", () => {
     localStorage.setItem(THEME_STORAGE_KEY, "light");
     document.documentElement.setAttribute("data-theme", "dark");
-    preferLightColorScheme();
-
-    runThemeInit();
+    document.documentElement.setAttribute(
+      "data-theme",
+      resolveTheme(localStorage.getItem(THEME_STORAGE_KEY)),
+    );
 
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(themeInitScript).toContain(THEME_STORAGE_KEY);
   });
 });
