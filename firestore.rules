@@ -25,7 +25,8 @@ service cloud.firestore {
           'email',
           'topic',
           'message',
-          'createdAt'
+          'createdAt',
+          'blueprintLeadId'
         ])
         && request.resource.data.name is string
         && request.resource.data.name.size() > 0
@@ -38,7 +39,23 @@ service cloud.firestore {
         && request.resource.data.message.size() >= 10
         && request.resource.data.message.size() <= 2000
         && request.resource.data.createdAt is string
-        && request.resource.data.createdAt.size() > 0;
+        && request.resource.data.createdAt.size() > 0
+        && (!('blueprintLeadId' in request.resource.data)
+          || (request.resource.data.blueprintLeadId is string
+            && request.resource.data.blueprintLeadId.size() > 0
+            && request.resource.data.blueprintLeadId.size() <= 128));
+    }
+
+    match /blueprintLeads/{id} {
+      allow read: if isAdmin();
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && request.resource.data.status in ['new', 'contacted', 'archived'];
+      allow create, delete: if false;
+    }
+
+    match /blueprintRateLimits/{id} {
+      allow read, write: if false;
     }
 
     match /profile/{id} {

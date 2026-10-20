@@ -12,5 +12,7 @@ export { WorkGrid, type WorkGridProps } from "./WorkGrid";
 export { WritingList, type WritingListProps } from "./WritingList";
 export { Testimonials, type TestimonialsProps } from "./Testimonials";
 export { ContactSection, type ContactSectionProps } from "./ContactSection";
+export { BlueprintSection, type BlueprintSectionProps } from "./BlueprintSection";
+export { BlueprintCanvas, type BlueprintCanvasProps } from "./BlueprintCanvas";
 export { CliLogin, type CliLoginProps } from "./CliLogin";
 

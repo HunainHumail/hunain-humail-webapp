@@ -26,6 +26,22 @@ export {
   type ContactMessageInput,
 } from "./contactMessage";
 export { inboxMessageSchema, type InboxMessage } from "./inboxMessage";
+export {
+  blueprintLeadSchema,
+  blueprintLeadStatusSchema,
+  blueprintPlatformSchema,
+  blueprintRequestSchema,
+  blueprintResponseSchema,
+  blueprintSpecSchema,
+  type BlueprintContent,
+  type BlueprintLead,
+  type BlueprintLeadStatus,
+  type BlueprintPlatform,
+  type BlueprintRequest,
+  type BlueprintResponse,
+  type BlueprintSpec,
+  type ContactPrefill,
+} from "./blueprint";
 
 export { storyItemSchema, type StoryItem } from "./story";
 export { nowItemSchema, type NowItem } from "./now";

@@ -13,6 +13,8 @@ const firebaseEnvSchema = z.object({
   STATIC_EXPORT: z.string().optional(),
   NEXT_PUBLIC_STATIC_EXPORT: z.string().optional(),
   NEXT_PUBLIC_SITE_URL: z.string().optional(),
+  NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY: z.string().optional(),
+  NEXT_PUBLIC_FUNCTIONS_REGION: z.string().optional(),
 });
 
 const parsed = firebaseEnvSchema.safeParse({
@@ -31,6 +33,9 @@ const parsed = firebaseEnvSchema.safeParse({
   STATIC_EXPORT: process.env.STATIC_EXPORT,
   NEXT_PUBLIC_STATIC_EXPORT: process.env.NEXT_PUBLIC_STATIC_EXPORT,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY:
+    process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY,
+  NEXT_PUBLIC_FUNCTIONS_REGION: process.env.NEXT_PUBLIC_FUNCTIONS_REGION,
 });
 
 export const env = parsed.success ? parsed.data : {};
@@ -80,6 +85,27 @@ export function isFirebaseConfigured(): boolean {
 /** Playwright sets this so the production e2e server can submit without Firestore. */
 export function isContactMockEnabled(): boolean {
   return process.env.NEXT_PUBLIC_CONTACT_MOCK === "true";
+}
+
+/** Playwright sets this so blueprint generation runs without Cloud Functions. */
+export function isBlueprintMockEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_BLUEPRINT_MOCK === "true";
+}
+
+export function getAppCheckSiteKey(): string | undefined {
+  const key = env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY;
+  return key && key.length > 0 ? key : undefined;
+}
+
+export function getFunctionsRegion(): string {
+  return env.NEXT_PUBLIC_FUNCTIONS_REGION ?? "me-central1";
+}
+
+export function isBlueprintEnabled(): boolean {
+  return (
+    isBlueprintMockEnabled() ||
+    (isFirebaseConfigured() && Boolean(getAppCheckSiteKey()))
+  );
 }
 
 /** Playwright sets this so /admin renders the signed-out guard without Firebase Auth. */

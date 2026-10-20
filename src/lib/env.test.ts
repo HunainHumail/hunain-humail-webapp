@@ -119,6 +119,25 @@ describe("firebase env", () => {
     expect(disabled.isE2ESignedOut()).toBe(false);
   });
 
+  it("enables blueprint mock or firebase plus app check", async () => {
+    vi.stubEnv("NEXT_PUBLIC_BLUEPRINT_MOCK", "true");
+    const mock = await import("./env");
+    expect(mock.isBlueprintEnabled()).toBe(true);
+
+    vi.resetModules();
+    stubFirebaseEnv();
+    vi.stubEnv("NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY", "site-key");
+    const live = await import("./env");
+    expect(live.isBlueprintEnabled()).toBe(true);
+
+    vi.resetModules();
+    stubFirebaseEnv();
+    vi.stubEnv("NEXT_PUBLIC_BLUEPRINT_MOCK", "");
+    vi.stubEnv("NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY", "");
+    const noAppCheck = await import("./env");
+    expect(noAppCheck.isBlueprintEnabled()).toBe(false);
+  });
+
   it("falls back when NEXT_PUBLIC_SITE_URL is not a url", async () => {
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "not a url");
     const { DEFAULT_SITE_URL, getSiteUrl } = await import("./env");

@@ -8,6 +8,7 @@ export const inboxMessageSchema = z.object({
   message: z.string().catch(""),
   createdAt: z.string().catch(""),
   read: z.boolean().catch(false),
+  blueprintLeadId: z.string().min(1).optional().catch(undefined),
 });
 
 export type InboxMessage = z.infer<typeof inboxMessageSchema>;

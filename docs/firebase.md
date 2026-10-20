@@ -23,10 +23,21 @@ Set the same project id in both places:
 
 ## Commands
 
-- `npm run emulators` — Firestore, Auth, Storage, and the emulator UI (`:4000`).
+- `npm run emulators` — Firestore, Auth, Storage, Functions (`:5001`), and the emulator UI (`:4000`).
+- `npm run build:functions` — bundle `generateBlueprint` and `linkBlueprintContact` into `functions/lib/`.
 - `npm run seed` — optional; push seed collections when the emulator or `GOOGLE_APPLICATION_CREDENTIALS` is available. Production seeding is the admin **Import seed data** button.
 - `npm run test:rules` — security rules via the emulators (`tests/rules`, excluded from `npm test`).
 - `firebase deploy --only hosting,firestore --project hunain-humail-webapp --non-interactive` — rules, indexes, and Hosting. Do not deploy Storage.
+
+## Blueprint generator (Blaze)
+
+The home-page **Blueprint your idea** section calls the `generateBlueprint` callable (App Check + Gemini). Upgrade to Blaze, set a GCP budget alert, then:
+
+1. `GEMINI_API_KEY="…" npm run setup:blueprint-secrets` (see [`docs/blueprint-setup.md`](blueprint-setup.md))
+2. Enable App Check with reCAPTCHA Enterprise; set `NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY`
+3. `firebase deploy --only functions,firestore,hosting`
+
+Leads live in `blueprintLeads` (admin read/update status only). Rate-limit counters use `blueprintRateLimits` with a TTL on `expiresAt` (see `firestore.indexes.json`). Contact messages may include optional `blueprintLeadId`; the `linkBlueprintContact` trigger sets `contactMessageId` on the lead.
 
 ## Rules
 

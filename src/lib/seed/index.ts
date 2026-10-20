@@ -1,4 +1,5 @@
 export { profileSeed } from "./profile";
+export { blueprintContentSeed, blueprintSampleSpecMobile } from "./blueprint";
 export { siteSettingsSeed } from "./settings";
 export { storySeed } from "./story";
 export { nowSeed } from "./now";

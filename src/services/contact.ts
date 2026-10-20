@@ -38,6 +38,9 @@ export async function submitContactMessage(
     topic: parsed.topic,
     message: parsed.message,
     createdAt: new Date().toISOString(),
+    ...(parsed.blueprintLeadId
+      ? { blueprintLeadId: parsed.blueprintLeadId }
+      : {}),
   });
 
   return { ok: true, id: created.id };

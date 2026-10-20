@@ -1,0 +1,96 @@
+/** Gemini OpenAPI-subset response schema mirroring blueprintSpecSchema. */
+export const blueprintGeminiResponseSchema = {
+  type: "OBJECT",
+  propertyOrdering: [
+    "appName",
+    "summary",
+    "audience",
+    "mvp",
+    "assumptions",
+    "later",
+    "platform",
+    "screens",
+    "features",
+  ],
+  required: [
+    "appName",
+    "summary",
+    "audience",
+    "mvp",
+    "assumptions",
+    "later",
+    "platform",
+    "screens",
+    "features",
+  ],
+  properties: {
+    appName: { type: "STRING" },
+    summary: { type: "STRING" },
+    audience: { type: "STRING" },
+    mvp: { type: "STRING" },
+    assumptions: {
+      type: "ARRAY",
+      minItems: 2,
+      maxItems: 4,
+      items: { type: "STRING" },
+    },
+    later: {
+      type: "ARRAY",
+      minItems: 2,
+      maxItems: 4,
+      items: { type: "STRING" },
+    },
+    platform: { type: "STRING", enum: ["mobile", "web"] },
+    screens: {
+      type: "ARRAY",
+      minItems: 3,
+      maxItems: 4,
+      items: {
+        type: "OBJECT",
+        required: ["id", "title", "purpose", "blocks"],
+        properties: {
+          id: { type: "STRING" },
+          title: { type: "STRING" },
+          purpose: { type: "STRING" },
+          blocks: {
+            type: "ARRAY",
+            minItems: 1,
+            maxItems: 6,
+            items: {
+              type: "OBJECT",
+              required: ["type", "label"],
+              properties: {
+                type: {
+                  type: "STRING",
+                  enum: [
+                    "header",
+                    "nav",
+                    "list",
+                    "card",
+                    "form",
+                    "button",
+                    "image",
+                    "tabbar",
+                  ],
+                },
+                label: { type: "STRING" },
+                items: {
+                  type: "ARRAY",
+                  minItems: 1,
+                  maxItems: 4,
+                  items: { type: "STRING" },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    features: {
+      type: "ARRAY",
+      minItems: 3,
+      maxItems: 5,
+      items: { type: "STRING" },
+    },
+  },
+} as const;

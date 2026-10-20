@@ -43,6 +43,7 @@ export const profileSeed: Profile = {
   ],
   ctas: [
     { label: "View work", href: "#work" },
+    { label: "Blueprint your idea", href: "/#blueprint" },
     { label: "Get in touch", href: "#contact" },
   ],
 };

@@ -25,4 +25,6 @@ export {
 export { FormField, type FormFieldProps } from "./FormField";
 export { SectionHeader, type SectionHeaderProps } from "./SectionHeader";
 export { RevealGroup, type RevealGroupProps } from "./RevealGroup";
+export { WireframeScreen, type WireframeScreenProps } from "./WireframeScreen";
+export { BlueprintLoading, type BlueprintLoadingProps } from "./BlueprintLoading";
 

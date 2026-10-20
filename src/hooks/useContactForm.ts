@@ -2,6 +2,7 @@
 
 import { useCallback, useState, type FormEvent } from "react";
 import { contactMessageSchema } from "@/lib/schemas/contactMessage";
+import type { ContactPrefill } from "@/lib/schemas/blueprint";
 import { submitContactMessage } from "@/services/contact";
 
 export type ContactFormStatus = "idle" | "success" | "error";
@@ -39,6 +40,20 @@ function emptyValues(topic: string): ContactFormValues {
   };
 }
 
+function initialValues(
+  topic: string,
+  prefill?: ContactPrefill,
+): ContactFormValues {
+  if (!prefill) {
+    return emptyValues(topic);
+  }
+  return {
+    ...emptyValues(topic),
+    email: prefill.email,
+    message: prefill.message,
+  };
+}
+
 function fieldErrorsFromZod(error: {
   issues: { path: (string | number)[]; message: string }[];
 }): ContactFormErrors {
@@ -58,15 +73,17 @@ function fieldErrorsFromZod(error: {
 
 export function useContactForm(
   options: readonly string[],
+  prefill?: ContactPrefill,
 ): UseContactFormResult {
   const initialTopic = options[0] ?? "";
   const [values, setValues] = useState<ContactFormValues>(() =>
-    emptyValues(initialTopic),
+    initialValues(initialTopic, prefill),
   );
   const [errors, setErrors] = useState<ContactFormErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<ContactFormStatus>("idle");
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const blueprintLeadId = prefill?.blueprintLeadId;
 
   const setField = useCallback(
     (field: keyof ContactFormValues, value: string) => {
@@ -90,7 +107,10 @@ export function useContactForm(
       setErrors({});
       setSubmitting(true);
       try {
-        await submitContactMessage(parsed.data);
+        await submitContactMessage({
+          ...parsed.data,
+          ...(blueprintLeadId ? { blueprintLeadId } : {}),
+        });
         setStatus("success");
         setValues(emptyValues(initialTopic));
       } catch {
@@ -102,7 +122,7 @@ export function useContactForm(
         setSubmitting(false);
       }
     },
-    [initialTopic, values],
+    [blueprintLeadId, initialTopic, values],
   );
 
   return {

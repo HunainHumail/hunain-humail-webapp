@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 import { ImportSeedButton } from "../ImportSeedButton";
 
@@ -19,6 +20,20 @@ export function AdminDashboard({ className }: AdminDashboardProps) {
         </p>
       </div>
       <ImportSeedButton />
+      <Link
+        href="/admin/blueprints"
+        className="rounded-md border border-border bg-surface p-4 no-underline transition-colors hover:bg-elevated"
+      >
+        <p className="font-mono text-xs uppercase tracking-wide text-muted">
+          Leads
+        </p>
+        <p className="font-display text-xl tracking-tight text-text">
+          Blueprints
+        </p>
+        <p className="mt-2 text-sm text-muted">
+          Review email-gated app ideas and generated wireframe specs.
+        </p>
+      </Link>
     </div>
   );
 }

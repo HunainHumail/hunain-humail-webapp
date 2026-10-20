@@ -24,6 +24,8 @@ export const spacing = {
   section: "5rem",
   "section-lg": "8.5rem",
   terminal: "27.5rem",
+  wireframe: "14rem",
+  "wireframe-web": "48rem",
   avatar: "6rem",
   "avatar-sm": "2rem",
   "avatar-lg": "clamp(10rem, 18vw, 12.5rem)",

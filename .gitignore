@@ -40,8 +40,12 @@ yarn-error.log*
 # env files
 .env*.local
 !.env.example
+functions/.env
+!functions/.env.example
 
 # firebase
+functions/lib/
+functions/node_modules/
 .firebase/
 firebase-debug.log
 firestore-debug.log

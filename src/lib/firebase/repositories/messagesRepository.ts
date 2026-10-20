@@ -19,6 +19,7 @@ export interface ContactMessageDoc {
   topic: string;
   message: string;
   createdAt: string;
+  blueprintLeadId?: string;
 }
 
 export interface MessagesRepository {

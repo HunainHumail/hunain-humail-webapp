@@ -14,4 +14,12 @@ export { ImageUpload, type ImageUploadProps } from "./ImageUpload";
 export { ImportSeedButton, type ImportSeedButtonProps } from "./ImportSeedButton";
 export { MarkdownEditor, type MarkdownEditorProps } from "./MarkdownEditor";
 export { MessagesPanel, type MessagesPanelProps } from "./MessagesPanel";
+export {
+  BlueprintLeadsPanel,
+  type BlueprintLeadsPanelProps,
+} from "./BlueprintLeadsPanel";
+export {
+  BlueprintLeadDetail,
+  type BlueprintLeadDetailProps,
+} from "./BlueprintLeadDetail";
 export { StatusToggle, type StatusToggleProps } from "./StatusToggle";

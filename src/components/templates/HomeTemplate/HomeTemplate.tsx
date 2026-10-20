@@ -1,3 +1,4 @@
+import { BlueprintSection } from "@/components/organisms/BlueprintSection";
 import { ContactSection } from "@/components/organisms/ContactSection";
 import { Hero } from "@/components/organisms/Hero";
 import { NowSection } from "@/components/organisms/NowSection";
@@ -6,7 +7,9 @@ import { WorkGrid } from "@/components/organisms/WorkGrid";
 import { Testimonials } from "@/components/organisms/Testimonials";
 import { WritingList } from "@/components/organisms/WritingList";
 import { SiteTemplate } from "@/components/templates/SiteTemplate";
+import type { BlueprintContent, ContactPrefill } from "@/lib/schemas/blueprint";
 import type { Profile } from "@/lib/schemas/profile";
+import { heroCtas } from "@/lib/utils/heroCtas";
 import type { NowItem } from "@/lib/schemas/now";
 import type { NavItem, SiteSettings } from "@/lib/schemas/siteSettings";
 import type { StoryItem } from "@/lib/schemas/story";
@@ -25,6 +28,10 @@ export interface HomeTemplateProps {
   writing: WritingItem[];
   testimonials?: Testimonial[];
   knownWorkSlugs?: readonly string[];
+  blueprint?: BlueprintContent;
+  blueprintEnabled?: boolean;
+  contactPrefill?: ContactPrefill;
+  onBlueprintDiscuss?: (prefill: ContactPrefill) => void;
 }
 
 function navFor(settings: SiteSettings, href: string): NavItem | undefined {
@@ -42,6 +49,10 @@ export function HomeTemplate({
   writing,
   testimonials = [],
   knownWorkSlugs,
+  blueprint,
+  blueprintEnabled = false,
+  contactPrefill,
+  onBlueprintDiscuss,
 }: HomeTemplateProps) {
   const nav = navWithTestimonials(settings.nav, testimonials.length > 0);
   const publicSettings = { ...settings, nav };
@@ -61,7 +72,7 @@ export function HomeTemplate({
         avatars={profile.avatars}
         chips={profile.chips}
         terminalLines={profile.terminalLines}
-        ctas={profile.ctas}
+        ctas={heroCtas(profile.ctas, blueprintEnabled)}
       />
       <StoryTimeline
         items={story}
@@ -88,10 +99,17 @@ export function HomeTemplate({
         index={testimonialsNav?.number}
         label={testimonialsNav?.label}
       />
+      {blueprintEnabled && blueprint && onBlueprintDiscuss ? (
+        <BlueprintSection
+          content={blueprint}
+          onDiscuss={onBlueprintDiscuss}
+        />
+      ) : null}
       <ContactSection
         contact={settings.contact}
         index={contactNav?.number}
         label={contactNav?.label}
+        prefill={contactPrefill}
       />
     </SiteTemplate>
   );

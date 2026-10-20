@@ -15,6 +15,7 @@ export const ADMIN_NAV = [
   { label: "Testimonials", href: "/admin/testimonials" },
   { label: "Settings/SEO", href: "/admin/settings" },
   { label: "Messages", href: "/admin/messages" },
+  { label: "Blueprints", href: "/admin/blueprints" },
 ] as const;
 
 export type AdminNavItem = (typeof ADMIN_NAV)[number];

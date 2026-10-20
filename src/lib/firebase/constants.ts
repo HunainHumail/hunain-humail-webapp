@@ -10,11 +10,13 @@ export const COLLECTIONS = {
   settings: "settings",
   messages: "messages",
   cliSessions: "cliSessions",
+  blueprintLeads: "blueprintLeads",
+  blueprintRateLimits: "blueprintRateLimits",
 } as const;
 
 export type ContentCollection = Exclude<
   (typeof COLLECTIONS)[keyof typeof COLLECTIONS],
-  "messages" | "cliSessions"
+  "messages" | "cliSessions" | "blueprintLeads" | "blueprintRateLimits"
 >;
 
 export const PROFILE_DOC_ID = "main";
@@ -26,6 +28,7 @@ export const FIREBASE_EMULATORS = {
   authPort: 9099,
   storagePort: 9199,
   uiPort: 4000,
+  functionsPort: 5001,
 } as const;
 
 export const STORAGE_IMAGES_PREFIX = "images";

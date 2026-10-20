@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { HomeLive } from "@/app/_live/HomeLive";
-import { getSiteUrl } from "@/lib/env";
+import { getSiteUrl, isBlueprintEnabled } from "@/lib/env";
+import { getBlueprintContent } from "@/services/blueprintContent";
 import { buildHomeMetadata, buildPersonJsonLd, serializeJsonLd } from "@/lib/seo";
 import { getProfile } from "@/services/profile";
 import { getSiteSettings } from "@/services/siteSettings";
@@ -18,16 +19,26 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const [settings, profile, story, now, work, writing, testimonials] =
-    await Promise.all([
-      getSiteSettings(),
-      getProfile(),
-      getStory(),
-      getNow(),
-      getWork(),
-      getWriting(),
-      getTestimonials(),
-    ]);
+  const [
+    settings,
+    profile,
+    story,
+    now,
+    work,
+    writing,
+    testimonials,
+    blueprint,
+  ] = await Promise.all([
+    getSiteSettings(),
+    getProfile(),
+    getStory(),
+    getNow(),
+    getWork(),
+    getWriting(),
+    getTestimonials(),
+    getBlueprintContent(),
+  ]);
+  const blueprintEnabled = isBlueprintEnabled();
   const jsonLd = buildPersonJsonLd({
     name: profile.name,
     sameAs: settings.socials.map((social) => social.href),
@@ -47,6 +58,8 @@ export default async function Home() {
         work={work}
         writing={writing}
         testimonials={testimonials}
+        blueprint={blueprint}
+        blueprintEnabled={blueprintEnabled}
       />
     </>
   );

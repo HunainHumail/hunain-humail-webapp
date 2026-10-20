@@ -207,6 +207,51 @@ describe("Firebase security rules", () => {
     );
   });
 
+  it("locks down blueprint leads and rate limits", async () => {
+    await assertFails(
+      setDoc(doc(unauth().firestore(), "blueprintLeads", "l1"), {
+        email: "a@example.com",
+      }),
+    );
+    await assertFails(getDoc(doc(unauth().firestore(), "blueprintLeads", "l1")));
+    await testEnv.withSecurityRulesDisabled(async (context) => {
+      await setDoc(doc(context.firestore(), "blueprintLeads", "l1"), {
+        email: "a@example.com",
+        status: "new",
+      });
+    });
+    await assertFails(getDoc(doc(unauth().firestore(), "blueprintLeads", "l1")));
+    await assertSucceeds(getDoc(doc(admin().firestore(), "blueprintLeads", "l1")));
+    await assertSucceeds(
+      updateDoc(doc(admin().firestore(), "blueprintLeads", "l1"), {
+        status: "contacted",
+      }),
+    );
+    await assertFails(
+      updateDoc(doc(admin().firestore(), "blueprintLeads", "l1"), {
+        email: "other@example.com",
+      }),
+    );
+    await assertFails(
+      setDoc(doc(unauth().firestore(), "blueprintRateLimits", "k1"), { count: 1 }),
+    );
+  });
+
+  it("allows optional blueprintLeadId on contact messages", async () => {
+    await assertSucceeds(
+      addDoc(collection(unauth().firestore(), "messages"), {
+        ...validMessage,
+        blueprintLeadId: "lead-abc",
+      }),
+    );
+    await assertFails(
+      addDoc(collection(unauth().firestore(), "messages"), {
+        ...validMessage,
+        blueprintLeadId: "",
+      }),
+    );
+  });
+
   it("keeps the admin email aligned with the product rules", () => {
     expect(ADMIN_EMAIL).toBe("hunainhumail786@gmail.com");
   });

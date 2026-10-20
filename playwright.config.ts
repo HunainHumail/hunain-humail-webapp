@@ -24,6 +24,7 @@ function e2eServerEnv(): Record<string, string> {
   }
 
   env.NEXT_PUBLIC_CONTACT_MOCK = "true";
+  env.NEXT_PUBLIC_BLUEPRINT_MOCK = "true";
   env.NEXT_PUBLIC_E2E_SIGNED_OUT = "true";
   env.NEXT_DIST_DIR = ".next-build";
   return env;

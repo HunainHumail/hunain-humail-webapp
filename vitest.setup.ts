@@ -12,6 +12,31 @@ afterEach(() => {
   cleanup();
 });
 
+const localStorageStore = new Map<string, string>();
+const localStorageMock = {
+  get length() {
+    return localStorageStore.size;
+  },
+  clear: () => {
+    localStorageStore.clear();
+  },
+  getItem: (key: string) => localStorageStore.get(key) ?? null,
+  key: (index: number) => [...localStorageStore.keys()][index] ?? null,
+  removeItem: (key: string) => {
+    localStorageStore.delete(key);
+  },
+  setItem: (key: string, value: string) => {
+    localStorageStore.set(key, value);
+  },
+};
+vi.stubGlobal("localStorage", localStorageMock);
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "localStorage", {
+    configurable: true,
+    value: localStorageMock,
+  });
+}
+
 class MockIntersectionObserver {
   observe() {
     return undefined;
@@ -46,14 +71,16 @@ vi.stubGlobal(
   MockResizeObserver as unknown as typeof ResizeObserver,
 );
 
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+}

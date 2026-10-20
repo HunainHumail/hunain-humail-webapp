@@ -20,6 +20,7 @@ Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.c
 | grid-hero | 8% cyan | 5.5% teal | `.bg-grid-hero` (radial mask) |
 | glow | cyan halo | teal halo | `--color-glow` |
 | focus-ring | cyan | darker cyan | `ring-focus-ring` |
+| blueprint-line | `#22d3ee` | `#0891b2` | `stroke-blueprint-line` (wireframe SVG strokes only) |
 
 Accent `#22d3ee` is reserved for the name-dot, active nav, scroll progress, primary pill CTAs, timeline dots/progress, hover borders, terminal prompt/caret, and focus rings. Magenta `#ee22d3` is only used in `--ring-gradient` for the profile avatar story ring.
 
@@ -42,6 +43,8 @@ Standard Tailwind scale plus:
 | section | `5rem` | `py-section` |
 | section-lg | `8.5rem` (136px) | `md:py-section-lg` |
 | terminal | `27.5rem` (440px) | `min-w-terminal` |
+| wireframe | `14rem` (224px) | `w-wireframe` (mobile frames) |
+| wireframe-web | `48rem` (768px) | `w-wireframe-web` (desktop web frames) |
 | avatar | `6rem` (96px) | `size-avatar` |
 | avatar-sm | `2rem` (32px) | `size-avatar-sm` (nav) |
 | avatar-lg | `clamp(10rem, 18vw, 12.5rem)` (160–200px) | `size-avatar-lg` (hero) |

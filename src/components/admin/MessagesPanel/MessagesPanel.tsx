@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/admin/ui/button";
 import {
   Table,
@@ -63,7 +64,19 @@ export function MessagesPanel({ className }: MessagesPanelProps) {
                   <p>{item.name}</p>
                   <p className="text-muted">{item.email}</p>
                 </TableCell>
-                <TableCell>{item.topic}</TableCell>
+                <TableCell>
+                  <div className="flex flex-col gap-1">
+                    <span>{item.topic}</span>
+                    {item.blueprintLeadId ? (
+                      <Link
+                        href={`/admin/blueprints?id=${item.blueprintLeadId}`}
+                        className="font-mono text-xs uppercase tracking-wide text-accent"
+                      >
+                        Blueprint
+                      </Link>
+                    ) : null}
+                  </div>
+                </TableCell>
                 <TableCell className="max-w-sm whitespace-normal">
                   {item.message}
                 </TableCell>

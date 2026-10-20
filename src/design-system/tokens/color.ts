@@ -13,6 +13,7 @@ export const colorDark = {
   gridHero: "rgba(34, 211, 238, 0.08)",
   glow: "rgba(34, 211, 238, 0.32)",
   focusRing: "#22d3ee",
+  blueprintLine: "#22d3ee",
 } as const;
 
 export const colorLight = {
@@ -29,6 +30,7 @@ export const colorLight = {
   gridHero: "rgba(8, 145, 178, 0.055)",
   glow: "rgba(8, 145, 178, 0.22)",
   focusRing: "#0891b2",
+  blueprintLine: "#0891b2",
 } as const;
 
 export type ColorToken = keyof typeof colorDark;

@@ -14,6 +14,7 @@ export const contactMessageSchema = z.object({
     .min(10, "Message must be at least 10 characters")
     .max(2000, "Message must be at most 2000 characters"),
   honeypot: z.string().optional().default(""),
+  blueprintLeadId: z.string().trim().min(1).max(128).optional(),
 });
 
 export type ContactMessage = z.infer<typeof contactMessageSchema>;

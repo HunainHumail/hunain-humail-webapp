@@ -17,6 +17,7 @@ export {
   type ContactMessageDoc,
   type MessagesRepository,
 } from "./messagesRepository";
+export { blueprintLeadsRepository } from "./blueprintLeadsRepository";
 export {
   createCliSession,
   type CliSessionCreateInput,
