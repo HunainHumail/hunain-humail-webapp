@@ -47,3 +47,28 @@ firebase deploy --only hosting,firestore --project hunain-humail-webapp --non-in
 `firebase.json` hosting `public` is `out/`, with `cleanUrls`, `trailingSlash: false` (same as `next.config.ts`), an `/admin/**` rewrite to `/admin.html`, and a long cache on `/_next/static/**`. `predeploy` runs `npm run build:static`.
 
 License: MIT
+
+## App Check / reCAPTCHA Enterprise (required for the live blueprint)
+
+`generateBlueprint` runs with `enforceAppCheck: true`. Every request needs a valid App Check token, or the site shows "Security check failed".
+
+Required config:
+1. **reCAPTCHA Enterprise key.** In Google Cloud console (project `hunain-humail-webapp`), go to Security → reCAPTCHA → Create key.
+   - Platform: Website. Type: score-based (no checkbox challenge).
+   - Domains: `hunain-humail-webapp.web.app`, `hunain-humail-webapp.firebaseapp.com`, plus your custom domain and `localhost` if needed.
+   - The key must live in this same GCP project.
+2. **App Check registration.** In the Firebase console, go to App Check → Apps → web app `1:7489717436:web:b0daf969739310dfae7cb9` → reCAPTCHA Enterprise.
+   - Paste the **same** site key.
+   - Token TTL: 1 hour is fine.
+3. **Env.** Set `NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY` in `.env.local` to that key, then rebuild and run `firebase deploy --only hosting`. The key is baked into the static build.
+4. **Enforcement.** Cloud Functions is enforced in code (`enforceAppCheck: true`). Turn on enforcement in the console only after the App Check metrics show mostly verified requests.
+
+Verify:
+- `node scripts/check-build-env.mjs` must print `ok`. It also runs automatically as `prebuild`. It fails on missing env vars or when Google answers "Invalid site key" or "Invalid domain for site key".
+- In the browser DevTools Network tab, while generating a wireframe:
+  - `recaptcha/enterprise/reload` → 200
+  - `content-firebaseappcheck.googleapis.com/...:exchangeRecaptchaEnterpriseToken` → 200
+  - the `generateBlueprint` request carries an `X-Firebase-AppCheck` header
+- Function logs should show `"app":"VALID"`.
+
+To skip the check (CI without secrets): `SKIP_ENV_CHECK=1`. To skip only the online key check: `SKIP_RECAPTCHA_CHECK=1`.
