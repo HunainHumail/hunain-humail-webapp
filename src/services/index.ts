@@ -34,5 +34,6 @@ export {
   setBlueprintLeadStatus,
   subscribeBlueprintLeads,
 } from "./blueprintLeads";
+export { countRecentHealthFailures, listHealthEvents } from "./healthEvents";
 
 

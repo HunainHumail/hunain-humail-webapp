@@ -26,6 +26,8 @@
   --color-glow: rgba(34, 211, 238, 0.32);
   --color-focus-ring: #22d3ee;
   --color-blueprint-line: #22d3ee;
+  --color-danger: #991b1b;
+  --color-danger-contrast: #ffffff;
 }
 
 [data-theme="light"] {
@@ -49,6 +51,8 @@
   --color-glow: rgba(8, 145, 178, 0.22);
   --color-focus-ring: #0891b2;
   --color-blueprint-line: #0891b2;
+  --color-danger: #991b1b;
+  --color-danger-contrast: #ffffff;
 }
 
 /* shadcn aliases — follow DLS tokens. Do not override --color-accent, --color-border, or --color-muted. */
@@ -105,6 +109,8 @@
   --color-glow: var(--color-glow);
   --color-focus-ring: var(--color-focus-ring);
   --color-blueprint-line: var(--color-blueprint-line);
+  --color-danger: var(--color-danger);
+  --color-danger-contrast: var(--color-danger-contrast);
 
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;

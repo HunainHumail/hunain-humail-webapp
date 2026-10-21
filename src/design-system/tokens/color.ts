@@ -14,6 +14,8 @@ export const colorDark = {
   glow: "rgba(34, 211, 238, 0.32)",
   focusRing: "#22d3ee",
   blueprintLine: "#22d3ee",
+  danger: "#991b1b",
+  dangerContrast: "#ffffff",
 } as const;
 
 export const colorLight = {
@@ -31,6 +33,8 @@ export const colorLight = {
   glow: "rgba(8, 145, 178, 0.22)",
   focusRing: "#0891b2",
   blueprintLine: "#0891b2",
+  danger: "#991b1b",
+  dangerContrast: "#ffffff",
 } as const;
 
 export type ColorToken = keyof typeof colorDark;

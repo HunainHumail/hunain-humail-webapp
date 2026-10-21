@@ -21,6 +21,8 @@ Tokens live in `tokens/` and are mirrored as CSS variables in `src/app/globals.c
 | glow | cyan halo | teal halo | `--color-glow` |
 | focus-ring | cyan | darker cyan | `ring-focus-ring` |
 | blueprint-line | `#22d3ee` | `#0891b2` | `stroke-blueprint-line` (wireframe SVG strokes only) |
+| danger | `#991b1b` | `#991b1b` | `bg-danger` (admin outage banner) |
+| danger-contrast | `#ffffff` | `#ffffff` | `text-danger-contrast` |
 
 Accent `#22d3ee` is reserved for the name-dot, active nav, scroll progress, primary pill CTAs, timeline dots/progress, hover borders, terminal prompt/caret, and focus rings. Magenta `#ee22d3` is only used in `--ring-gradient` for the profile avatar story ring.
 

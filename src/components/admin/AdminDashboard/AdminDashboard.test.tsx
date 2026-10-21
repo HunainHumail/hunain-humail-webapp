@@ -19,6 +19,13 @@ vi.mock("@/services/importSeed", () => ({
   formatSeedImportSummary: vi.fn(),
 }));
 
+const countRecentHealthFailures = vi.hoisted(() => vi.fn(async () => 0));
+
+vi.mock("@/services/healthEvents", () => ({
+  countRecentHealthFailures: () => countRecentHealthFailures(),
+  listHealthEvents: vi.fn(async () => []),
+}));
+
 describe("AdminDashboard", () => {
   it("offers the seed import action", () => {
     render(<AdminDashboard />);
@@ -26,5 +33,14 @@ describe("AdminDashboard", () => {
     expect(
       screen.getByRole("button", { name: "Import seed data" }),
     ).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /in the last hour/ })).not.toBeInTheDocument();
+  });
+
+  it("shows a failure banner when the last hour has failures", async () => {
+    countRecentHealthFailures.mockResolvedValueOnce(2);
+    render(<AdminDashboard />);
+    expect(
+      await screen.findByRole("link", { name: "2 failures in the last hour" }),
+    ).toHaveAttribute("href", "/admin/health");
   });
 });

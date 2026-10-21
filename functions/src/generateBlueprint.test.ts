@@ -2,8 +2,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { HttpsError } from "firebase-functions/v2/https";
 import { createGenerateBlueprintHandler } from "./generateBlueprint";
+import type { HealthEventWriter } from "./healthEvents";
 import type { LeadStore } from "./leadStore";
 import type { GeminiLlm } from "./geminiClient";
+import { ProviderQuotaError, TimeoutError } from "./geminiClient";
 
 const validRequest = {
   email: "ada@example.com",
@@ -73,6 +75,10 @@ function mockLlm(): GeminiLlm {
   };
 }
 
+function mockHealth(): HealthEventWriter & { write: ReturnType<typeof vi.fn> } {
+  return { write: vi.fn().mockResolvedValue(undefined) };
+}
+
 describe("createGenerateBlueprintHandler", () => {
   it("rejects invalid input without touching store or llm", async () => {
     const store = mockStore();
@@ -85,6 +91,7 @@ describe("createGenerateBlueprintHandler", () => {
       limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
       modelId: "test-model",
       deadlineMs: 18_000,
+      health: { write: vi.fn().mockResolvedValue(undefined) },
     });
 
     await expect(handler({ data: { email: "bad", idea: "x" } } as never)).rejects.toBeInstanceOf(
@@ -108,6 +115,7 @@ describe("createGenerateBlueprintHandler", () => {
       limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
       modelId: "test-model",
       deadlineMs: 18_000,
+      health: { write: vi.fn().mockResolvedValue(undefined) },
     });
     const result = await handler({
       data: validRequest,
@@ -129,6 +137,7 @@ describe("createGenerateBlueprintHandler", () => {
       limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
       modelId: "test-model",
       deadlineMs: 18_000,
+      health: { write: vi.fn().mockResolvedValue(undefined) },
     });
 
     const result = await handler({
@@ -152,6 +161,7 @@ describe("createGenerateBlueprintHandler", () => {
       limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
       modelId: "test-model",
       deadlineMs: 18_000,
+      health: { write: vi.fn().mockResolvedValue(undefined) },
     });
 
     await expect(
@@ -172,6 +182,7 @@ describe("createGenerateBlueprintHandler", () => {
       limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
       modelId: "test-model",
       deadlineMs: 18_000,
+      health: { write: vi.fn().mockResolvedValue(undefined) },
     });
 
     await handler({
@@ -189,5 +200,151 @@ describe("createGenerateBlueprintHandler", () => {
 
     expect(store.reserve).not.toHaveBeenCalled();
     expect(store.writeLead).toHaveBeenCalledTimes(2);
+  });
+
+  it("records rate-limit failures without a lead and still rejects", async () => {
+    const store = mockStore({
+      reserve: vi.fn().mockResolvedValue({ ok: false, reason: "rate-limit" }),
+    });
+    const health = mockHealth();
+    const handler = createGenerateBlueprintHandler({
+      llm: mockLlm(),
+      store,
+      hash: { ip: () => "1.1.1.1", hmac: (v) => v },
+      now: () => new Date(),
+      limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
+      modelId: "test-model",
+      deadlineMs: 18_000,
+      health,
+    });
+
+    await expect(
+      handler({ data: validRequest, rawRequest: { ip: "1.1.1.1", headers: {} } } as never),
+    ).rejects.toMatchObject({ code: "resource-exhausted" });
+    expect(health.write).toHaveBeenCalledWith({
+      type: "rate-limit",
+      code: "resource-exhausted",
+      message: "Rate limited",
+    });
+    expect(store.writeLead).not.toHaveBeenCalled();
+    expect(JSON.stringify(health.write.mock.calls)).not.toContain(validRequest.email);
+    expect(JSON.stringify(health.write.mock.calls)).not.toContain(validRequest.idea);
+  });
+
+  it("records daily-budget failures", async () => {
+    const health = mockHealth();
+    const handler = createGenerateBlueprintHandler({
+      llm: mockLlm(),
+      store: mockStore({
+        reserve: vi.fn().mockResolvedValue({ ok: false, reason: "daily-budget" }),
+      }),
+      hash: { ip: () => "1.1.1.1", hmac: (v) => v },
+      now: () => new Date(),
+      limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
+      modelId: "test-model",
+      deadlineMs: 18_000,
+      health,
+    });
+
+    await expect(
+      handler({ data: validRequest, rawRequest: { ip: "1.1.1.1", headers: {} } } as never),
+    ).rejects.toMatchObject({ code: "resource-exhausted" });
+    expect(health.write).toHaveBeenCalledWith({
+      type: "daily-budget",
+      code: "resource-exhausted",
+      message: "Daily budget",
+    });
+  });
+
+  it("records invalid output, provider errors, quota, and timeouts with the lead id", async () => {
+    const cases: { text?: string; error?: Error; type: string; message: string }[] = [
+      { text: "not-json", type: "invalid-output", message: "Invalid output" },
+      { error: new Error("model down ada@example.com"), type: "provider-error", message: "Provider error" },
+      { error: new ProviderQuotaError("quota key=secret"), type: "provider-quota", message: "Provider quota" },
+      { error: new TimeoutError("slow"), type: "timeout", message: "Timeout" },
+    ];
+
+    for (const item of cases) {
+      const health = mockHealth();
+      const llm = mockLlm();
+      llm.generate = vi.fn().mockImplementation(() => {
+        if (item.error) {
+          return Promise.reject(item.error);
+        }
+        return Promise.resolve({ text: item.text ?? "", inputTokens: 1, outputTokens: 1 });
+      });
+      const handler = createGenerateBlueprintHandler({
+        llm,
+        store: mockStore(),
+        hash: { ip: () => "1.1.1.1", hmac: (v) => v },
+        now: () => new Date("2026-01-01T00:00:00.000Z"),
+        limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
+        modelId: "test-model",
+        deadlineMs: 18_000,
+        health,
+      });
+      await expect(
+        handler({ data: validRequest, rawRequest: { ip: "1.1.1.1", headers: {} } } as never),
+      ).rejects.toBeInstanceOf(HttpsError);
+      expect(health.write).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: item.type,
+          message: item.message,
+          leadId: "lead-1",
+        }),
+      );
+      const recorded = JSON.stringify(health.write.mock.calls);
+      expect(recorded).not.toContain(validRequest.email);
+      expect(recorded).not.toContain(validRequest.idea);
+      expect(recorded).not.toContain("secret");
+    }
+  });
+
+  it("still rejects when health logging fails", async () => {
+    const health: HealthEventWriter = {
+      write: vi.fn().mockRejectedValue(new Error("firestore down")),
+    };
+    const handler = createGenerateBlueprintHandler({
+      llm: mockLlm(),
+      store: mockStore({
+        reserve: vi.fn().mockResolvedValue({ ok: false, reason: "rate-limit" }),
+      }),
+      hash: { ip: () => "1.1.1.1", hmac: (v) => v },
+      now: () => new Date(),
+      limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
+      modelId: "test-model",
+      deadlineMs: 18_000,
+      health,
+    });
+
+    await expect(
+      handler({ data: validRequest, rawRequest: { ip: "1.1.1.1", headers: {} } } as never),
+    ).rejects.toMatchObject({ code: "resource-exhausted" });
+  });
+
+  it("records unexpected store failures without echoing the idea", async () => {
+    const health = mockHealth();
+    const handler = createGenerateBlueprintHandler({
+      llm: mockLlm(),
+      store: mockStore({
+        writeLead: vi.fn().mockRejectedValue(new Error(`disk ${validRequest.idea}`)),
+      }),
+      hash: { ip: () => "1.1.1.1", hmac: (v) => v },
+      now: () => new Date(),
+      limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
+      modelId: "test-model",
+      deadlineMs: 18_000,
+      health,
+    });
+
+    await expect(
+      handler({ data: validRequest, rawRequest: { ip: "1.1.1.1", headers: {} } } as never),
+    ).rejects.toThrow(/disk/);
+    expect(health.write).toHaveBeenCalledWith({
+      type: "unexpected",
+      code: "Error",
+      message: "Unexpected error",
+    });
+    expect(JSON.stringify(health.write.mock.calls)).not.toContain(validRequest.idea);
   });
 });

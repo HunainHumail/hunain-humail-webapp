@@ -14,6 +14,7 @@ import {
   REGION,
 } from "./config";
 import { createGenerateBlueprintHandler } from "./generateBlueprint";
+import { createHealthEventWriter } from "./healthEvents";
 import { createGeminiLlm } from "./geminiClient";
 import { clientIp, hmacHex } from "./hash";
 import { createLeadStore } from "./leadStore";
@@ -56,6 +57,7 @@ export const generateBlueprint = onCall(
       },
       modelId: BLUEPRINT_MODEL.value(),
       deadlineMs: DEADLINE_MS,
+      health: createHealthEventWriter(db),
     });
     return handler(request);
   },

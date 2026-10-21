@@ -18,6 +18,7 @@ export {
   type MessagesRepository,
 } from "./messagesRepository";
 export { blueprintLeadsRepository } from "./blueprintLeadsRepository";
+export { healthEventsRepository } from "./healthEventsRepository";
 export {
   createCliSession,
   type CliSessionCreateInput,

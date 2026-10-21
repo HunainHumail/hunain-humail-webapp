@@ -55,4 +55,6 @@ export {
   type UseBlueprintGeneratorResult,
 } from "./useBlueprintGenerator";
 export { useBlueprintLeads, type UseBlueprintLeadsResult } from "./useBlueprintLeads";
+export { useHealthEvents, type UseHealthEventsResult } from "./useHealthEvents";
+export { useHealthFailureCount } from "./useHealthFailureCount";
 

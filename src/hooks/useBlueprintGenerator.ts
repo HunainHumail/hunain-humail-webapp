@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState, type FormEvent } from "react";
 import { BlueprintError } from "@/lib/blueprint/errors";
+import { reportClientError } from "@/lib/health/reportClientError";
 import { buildContactPrefill, specToText } from "@/lib/blueprint/specToText";
 import {
   blueprintRequestSchema,
@@ -131,6 +132,9 @@ export function useBlueprintGenerator(): UseBlueprintGeneratorResult {
         setResult(response);
         setStatus("success");
       } catch (error: unknown) {
+        if (!(error instanceof BlueprintError)) {
+          reportClientError({ type: "unknown", message: "unknown" });
+        }
         setStatus("error");
         setErrorKind(
           error instanceof BlueprintError ? error.kind : "unknown",

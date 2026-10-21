@@ -6,10 +6,12 @@ import { rateLimitKeys, isRateLimitExempt, type RateLimitConfig } from "@/lib/bl
 import {
   blueprintRequestSchema,
   type BlueprintErrorCode,
+  type BlueprintRequest,
   type BlueprintSpec,
 } from "@/lib/schemas/blueprint";
 import type { GeminiLlm } from "./geminiClient";
 import { ProviderQuotaError, TimeoutError } from "./geminiClient";
+import type { HealthEventWriter, ServerHealthEvent } from "./healthEvents";
 import type { LeadStore } from "./leadStore";
 
 export interface GenerateBlueprintDeps {
@@ -23,11 +25,43 @@ export interface GenerateBlueprintDeps {
   limits: RateLimitConfig;
   modelId: string;
   deadlineMs: number;
+  health: HealthEventWriter;
+}
+
+function failureMeta(type: string): { code: string; message: string } {
+  switch (type) {
+    case "timeout":
+      return { code: "deadline-exceeded", message: "Timeout" };
+    case "invalid-output":
+      return { code: "internal", message: "Invalid output" };
+    case "provider-quota":
+      return { code: "resource-exhausted", message: "Provider quota" };
+    case "provider-error":
+      return { code: "internal", message: "Provider error" };
+    case "rate-limit":
+      return { code: "resource-exhausted", message: "Rate limited" };
+    case "daily-budget":
+      return { code: "resource-exhausted", message: "Daily budget" };
+    default:
+      return { code: "internal", message: "Request failed" };
+  }
+}
+
+async function recordFailure(
+  health: HealthEventWriter,
+  event: ServerHealthEvent,
+): Promise<void> {
+  try {
+    await health.write(event);
+  } catch (error: unknown) {
+    logger.warn("healthEvents write failed", {
+      message: error instanceof Error ? error.message : "unknown",
+    });
+  }
 }
 
 export function createGenerateBlueprintHandler(deps: GenerateBlueprintDeps) {
   return async (request: CallableRequest<unknown>) => {
-    const started = Date.now();
     const parsed = blueprintRequestSchema.safeParse(request.data);
     if (!parsed.success) {
       throw new HttpsError("invalid-argument", "Invalid input", {
@@ -35,7 +69,31 @@ export function createGenerateBlueprintHandler(deps: GenerateBlueprintDeps) {
       });
     }
 
-    const { email, idea, platform } = parsed.data;
+    try {
+      return await runGenerate(deps, request, parsed.data);
+    } catch (error: unknown) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      const code = error instanceof Error ? error.name : "unknown";
+      await recordFailure(deps.health, {
+        type: "unexpected",
+        code,
+        message: "Unexpected error",
+      });
+      throw error;
+    }
+  };
+}
+
+async function runGenerate(
+  deps: GenerateBlueprintDeps,
+  request: CallableRequest<unknown>,
+  parsedData: BlueprintRequest,
+) {
+    const started = Date.now();
+
+    const { email, idea, platform } = parsedData;
     const ipRaw = deps.hash.ip(request.rawRequest);
     const ipHash = deps.hash.hmac(ipRaw);
     const emailHash = deps.hash.hmac(email);
@@ -65,6 +123,12 @@ export function createGenerateBlueprintHandler(deps: GenerateBlueprintDeps) {
     if (!exempt) {
       const reserved = await deps.store.reserve(keys, deps.limits, now);
       if (!reserved.ok) {
+        const meta = failureMeta(reserved.reason);
+        await recordFailure(deps.health, {
+          type: reserved.reason,
+          code: meta.code,
+          message: meta.message,
+        });
         throw new HttpsError("resource-exhausted", "Rate limited", {
           reason: reserved.reason,
         });
@@ -155,6 +219,16 @@ export function createGenerateBlueprintHandler(deps: GenerateBlueprintDeps) {
       durationMs: Date.now() - started,
     });
 
+    if (errorCode) {
+      const meta = failureMeta(errorCode);
+      await recordFailure(deps.health, {
+        type: errorCode,
+        code: meta.code,
+        message: meta.message,
+        leadId: lead.id,
+      });
+    }
+
     if (errorCode === "provider-quota") {
       throw new HttpsError("resource-exhausted", "Provider quota", {
         reason: "provider-quota",
@@ -179,5 +253,4 @@ export function createGenerateBlueprintHandler(deps: GenerateBlueprintDeps) {
     }
 
     return { leadId: lead.id, spec };
-  };
 }

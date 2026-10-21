@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
+import { HealthFailureBanner } from "../HealthFailureBanner";
 import { ImportSeedButton } from "../ImportSeedButton";
 
 export interface AdminDashboardProps {
@@ -9,6 +10,7 @@ export interface AdminDashboardProps {
 export function AdminDashboard({ className }: AdminDashboardProps) {
   return (
     <div className={cn("flex max-w-xl flex-col gap-6", className)}>
+      <HealthFailureBanner />
       <div>
         <p className="font-mono text-xs uppercase tracking-wide text-muted">
           Admin

@@ -307,4 +307,70 @@ describe("Firebase security rules", () => {
     await assertSucceeds(getDoc(doc(unauth().firestore(), "cliSessions", "fresh")));
     await assertFails(getDoc(doc(unauth().firestore(), "cliSessions", "stale")));
   });
+
+  it("lets anyone create a valid client health event and only the admin read it", async () => {
+    const valid = {
+      source: "client",
+      type: "timeout",
+      code: "functions/deadline-exceeded",
+      message: "timeout",
+      page: "/",
+      ua: "TestAgent",
+      sessionId: "tab-session-1",
+      createdAt: serverTimestamp(),
+    };
+    const guest = unauth().firestore();
+    const created = await assertSucceeds(
+      addDoc(collection(guest, "healthEvents"), valid),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), { ...valid, source: "server" }),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), { ...valid, idea: "secret idea" }),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), {
+        ...valid,
+        message: "m".repeat(301),
+      }),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), { ...valid, code: "c".repeat(81) }),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), { ...valid, sessionId: "" }),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), { ...valid, type: "" }),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), {
+        source: valid.source,
+        type: valid.type,
+        message: valid.message,
+        page: valid.page,
+        ua: valid.ua,
+        sessionId: valid.sessionId,
+        createdAt: valid.createdAt,
+      }),
+    );
+    await assertFails(
+      addDoc(collection(guest, "healthEvents"), {
+        ...valid,
+        createdAt: "2026-01-01T00:00:00.000Z",
+      }),
+    );
+
+    await assertFails(getDocs(collection(guest, "healthEvents")));
+    await assertFails(getDoc(doc(guest, "healthEvents", created.id)));
+    await assertSucceeds(getDoc(doc(admin().firestore(), "healthEvents", created.id)));
+    await assertFails(
+      updateDoc(doc(admin().firestore(), "healthEvents", created.id), {
+        message: "changed",
+      }),
+    );
+    await assertFails(deleteDoc(doc(admin().firestore(), "healthEvents", created.id)));
+    await assertFails(deleteDoc(doc(guest, "healthEvents", created.id)));
+  });
 });

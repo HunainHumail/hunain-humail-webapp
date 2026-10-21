@@ -77,4 +77,10 @@ export {
   cliSessionWriteSchema,
   type CliSessionWrite,
 } from "./cliSession";
+export {
+  healthEventSchema,
+  healthEventSourceSchema,
+  type HealthEvent,
+  type HealthEventSource,
+} from "./healthEvent";
 

@@ -23,3 +23,8 @@ export {
   type BlueprintLeadDetailProps,
 } from "./BlueprintLeadDetail";
 export { StatusToggle, type StatusToggleProps } from "./StatusToggle";
+export {
+  HealthFailureBanner,
+  type HealthFailureBannerProps,
+} from "./HealthFailureBanner";
+export { HealthPanel, type HealthPanelProps } from "./HealthPanel";

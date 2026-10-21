@@ -46,6 +46,45 @@ service cloud.firestore {
             && request.resource.data.blueprintLeadId.size() <= 128));
     }
 
+    function isClientHealthEvent() {
+      return request.resource.data.keys().hasOnly([
+          'source',
+          'type',
+          'code',
+          'message',
+          'page',
+          'ua',
+          'sessionId',
+          'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'source',
+          'type',
+          'code',
+          'message',
+          'page',
+          'ua',
+          'sessionId',
+          'createdAt'
+        ])
+        && request.resource.data.source == 'client'
+        && request.resource.data.type is string
+        && request.resource.data.type.size() > 0
+        && request.resource.data.type.size() <= 64
+        && request.resource.data.code is string
+        && request.resource.data.code.size() <= 80
+        && request.resource.data.message is string
+        && request.resource.data.message.size() <= 300
+        && request.resource.data.page is string
+        && request.resource.data.page.size() <= 200
+        && request.resource.data.ua is string
+        && request.resource.data.ua.size() <= 120
+        && request.resource.data.sessionId is string
+        && request.resource.data.sessionId.size() > 0
+        && request.resource.data.sessionId.size() <= 40
+        && request.resource.data.createdAt == request.time;
+    }
+
     match /blueprintLeads/{id} {
       allow read: if isAdmin();
       allow update: if isAdmin()
@@ -56,6 +95,12 @@ service cloud.firestore {
 
     match /blueprintRateLimits/{id} {
       allow read, write: if false;
+    }
+
+    match /healthEvents/{id} {
+      allow create: if isClientHealthEvent();
+      allow read: if isAdmin();
+      allow update, delete: if false;
     }
 
     match /profile/{id} {

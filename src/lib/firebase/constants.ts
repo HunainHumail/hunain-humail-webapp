@@ -12,11 +12,16 @@ export const COLLECTIONS = {
   cliSessions: "cliSessions",
   blueprintLeads: "blueprintLeads",
   blueprintRateLimits: "blueprintRateLimits",
+  healthEvents: "healthEvents",
 } as const;
 
 export type ContentCollection = Exclude<
   (typeof COLLECTIONS)[keyof typeof COLLECTIONS],
-  "messages" | "cliSessions" | "blueprintLeads" | "blueprintRateLimits"
+  | "messages"
+  | "cliSessions"
+  | "blueprintLeads"
+  | "blueprintRateLimits"
+  | "healthEvents"
 >;
 
 export const PROFILE_DOC_ID = "main";
