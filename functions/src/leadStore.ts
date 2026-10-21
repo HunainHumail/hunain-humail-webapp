@@ -22,6 +22,12 @@ export interface LeadStore {
     now: Date,
   ): Promise<{ ok: true } | { ok: false; reason: "rate-limit" | "daily-budget" }>;
   writeLead(data: LeadWrite): Promise<{ id: string }>;
+  /** Saved successful blueprint for the same email + idea + platform, if any. */
+  findSaved?(key: {
+    email: string;
+    idea: string;
+    platform: LeadWrite["platform"];
+  }): Promise<{ id: string; spec: NonNullable<LeadWrite["spec"]> } | null>;
 }
 
 function readCountFromSnap(
@@ -72,6 +78,20 @@ export function createLeadStore(db: Firestore): LeadStore {
         tx.set(globalRef, { count: global + 1, expiresAt: exp }, { merge: true });
         return { ok: true as const };
       });
+    },
+
+    async findSaved({ email, idea, platform }) {
+      const snap = await db
+        .collection(COLLECTIONS.blueprintLeads)
+        .where("email", "==", email)
+        .where("idea", "==", idea)
+        .where("platform", "==", platform)
+        .where("generationStatus", "==", "success")
+        .limit(1)
+        .get();
+      const doc = snap.docs[0];
+      const spec = doc?.data().spec as NonNullable<LeadWrite["spec"]> | undefined;
+      return doc && spec ? { id: doc.id, spec } : null;
     },
 
     async writeLead(data) {

@@ -95,6 +95,30 @@ describe("createGenerateBlueprintHandler", () => {
     expect(llm.generate).not.toHaveBeenCalled();
   });
 
+  it("reuses a saved blueprint for a repeat submit with zero llm calls", async () => {
+    const store = mockStore({
+      findSaved: vi.fn().mockResolvedValue({ id: "saved-1", spec: validSpec }),
+    });
+    const llm = mockLlm();
+    const handler = createGenerateBlueprintHandler({
+      llm,
+      store,
+      hash: { ip: () => "1.1.1.1", hmac: (v) => v },
+      now: () => new Date("2026-01-01T00:00:00.000Z"),
+      limits: { perIpHour: 5, perEmailHour: 5, dailyCap: 200 },
+      modelId: "test-model",
+      deadlineMs: 18_000,
+    });
+    const result = await handler({
+      data: validRequest,
+      rawRequest: { ip: "1.1.1.1", headers: {} },
+    } as never);
+    expect(result).toEqual({ leadId: "saved-1", spec: validSpec });
+    expect(llm.generate).not.toHaveBeenCalled();
+    expect(store.reserve).not.toHaveBeenCalled();
+    expect(store.writeLead).not.toHaveBeenCalled();
+  });
+
   it("returns leadId and spec on success", async () => {
     const store = mockStore();
     const handler = createGenerateBlueprintHandler({

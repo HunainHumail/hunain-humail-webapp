@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils/cn";
 
 export interface BlueprintLeadDetailProps {
   lead: BlueprintLead;
+  /** Another lead (same email + idea) holding the saved wireframe. */
+  savedLead?: BlueprintLead;
   onStatusChange: (status: BlueprintLeadStatus) => void;
   backHref?: string;
   className?: string;
@@ -22,11 +24,13 @@ export interface BlueprintLeadDetailProps {
 
 export function BlueprintLeadDetail({
   lead,
+  savedLead,
   onStatusChange,
   backHref = "/admin/blueprints",
   className,
 }: BlueprintLeadDetailProps) {
-  const appName = lead.spec?.appName ?? "App blueprint";
+  const savedSpec = lead.spec ?? savedLead?.spec;
+  const appName = savedSpec?.appName ?? "App blueprint";
   const mailSubject = encodeURIComponent(`Your ${appName} blueprint`);
   const mailto = `mailto:${lead.email}?subject=${mailSubject}`;
 
@@ -101,11 +105,27 @@ export function BlueprintLeadDetail({
         </CardContent>
       </Card>
 
-      {lead.spec ? (
-        <BlueprintCanvas spec={lead.spec} copyLabel="Copy plan" />
+      {/* Display only what was saved when the client generated it. Never calls the model. */}
+      {savedSpec ? (
+        <>
+          {!lead.spec && savedLead ? (
+            <p className="text-sm text-muted">
+              This attempt failed ({lead.errorCode ?? "unknown"}). Showing the
+              wireframe the client got on a later attempt.{" "}
+              <Link
+                href={`/admin/blueprints?id=${savedLead.id}`}
+                className="text-accent underline-offset-4 hover:underline"
+              >
+                Open that lead
+              </Link>
+            </p>
+          ) : null}
+          <BlueprintCanvas spec={savedSpec} copyLabel="Copy plan" />
+        </>
       ) : (
         <p className="text-muted">
-          Generation failed ({lead.errorCode ?? "unknown"}).
+          No saved wireframe. Generation failed for this lead (
+          {lead.errorCode ?? "unknown"}), so the client did not get one.
         </p>
       )}
     </div>

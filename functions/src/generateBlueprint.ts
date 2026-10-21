@@ -46,6 +46,22 @@ export function createGenerateBlueprintHandler(deps: GenerateBlueprintDeps) {
       headers: request.rawRequest?.headers as Record<string, unknown> | undefined,
     });
 
+    // Token saver: a repeat submit / retry of the same idea reuses the saved
+    // blueprint instead of calling the model again.
+    if (deps.store.findSaved) {
+      try {
+        const saved = await deps.store.findSaved({ email, idea, platform });
+        if (saved) {
+          logger.info("generateBlueprint cache hit", { leadId: saved.id });
+          return { leadId: saved.id, spec: saved.spec };
+        }
+      } catch (error: unknown) {
+        logger.warn("generateBlueprint cache lookup failed", {
+          message: error instanceof Error ? error.message : "unknown",
+        });
+      }
+    }
+
     if (!exempt) {
       const reserved = await deps.store.reserve(keys, deps.limits, now);
       if (!reserved.ok) {
