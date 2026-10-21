@@ -55,11 +55,35 @@ export async function generateBlueprint(input: unknown): Promise<BlueprintResult
     throw new BlueprintError("unavailable");
   }
 
-  const { getBlueprintCallable } = await import("@/lib/firebase/functions");
+  const { getBlueprintCallable, ensureAppCheckToken } = await import(
+    "@/lib/firebase/functions"
+  );
   const callable = await getBlueprintCallable();
 
   try {
-    const result = await withTimeout(callable(parsed.data), 25_000);
+    await ensureAppCheckToken();
+  } catch {
+    throw new BlueprintError("app-check");
+  }
+
+  const invoke = () => withTimeout(callable(parsed.data), 25_000);
+  try {
+    let result;
+    try {
+      result = await invoke();
+    } catch (first: unknown) {
+      // Stale/expired token on a long-open tab: refresh once and retry.
+      const code = String((first as { code?: unknown })?.code ?? "");
+      if (code !== "functions/unauthenticated") {
+        throw first;
+      }
+      try {
+        await ensureAppCheckToken(true);
+      } catch {
+        throw new BlueprintError("app-check");
+      }
+      result = await invoke();
+    }
     const data = result.data;
     const response = blueprintResponseSchema.safeParse(data);
     if (!response.success) {
