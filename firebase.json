@@ -9,16 +9,28 @@
     {
       "source": "functions",
       "codebase": "default",
-      "ignore": ["src", "*.test.ts", "build.mjs"],
-      "predeploy": ["npm run build:functions"]
+      "ignore": [
+        "src",
+        "*.test.ts",
+        "build.mjs"
+      ],
+      "predeploy": [
+        "npm run build:functions"
+      ]
     }
   ],
   "hosting": {
     "public": "out",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "cleanUrls": true,
     "trailingSlash": false,
-    "predeploy": ["npm run build:static"],
+    "predeploy": [
+      "npm run build:static"
+    ],
     "rewrites": [
       {
         "source": "/admin/**",
@@ -63,6 +75,24 @@
           {
             "key": "Content-Type",
             "value": "image/png"
+          }
+        ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
           }
         ]
       }
